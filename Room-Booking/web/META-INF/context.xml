@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/Room-Booking"/>
+<Context path="/Room-Booking">
     <Resource name="jdbc/localhostDS" type="javax.sql.DataSource" auth="Container" 
         username="root" password="admin" driverClassName="com.mysql.jdbc.Driver"
         url="jdbc:mysql://localhost:3306/roombooking">
