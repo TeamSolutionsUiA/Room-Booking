@@ -22,9 +22,6 @@ public class LeilighetsType {
         conn = dbTool.loggInn(out);
         try{
             DatabaseMetaData dbm = conn.getMetaData();
-        
-            
-            
             
             String sql = "INSERT INTO LeilighetsType (Navn, Kategori, Enkeltsenger, Dobeltsenger, Beskrivelse, Pris) "
                     + "VALUES (?, ?, ?, ?, ?, ?)";
@@ -44,23 +41,6 @@ public class LeilighetsType {
         } catch (SQLException e){
             e.printStackTrace();
             out.println("Are er ikke awsome");
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-    
-    private void CreateTable(PrintWriter out, Connection conn){
-        try {
-        
-        //stmt = conn.createStatement();
-        String sql = "create table LeilighetsType(ID int AUTO_INCREMENT=10000, Navn varchar(30), Kategori varchar(20),"
-                + " Enkeltsenger int,Dobeltsenger int, Beskrivelse varchar(150), Pris int, PublisertStatus bool,"
-                + "constraint PK_LeilighetsType primary key (ID));";
-        PreparedStatement statement = conn.prepareStatement(sql);
-        statement.executeUpdate();
-        out.println("Are er awsome!!!!!!!!!!");
-        } catch (SQLException e){
-            e.printStackTrace();
         } catch (Exception e){
             e.printStackTrace();
         }
