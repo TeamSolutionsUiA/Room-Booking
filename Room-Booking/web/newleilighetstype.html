@@ -12,14 +12,16 @@ and open the template in the editor.
     </head>
     <body>
         <div class="Create">
-            <h1>Ny Romtype</h1>
-            <form action="create" method="post">
+            <h1>Ny Lelighetstype</h1>
+            <form action="createleilighetstype" method="post">
                 <p><input type="text" name="Navn" placeholder="Navn"></p>
-                <p><input type="text" name="Enkeltsenger" placeholder="Antall enkeltsenger"></p>
-                <p><input type="text" name="Dobeltsenger" placeholder="Antall dobeltsenger"></p>
+                <p><input type="text" name="Kategori" placeholder="Kategori"></p>
+                <p><input type="number" name="Enkeltsenger" placeholder="Antall enkeltsenger"></p>
+                <p><input type="number" name="Dobeltsenger" placeholder="Antall dobeltsenger"></p>
                 <p><input type="text" name="Beskrivelse" placeholder="Beskrivelse"></p>
                 <p><input type="file" name="Bilde" accept="image/*"></p>
-                <p><input type="text" name="Pris" placeholder="Pris per døgn"></p>
+                <p><input type="number" name="Pris" placeholder="Pris per døgn"></p>
+                <p><input type="text" name="Egenskaper" placeholder="Egenskaper separert med komma"></p>
                 <p><input type="submit" value="Opprett romtype"></p>
             </form>
         </div>
