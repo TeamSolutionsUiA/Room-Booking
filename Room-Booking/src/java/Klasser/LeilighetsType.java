@@ -16,35 +16,52 @@ public class LeilighetsType {
     Connection conn;
     Statement stmt;
     
-    public void Insert(PrintWriter out, String Navn, String Kategori, String Enkeltsenger, String Dobeltsenger, String Beskrivelse, String Pris){
-        out.println("Are er awsome!");
+    public void Insert(String navn, String kategori, String enkeltsenger, String dobeltsenger, String beskrivelse, String pris, String egenskaper){
         DbTool dbTool = new DbTool();
-        conn = dbTool.loggInn(out);
+        conn = dbTool.loggInn();
         try{
-            DatabaseMetaData dbm = conn.getMetaData();
-            
             String sql = "INSERT INTO LeilighetsType (Navn, Kategori, Enkeltsenger, Dobeltsenger, Beskrivelse, Pris) "
                     + "VALUES (?, ?, ?, ?, ?, ?)";
             
-            PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, Navn);
-            statement.setString(2, Kategori);
-            statement.setString(3, Enkeltsenger);
-            statement.setString(4, Dobeltsenger);
-            statement.setString(5, Beskrivelse);
-            statement.setString(6, Pris);
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, navn);
+            statement.setString(2, kategori);
+            statement.setString(3, enkeltsenger);
+            statement.setString(4, dobeltsenger);
+            statement.setString(5, beskrivelse);
+            statement.setString(6, pris);
  
             int rowsInserted = statement.executeUpdate();
-            if (rowsInserted > 0) {
-                out.println("A new user was inserted successfully!");
+            ResultSet idRs = statement.getGeneratedKeys();
+            if (idRs.next()){
+            int id = idRs.getInt(1);
+            InsertEgenskaper(conn, egenskaper, id);
+            } else {
+                throw new SQLException("Ingen ID returnert");
             }
-            sql= "INSERT INTO Egenskap (Egenskap)" +"VALUES(?)";
-            statement = conn.prepareStatement(sql);
-            statement.serString (1, egenskap);
-            
         } catch (SQLException e){
             e.printStackTrace();
-            out.println("Are er ikke awsome");
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    
+    private void InsertEgenskaper(Connection conn, String egenskaper, int id){
+        String[] egenskaperArr;
+        egenskaperArr = egenskaper.split(",");
+        try {
+            for (String egenskap : egenskaperArr){
+                egenskap = egenskap.trim();
+                
+                String sql= "INSERT INTO Egenskap (Egenskap, Leilighet_ID)" +"VALUES(?, ?)";
+                PreparedStatement statement = conn.prepareStatement(sql);
+                statement = conn.prepareStatement(sql);
+                statement.setString (1, egenskap);
+                statement.setInt(2, id);
+                int rowsInserted = statement.executeUpdate();
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
         } catch (Exception e){
             e.printStackTrace();
         }

@@ -21,7 +21,7 @@ public class DbTool {
     /*
         Vil etablere kontakt med databsen og returner et Connection objekt. 
     */
-    public Connection loggInn(PrintWriter out) {
+    public Connection loggInn() {
         try {
          // Step 1: Allocate a database 'Connection' object
          Context cont = new InitialContext();
@@ -30,12 +30,10 @@ public class DbTool {
          conn = ds.getConnection();
          return conn; 
  
-        }
-        catch (SQLException ex ) {
-            out.println("Not connected to database " +ex);
-        }
-        catch (NamingException nex) {
-            out.println("Not correct naming" + nex);
+        } catch (SQLException e){
+            e.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
         }
         return null; 
     }  // end loggInn

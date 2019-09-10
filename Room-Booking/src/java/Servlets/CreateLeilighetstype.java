@@ -36,16 +36,16 @@ public class CreateLeilighetstype extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("Are er awsome");
-            String Navn = request.getParameter("Navn");
-            String Enkeltsenger = request.getParameter("Enkeltsenger");
-            String Dobeltsenger = request.getParameter("Dobeltsenger");
-            String Beskrivelse = request.getParameter("Beskrivelse");
-            String Pris = request.getParameter("Pris");
-            String Kategori = request.getParameter("Kategori");
-            String Egenskaper = request.getParameter("Egenskaper");
+            String navn = request.getParameter("Navn");
+            String enkeltsenger = request.getParameter("Enkeltsenger");
+            String dobeltsenger = request.getParameter("Dobeltsenger");
+            String beskrivelse = request.getParameter("Beskrivelse");
+            String pris = request.getParameter("Pris");
+            String kategori = request.getParameter("Kategori");
+            String egenskaper = request.getParameter("Egenskaper");
             
             LeilighetsType leilighetsType = new LeilighetsType();
-            leilighetsType.Insert(out, Navn, Kategori, Enkeltsenger, Dobeltsenger, Beskrivelse, Pris);
+            leilighetsType.Insert(navn, kategori, enkeltsenger, dobeltsenger, beskrivelse, pris , egenskaper);
         }
     }
 
