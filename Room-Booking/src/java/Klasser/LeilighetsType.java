@@ -7,9 +7,6 @@ package Klasser;
 
 import java.io.PrintWriter;
 import java.sql.*;
-import javax.naming.*;
-import javax.sql.DataSource;
-import Klasser.DbTool;
 
 /**
  *
@@ -26,11 +23,7 @@ public class LeilighetsType {
         try{
             DatabaseMetaData dbm = conn.getMetaData();
         
-            ResultSet table = dbm.getTables(null, null, "LeilighetsType", null);
-            if(table.next()){
-                CreateTable(out, conn);
-                out.println("Are er awsome!!!!!");
-            } else {out.println("Are er awsome!!!");}
+            
             
             
             String sql = "INSERT INTO LeilighetsType (Navn, Kategori, Enkeltsenger, Dobeltsenger, Beskrivelse, Pris) "
