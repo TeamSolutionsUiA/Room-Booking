@@ -38,6 +38,10 @@ public class LeilighetsType {
             if (rowsInserted > 0) {
                 out.println("A new user was inserted successfully!");
             }
+            sql= "INSERT INTO Egenskap (Egenskap)" +"VALUES(?)";
+            statement = conn.prepareStatement(sql);
+            statement.serString (1, egenskap);
+            
         } catch (SQLException e){
             e.printStackTrace();
             out.println("Are er ikke awsome");
