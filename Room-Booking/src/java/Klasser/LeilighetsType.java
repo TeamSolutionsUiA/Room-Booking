@@ -39,7 +39,7 @@ public class LeilighetsType {
             if (idRs.next()){
             int id = idRs.getInt(1);
             InsertEgenskaper(conn, egenskaper, id);
-            //InsertBilder(conn, bilder, id);
+            InsertBilder(conn, bilder, id);
             } else {
                 throw new SQLException("Ingen ID returnert");
             }

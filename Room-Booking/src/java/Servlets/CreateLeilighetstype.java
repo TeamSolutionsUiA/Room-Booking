@@ -54,12 +54,12 @@ public class CreateLeilighetstype extends HttpServlet {
             String egenskaper = request.getParameter("Egenskaper");
             List<InputStream> bilder = new ArrayList<>();
             for (Part bilde : request.getParts()){
-                out.println(bilde.getName());
-                InputStream inputStream = bilde.getInputStream();
-                bilder.add(inputStream);
+                if (bilde.getContentType() != null){
+                    InputStream inputStream = bilde.getInputStream();
+                    bilder.add(inputStream);
+                }
             }
             
-            out.println("1");
             LeilighetsType leilighetsType = new LeilighetsType();
             leilighetsType.Insert(navn, kategori, enkeltsenger, dobeltsenger, beskrivelse, pris , egenskaper, bilder);
         }
