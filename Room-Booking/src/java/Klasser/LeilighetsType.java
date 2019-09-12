@@ -5,8 +5,11 @@
  */
 package Klasser;
 
-import java.io.PrintWriter;
+import java.io.InputStream;
 import java.sql.*;
+import java.util.Collection;
+import java.util.List;
+import javax.servlet.http.Part;
 
 /**
  *
@@ -16,7 +19,7 @@ public class LeilighetsType {
     Connection conn;
     Statement stmt;
     
-    public void Insert(String navn, String kategori, String enkeltsenger, String dobeltsenger, String beskrivelse, String pris, String egenskaper){
+    public void Insert(String navn, String kategori, String enkeltsenger, String dobeltsenger, String beskrivelse, String pris, String egenskaper, List<InputStream> bilder){
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
         try{
@@ -36,6 +39,7 @@ public class LeilighetsType {
             if (idRs.next()){
             int id = idRs.getInt(1);
             InsertEgenskaper(conn, egenskaper, id);
+            //InsertBilder(conn, bilder, id);
             } else {
                 throw new SQLException("Ingen ID returnert");
             }
@@ -57,6 +61,24 @@ public class LeilighetsType {
                 PreparedStatement statement = conn.prepareStatement(sql);
                 statement = conn.prepareStatement(sql);
                 statement.setString (1, egenskap);
+                statement.setInt(2, id);
+                int rowsInserted = statement.executeUpdate();
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    
+    private void InsertBilder(Connection conn, List<InputStream> bilder, int id){
+        try {
+            for (InputStream bilde : bilder){
+                
+                String sql= "INSERT INTO Bilde (Bilde, Leilighet_ID)" +"VALUES(?, ?)";
+                PreparedStatement statement = conn.prepareStatement(sql);
+                statement = conn.prepareStatement(sql);
+                statement.setBlob(1, bilde);
                 statement.setInt(2, id);
                 int rowsInserted = statement.executeUpdate();
             }

@@ -13,12 +13,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Klasser.LeilighetsType;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.http.Part;
+import javax.servlet.annotation.MultipartConfig;
 
 /**
  *
  * @author Are
  */
 @WebServlet(name = "CreateRomtype", urlPatterns = {"/createleilighetstype"})
+@MultipartConfig(fileSizeThreshold = 6291456, // 6 MB
+		maxFileSize = 10485760L, // 10 MB
+		maxRequestSize = 20971520L // 20 MB
+)
 public class CreateLeilighetstype extends HttpServlet {
 
     /**
@@ -43,9 +52,16 @@ public class CreateLeilighetstype extends HttpServlet {
             String pris = request.getParameter("Pris");
             String kategori = request.getParameter("Kategori");
             String egenskaper = request.getParameter("Egenskaper");
+            List<InputStream> bilder = new ArrayList<>();
+            for (Part bilde : request.getParts()){
+                out.println(bilde.getName());
+                InputStream inputStream = bilde.getInputStream();
+                bilder.add(inputStream);
+            }
             
+            out.println("1");
             LeilighetsType leilighetsType = new LeilighetsType();
-            leilighetsType.Insert(navn, kategori, enkeltsenger, dobeltsenger, beskrivelse, pris , egenskaper);
+            leilighetsType.Insert(navn, kategori, enkeltsenger, dobeltsenger, beskrivelse, pris , egenskaper, bilder);
         }
     }
 
