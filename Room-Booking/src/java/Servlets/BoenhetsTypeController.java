@@ -95,9 +95,12 @@ public class BoenhetsTypeController extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>BoenhetsTyper</h1>");
+            List<String> kategorier = boenhetsType;
             List<BoenhetsType> boenhetsTyper= boenhetsTypeDAO.readAll();
+            for
             for (BoenhetsType boenhetsType : boenhetsTyper){
                 out.println("<div>");
+                for
                 out.println("<h2>");
                 out.println(boenhetsType.getNavn());
                 out.println("</h2>");

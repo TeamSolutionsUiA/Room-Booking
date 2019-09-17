@@ -65,8 +65,11 @@ public class BoenhetsTypeDAO {
             List<BoenhetsType> boenhetsTyper = new ArrayList<BoenhetsType>();
        
             while (rs.next()) {
-                List<Bilde> bilder = new ArrayList();
-                boenhetsType = new BoenhetsType(rs.getString("Navn"), rs.getString("Kategori") , rs.getInt("EnkeltSenger"), rs.getInt("DobeltSenger"), rs.getString("Beskrivelse"), rs.getInt("Pris"), egenskapDAO.readAll(conn,rs.getString("Leilighet_ID")), bilder);
+                boenhetsType = new BoenhetsType(rs.getString("Navn"), rs.getString("Kategori"),
+                        rs.getInt("EnkeltSenger"), rs.getInt("DobeltSenger"),
+                        rs.getString("Beskrivelse"), rs.getInt("Pris"),
+                        egenskapDAO.readAll(conn,rs.getString("Leilighet_ID")), 
+                        bilderDAO.readAll(conn, rs.getString("Leilighet_ID")));
                 boenhetsTyper.add(boenhetsType);   
             }
             return boenhetsTyper;
