@@ -48,13 +48,19 @@ public class BoenhetsTypeController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("Are er awsome");
             String navn = request.getParameter("Navn");
-            String enkeltsenger = request.getParameter("Enkeltsenger");
-            String dobeltsenger = request.getParameter("Dobeltsenger");
+            
+            String enkeltsengerStr = request.getParameter("Enkeltsenger");
+            int enkeltsenger = Integer.parseInt(enkeltsengerStr);
+            
+            String dobeltsengerStr = request.getParameter("Dobeltsenger");
+            int dobeltsenger = Integer.parseInt(dobeltsengerStr);
+            
             String beskrivelse = request.getParameter("Beskrivelse");
-            String pris = request.getParameter("Pris");
+            
+            String prisStr = request.getParameter("Pris");
+            int pris = Integer.parseInt(prisStr);
+            
             String kategori = request.getParameter("Kategori");
             String egenskaper = request.getParameter("Egenskaper");
             
@@ -75,6 +81,32 @@ public class BoenhetsTypeController extends HttpServlet {
             BoenhetsType boenhetsType;
             boenhetsType = new BoenhetsType(navn, kategori, enkeltsenger, dobeltsenger, beskrivelse, pris , egenskaperList, bilder);
             boenhetsTypeDAO.Insert(boenhetsType);
+        }
+    }
+    
+    protected void ReadAllBoenhetsType(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>BoenhetsTyper</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>BoenhetsTyper</h1>");
+            List<BoenhetsType> boenhetsTyper= boenhetsTypeDAO.readAll();
+            for (BoenhetsType boenhetsType : boenhetsTyper){
+                out.println("<div>");
+                out.println("<h2>");
+                out.println(boenhetsType.getNavn());
+                out.println("</h2>");
+                out.println("<>");
+                out.println("<>");
+                out.println("</div>");
+            }
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 

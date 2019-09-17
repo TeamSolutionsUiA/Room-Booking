@@ -30,10 +30,10 @@ public class BoenhetsTypeDAO {
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, boenhetsType.getNavn());
             statement.setString(2, boenhetsType.getKategori());
-            statement.setString(3, boenhetsType.getEnkeltsenger());
-            statement.setString(4, boenhetsType.getDobeltsenger());
+            statement.setInt(3, boenhetsType.getEnkeltsenger());
+            statement.setInt(4, boenhetsType.getDobeltsenger());
             statement.setString(5, boenhetsType.getBeskrivelse());
-            statement.setString(6, boenhetsType.getPris());
+            statement.setInt(6, boenhetsType.getPris());
  
             int rowsInserted = statement.executeUpdate();
             ResultSet idRs = statement.getGeneratedKeys();
@@ -54,7 +54,7 @@ public class BoenhetsTypeDAO {
             e.printStackTrace();
         }
     }
-   public void read () {
+   public List<BoenhetsType> readAll () {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
         
@@ -62,19 +62,20 @@ public class BoenhetsTypeDAO {
             Statement stm =conn.createStatement();
             String query ="SELECT * From LeilighetsType";
             ResultSet rs = stm.executeQuery(query);
-            ArrayList<BoenhetsType> list = new ArrayList<BoenhetsType>();
+            List<BoenhetsType> boenhetsTyper = new ArrayList<BoenhetsType>();
        
             while (rs.next()) {
                 List<Bilde> bilder = new ArrayList();
-                boenhetsType = new BoenhetsType(rs.getString("Navn"), rs.getString("Kategori") , rs.getString("EnkeltSenger"), rs.getString("DobeltSenger"), rs.getString("Beskrivelse"), rs.getString("Pris"), egenskapDAO.readAll(conn,rs.getString("Leilighet_ID")), bilder);
-                list.add(boenhetsType);   
+                boenhetsType = new BoenhetsType(rs.getString("Navn"), rs.getString("Kategori") , rs.getInt("EnkeltSenger"), rs.getInt("DobeltSenger"), rs.getString("Beskrivelse"), rs.getInt("Pris"), egenskapDAO.readAll(conn,rs.getString("Leilighet_ID")), bilder);
+                boenhetsTyper.add(boenhetsType);   
             }
+            return boenhetsTyper;
         } catch (SQLException e){
             e.printStackTrace();
         } catch (Exception e){
             e.printStackTrace();
         }
-       
+        return null;
    }
     
     

@@ -15,14 +15,14 @@ import java.util.List;
 public class BoenhetsType {
     private String navn;
     private String kategori;
-    private String enkeltsenger;
-    private String dobeltsenger;
+    private int enkeltsenger;
+    private int dobeltsenger;
     private String beskrivelse;
-    private String pris;
+    private int pris;
     private List<Bilde> bilder;
     private List<Egenskap> egenskaper;
 
-    public BoenhetsType(String navn, String kategori, String enkeltsenger, String dobeltsenger, String beskrivelse, String pris, List<Egenskap> egenskaper, List<Bilde> bilder) {
+    public BoenhetsType(String navn, String kategori, int enkeltsenger, int dobeltsenger, String beskrivelse, int pris, List<Egenskap> egenskaper, List<Bilde> bilder) {
         this.navn = navn;
         this.kategori = kategori;
         this.enkeltsenger = enkeltsenger;
@@ -49,19 +49,19 @@ public class BoenhetsType {
         this.kategori = kategori;
     }
 
-    public String getEnkeltsenger() {
+    public int getEnkeltsenger() {
         return enkeltsenger;
     }
 
-    public void setEnkeltsenger(String enkeltsenger) {
+    public void setEnkeltsenger(int enkeltsenger) {
         this.enkeltsenger = enkeltsenger;
     }
 
-    public String getDobeltsenger() {
+    public int getDobeltsenger() {
         return dobeltsenger;
     }
 
-    public void setDobeltsenger(String dobeltsenger) {
+    public void setDobeltsenger(int dobeltsenger) {
         this.dobeltsenger = dobeltsenger;
     }
 
@@ -73,11 +73,11 @@ public class BoenhetsType {
         this.beskrivelse = beskrivelse;
     }
 
-    public String getPris() {
+    public int getPris() {
         return pris;
     }
 
-    public void setPris(String pris) {
+    public void setPris(int pris) {
         this.pris = pris;
     }
 
