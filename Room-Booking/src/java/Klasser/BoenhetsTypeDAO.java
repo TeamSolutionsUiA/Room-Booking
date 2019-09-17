@@ -77,6 +77,28 @@ public class BoenhetsTypeDAO {
         }
         return null;
    }
+   
+   public List<String> readAllKategorier(){
+        DbTool dbTool = new DbTool();
+        conn = dbTool.loggInn();
+        
+        try {
+            Statement stm =conn.createStatement();
+            String query ="SELECT DISTINCT Kategori From LeilighetsType";
+            ResultSet rs = stm.executeQuery(query);
+            List<String> kategori = new ArrayList<String>();
+       
+            while (rs.next()) {
+                kategori.add(rs.getString("Kategori"));   
+            }
+            return kategori;
+        } catch (SQLException e){
+            e.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+   }
     
     
     

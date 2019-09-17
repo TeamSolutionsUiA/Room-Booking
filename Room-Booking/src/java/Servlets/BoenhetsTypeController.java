@@ -26,7 +26,7 @@ import javax.servlet.annotation.MultipartConfig;
  *
  * @author Are
  */
-@WebServlet(name = "CreateRomtype", urlPatterns = {"/createleilighetstype"})
+@WebServlet(name = "BoenhetsTypeController", urlPatterns = {"/boenhetstype"})
 @MultipartConfig(fileSizeThreshold = 6291456, // 6 MB
 		maxFileSize = 10485760L, // 10 MB
 		maxRequestSize = 20971520L // 20 MB
