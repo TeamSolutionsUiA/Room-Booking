@@ -95,18 +95,57 @@ public class BoenhetsTypeController extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>BoenhetsTyper</h1>");
-            List<String> kategorier = boenhetsType;
+            List<String> kategorier = boenhetsTypeDAO.readAllKategorier();
             List<BoenhetsType> boenhetsTyper= boenhetsTypeDAO.readAll();
-            for
-            for (BoenhetsType boenhetsType : boenhetsTyper){
-                out.println("<div>");
-                for
+            for (String kategori: kategorier ) {
+               out.println("<div>");
+               
                 out.println("<h2>");
-                out.println(boenhetsType.getNavn());
+                out.println(kategori);
                 out.println("</h2>");
-                out.println("<>");
-                out.println("<>");
-                out.println("</div>");
+                
+            
+            for (BoenhetsType boenhetsType : boenhetsTyper){
+                if(kategori==boenhetsType.getKategori()){
+                out.println("<div>");
+               
+                out.println("<h3>");
+                out.println(boenhetsType.getNavn());
+                out.println("</h3>");
+                out.println("<p>");
+                out.println(boenhetsType.getBeskrivelse());
+                out.println("</p>");
+                
+               int eSeng=boenhetsType.getEnkeltsenger();
+               int dSeng=boenhetsType.getDobeltsenger();
+               int sengTotal=eSeng+dSeng;
+                if(sengTotal>0) {
+                out.println("<p>");
+                out.println("Antall enkeltsenger" +eSeng);
+                out.println("Antall dobbelsenger" + dSeng);
+                out.println("Antall sengeplasser " +sengTotal);
+                out.println("</p>");
+                
+               }
+               out.println("<p>");
+               out.println("Pris" + boenhetsType.getPris() + "Nok");
+               out.println("</p>");
+               List<Egenskap> egenskaper =boenhetsType.getEgenskaper();
+              out.println("<p>");
+              
+              out.println("<h4>Egenskaper:</h4>");
+              for(Egenskap egenskap : egenskaper ){
+                   
+               out.println(egenskap);
+               }
+               out.println("</p>");
+               
+               out.println("</div>");
+               }
+               
+  
+            }
+            out.println("</div>");  
             }
             out.println("</body>");
             out.println("</html>");
