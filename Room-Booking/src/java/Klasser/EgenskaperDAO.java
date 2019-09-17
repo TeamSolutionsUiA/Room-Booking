@@ -7,7 +7,10 @@ package Klasser;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
@@ -34,4 +37,23 @@ public class EgenskaperDAO {
             e.printStackTrace();
         }
     }
+    public ArrayList readEgenskap (Connection conn, String LelighetsID) {
+        ArrayList<Egenskaper> list = new ArrayList<Egenskaper>();
+       
+       
+      
+       try {
+       Statement stm =conn.createStatement();
+       String query = "SELECT * FROM Egenskap where Leilighet_ID=" +LelighetsID;
+       ResultSet rs = stm.executeQuery(query);
+       
+        list.add(new Egenskaper(rs.getString(query)));
+       }catch (Exception e){
+           
+           
+       }
+        return list;
+    }
 }
+
+

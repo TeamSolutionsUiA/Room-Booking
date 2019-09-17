@@ -5,10 +5,8 @@
  */
 package Klasser;
 
-import java.io.InputStream;
 import java.sql.*;
-import java.util.Collection;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  *
@@ -49,7 +47,36 @@ public class BoenhetsTypeDAO {
             e.printStackTrace();
         }
     }
-    
+   public void read () {
+       DbTool dbTool = new DbTool();
+       conn = dbTool.loggInn();
+       
+       
+       
+       try {
+       Statement stm =conn.createStatement();
+       String query ="SELECT * From LeilighetsType";
+       ResultSet rs = stm.executeQuery(query);
+       ArrayList<BoenhetsType> list = new ArrayList<BoenhetsType>();
+       
+       
+       
+       while (rs.next()) {
+         
+
+       list.add(new BoenhetsType(rs.getString("navn"), rs.getString("enkeltSenger"), rs.getString("DobeltSenger"), rs.getString("Beskrivelse"), rs.getString("Pris")));   
+        
+       
+       
+       
+       }
+       
+       }catch(Exception e) {
+           
+           
+       }
+       
+   }
     
     
     
