@@ -66,10 +66,10 @@ public class BoenhetsTypeDAO {
        
             while (rs.next()) {
                 boenhetsType = new BoenhetsType(rs.getString("Navn"), rs.getString("Kategori"),
-                        rs.getInt("EnkeltSenger"), rs.getInt("DobeltSenger"),
-                        rs.getString("Beskrivelse"), rs.getInt("Pris"),
-                        egenskapDAO.readAll(conn,rs.getString("Leilighet_ID")), 
-                        bilderDAO.readAll(conn, rs.getString("Leilighet_ID")));
+                    rs.getInt("EnkeltSenger"), rs.getInt("DobeltSenger"),
+                    rs.getString("Beskrivelse"), rs.getInt("Pris"),
+                    egenskapDAO.readAll(conn,rs.getString("Leilighet_ID")), 
+                    bilderDAO.readAll(conn, rs.getString("Leilighet_ID")));
                 boenhetsTyper.add(boenhetsType);   
             }
             return boenhetsTyper;
@@ -101,8 +101,30 @@ public class BoenhetsTypeDAO {
             e.printStackTrace();
         }
         return null;
-   }
-    
-    
-    
+    }
+    public List<BoenhetsType> readBoenhet(String id){
+        DbTool dbTool = new DbTool();
+        conn = dbTool.loggInn();
+        
+        try {
+            String query ="SELECT From LeilighetsType WHERE ID = id";
+            PreparedStatement stm =conn.prepareStatement(query);
+            ResultSet rs = stm.executeQuery(query);
+            //List<BoenhetsType> boenhetInfo = new ArrayList<BoenhetsType>();
+       
+            boenhetsType = new BoenhetsType(rs.getString("Navn"), rs.getString("Kategori"),
+                rs.getInt("EnkeltSenger"), rs.getInt("DobeltSenger"),
+                rs.getString("Beskrivelse"), rs.getInt("Pris"),
+                egenskapDAO.readAll(conn,rs.getString("Leilighet_ID")), 
+                bilderDAO.readAll(conn, rs.getString("Leilighet_ID")));      
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+        
+    }
+    //private void read(){}
 }
