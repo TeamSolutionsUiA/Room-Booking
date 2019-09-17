@@ -64,7 +64,7 @@ public class BoenhetsTypeDAO {
        while (rs.next()) {
          
 
-       list.add(new BoenhetsType(rs.getString("navn"), rs.getString("enkeltSenger"), rs.getString("DobeltSenger"), rs.getString("Beskrivelse"), rs.getString("Pris")));   
+       list.add(new BoenhetsType(rs.getString("navn"), rs.getString("enkeltSenger"), rs.getString("DobeltSenger"), rs.getString("Beskrivelse"), rs.getString("Pris"), EgenskaperDAO.readEgenskap(conn,rs.getString("Leilighet_ID"))));   
         
        
        
