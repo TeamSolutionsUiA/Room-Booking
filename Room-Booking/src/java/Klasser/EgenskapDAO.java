@@ -11,15 +11,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author arefj
  */
-public class EgenskaperDAO {
-    public void Insert(Connection conn, Egenskaper egenskaper, int id){
+public class EgenskapDAO {
+    public void Insert(Connection conn, Egenskap egenskaper, int id){
         String[] egenskaperArr;
-        egenskaperArr = egenskaper.getEgenskaper().split(",");
+        egenskaperArr = egenskaper.getEgenskap().split(",");
         try {
             for (String egenskap : egenskaperArr){
                 egenskap = egenskap.trim();
@@ -37,17 +38,17 @@ public class EgenskaperDAO {
             e.printStackTrace();
         }
     }
-    public ArrayList readEgenskap (Connection conn, String LelighetsID) {
-        ArrayList<Egenskaper> list = new ArrayList<Egenskaper>();
+    public List<Egenskap> readEgenskaper (Connection conn, String LelighetsID) {
+        List<Egenskap> list = new ArrayList<Egenskap>();
        
        
       
-       try {
-       Statement stm =conn.createStatement();
-       String query = "SELECT * FROM Egenskap where Leilighet_ID=" +LelighetsID;
-       ResultSet rs = stm.executeQuery(query);
+        try {
+            Statement stm =conn.createStatement();
+            String query = "SELECT * FROM Egenskap where Leilighet_ID=" +LelighetsID;
+            ResultSet rs = stm.executeQuery(query);
        
-        list.add(new Egenskaper(rs.getString(query)));
+            list.add(new Egenskap(rs.getString(query)));
        }catch (Exception e){
            
            

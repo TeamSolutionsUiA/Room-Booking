@@ -14,18 +14,16 @@ import java.sql.SQLException;
  *
  * @author arefj
  */
-public class BilderDAO {
-    public void Insert(Connection conn, Bilder bilder, int id){
+public class BildeDAO {
+    public void Insert(Connection conn, Bilde bilde, int id){
         try {
-            for (InputStream bilde : bilder.getBilder()){
-                
+                InputStream nyttBilde = bilde.getBilde();
                 String sql= "INSERT INTO Bilde (Bilde, Leilighet_ID)" +"VALUES(?, ?)";
                 PreparedStatement statement;
                 statement = conn.prepareStatement(sql);
-                statement.setBlob(1, bilde);
+                statement.setBlob(1, nyttBilde);
                 statement.setInt(2, id);
                 int rowsInserted = statement.executeUpdate();
-            }
         } catch (SQLException e){
             e.printStackTrace();
         } catch (Exception e){

@@ -19,8 +19,8 @@ public class BoenhetsType {
     private String dobeltsenger;
     private String beskrivelse;
     private String pris;
-    private Bilder bilder;
-    private Egenskaper egenskaper;
+    private List<Bilde> bilder;
+    private List<Egenskap> egenskaper;
 
     public BoenhetsType(String navn, String kategori, String enkeltsenger, String dobeltsenger, String beskrivelse, String pris, String egenskaper, List<InputStream> bilder) {
         this.navn = navn;
@@ -29,8 +29,18 @@ public class BoenhetsType {
         this.dobeltsenger = dobeltsenger;
         this.beskrivelse = beskrivelse;
         this.pris = pris;
-        this.egenskaper = new Egenskaper(egenskaper);
-        this.bilder = new Bilder(bilder);
+        
+        String[] egenskaperArr;
+        egenskaperArr = egenskaper.split(",");
+        for (String egenskap : egenskaper.split(",")){
+            Egenskap nyEgenskap = new Egenskap(egenskap);
+            this.egenskaper.add(nyEgenskap);
+        }
+         
+        for (InputStream bilde : bilder){
+            Bilde nyttBilde = new Bilde(bilde);
+            this.bilder.add(nyttBilde);
+        }
     }
     public String getNavn() {
         return navn;
@@ -80,19 +90,20 @@ public class BoenhetsType {
         this.pris = pris;
     }
 
-    public Bilder getBilder() {
+    public List<Bilde> getBilder() {
         return bilder;
     }
 
-    public void setBilder(Bilder bilder) {
+    public void setBilder(List<Bilde> bilder) {
         this.bilder = bilder;
     }
 
-    public Egenskaper getEgenskaper() {
+    public List<Egenskap> getEgenskaper() {
         return egenskaper;
     }
 
-    public void setEgenskaper(Egenskaper egenskaper) {
+    public void setEgenskaper(List<Egenskap> egenskaper) {
         this.egenskaper = egenskaper;
     }
+    
 }

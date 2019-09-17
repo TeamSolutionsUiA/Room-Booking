@@ -12,18 +12,18 @@ import java.util.List;
  *
  * @author arefj
  */
-public class Bilder {
-    List<InputStream> bilder;
+public class Bilde {
+    InputStream bilde;
 
-    public Bilder(List<InputStream> bilder) {
-        this.bilder = bilder;
+    public Bilde(InputStream bilde) {
+        this.bilde = bilde;
     }
 
-    public List<InputStream> getBilder() {
-        return bilder;
+    public InputStream getBilde() {
+        return bilde;
     }
 
-    public void setBilder(List<InputStream> bilder) {
-        this.bilder = bilder;
+    public void setBilde(InputStream bilde) {
+        this.bilde = bilde;
     }
 }

@@ -14,8 +14,8 @@ import java.util.ArrayList;
  */
 public class BoenhetsTypeDAO {
     private Connection conn;
-    private BilderDAO bilderDAO;
-    private EgenskaperDAO egenskaperDAO;
+    private BildeDAO bilderDAO;
+    private EgenskapDAO egenskaperDAO;
     
     public void Insert(BoenhetsType boenhetsType){
         DbTool dbTool = new DbTool();
@@ -36,8 +36,12 @@ public class BoenhetsTypeDAO {
             ResultSet idRs = statement.getGeneratedKeys();
             if (idRs.next()){
             int id = idRs.getInt(1);
-            egenskaperDAO.Insert(conn, boenhetsType.getEgenskaper(), id);
-            bilderDAO.Insert(conn, boenhetsType.getBilder(), id);
+            for (Egenskap egenskap : boenhetsType.getEgenskaper()){
+                egenskaperDAO.Insert(conn, egenskap, id);
+            }
+            for (Bilde bilde : boenhetsType.getBilder()){
+                bilderDAO.Insert(conn, bilde, id);
+            }
             } else {
                 throw new SQLException("Ingen ID returnert");
             }
@@ -64,7 +68,7 @@ public class BoenhetsTypeDAO {
        while (rs.next()) {
          
 
-       list.add(new BoenhetsType(rs.getString("navn"), rs.getString("enkeltSenger"), rs.getString("DobeltSenger"), rs.getString("Beskrivelse"), rs.getString("Pris"), EgenskaperDAO.readEgenskap(conn,rs.getString("Leilighet_ID"))));   
+       list.add(new BoenhetsType(rs.getString("navn"), rs.getString("enkeltSenger"), rs.getString("DobeltSenger"), rs.getString("Beskrivelse"), rs.getString("Pris"), EgenskapDAO.readEgenskaper(conn,rs.getString("Leilighet_ID"))));   
         
        
        
