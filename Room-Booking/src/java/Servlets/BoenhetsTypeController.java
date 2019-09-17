@@ -5,6 +5,7 @@
  */
 package Servlets;
 
+import Klasser.Bilde;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -14,8 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Klasser.BoenhetsType;
 import Klasser.BoenhetsTypeDAO;
+import Klasser.Egenskap;
 import java.io.InputStream;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.Part;
@@ -56,15 +57,23 @@ public class BoenhetsTypeController extends HttpServlet {
             String pris = request.getParameter("Pris");
             String kategori = request.getParameter("Kategori");
             String egenskaper = request.getParameter("Egenskaper");
-            List<InputStream> bilder = new ArrayList<>();
+            
+            List<Egenskap> egenskaperList = new ArrayList();
+            for (String egenskap : egenskaper.split(",")){
+            Egenskap nyEgenskap = new Egenskap(egenskap);
+            egenskaperList.add(nyEgenskap);
+            }
+            
+            List<Bilde> bilder = new ArrayList<>();
             for (Part bilde : request.getParts()){
                 if (bilde.getContentType() != null){
                     InputStream inputStream = bilde.getInputStream();
-                    bilder.add(inputStream);
+                    bilder.add(new Bilde(inputStream));
                 }
             }
             
-            BoenhetsType boenhetsType = new BoenhetsType(navn, kategori, enkeltsenger, dobeltsenger, beskrivelse, pris , egenskaper, bilder);
+            BoenhetsType boenhetsType;
+            boenhetsType = new BoenhetsType(navn, kategori, enkeltsenger, dobeltsenger, beskrivelse, pris , egenskaperList, bilder);
             boenhetsTypeDAO.Insert(boenhetsType);
         }
     }

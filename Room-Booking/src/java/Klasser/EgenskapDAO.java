@@ -18,6 +18,8 @@ import java.util.List;
  * @author arefj
  */
 public class EgenskapDAO {
+    private List<Egenskap> egenskaper;
+    
     public void Insert(Connection conn, Egenskap egenskaper, int id){
         String[] egenskaperArr;
         egenskaperArr = egenskaper.getEgenskap().split(",");
@@ -38,22 +40,21 @@ public class EgenskapDAO {
             e.printStackTrace();
         }
     }
-    public List<Egenskap> readEgenskaper (Connection conn, String LelighetsID) {
-        List<Egenskap> list = new ArrayList<Egenskap>();
-       
-       
-      
+    public List<Egenskap> readAll (Connection conn, String LelighetsID) {
+        
         try {
             Statement stm =conn.createStatement();
             String query = "SELECT * FROM Egenskap where Leilighet_ID=" +LelighetsID;
             ResultSet rs = stm.executeQuery(query);
        
-            list.add(new Egenskap(rs.getString(query)));
-       }catch (Exception e){
-           
-           
-       }
-        return list;
+            egenskaper.add(new Egenskap(rs.getString(query)));
+        } catch (SQLException e){
+            e.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        
+        return egenskaper;
     }
 }
 

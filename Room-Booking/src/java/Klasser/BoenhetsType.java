@@ -22,26 +22,17 @@ public class BoenhetsType {
     private List<Bilde> bilder;
     private List<Egenskap> egenskaper;
 
-    public BoenhetsType(String navn, String kategori, String enkeltsenger, String dobeltsenger, String beskrivelse, String pris, String egenskaper, List<InputStream> bilder) {
+    public BoenhetsType(String navn, String kategori, String enkeltsenger, String dobeltsenger, String beskrivelse, String pris, List<Egenskap> egenskaper, List<Bilde> bilder) {
         this.navn = navn;
         this.kategori = kategori;
         this.enkeltsenger = enkeltsenger;
         this.dobeltsenger = dobeltsenger;
         this.beskrivelse = beskrivelse;
         this.pris = pris;
-        
-        String[] egenskaperArr;
-        egenskaperArr = egenskaper.split(",");
-        for (String egenskap : egenskaper.split(",")){
-            Egenskap nyEgenskap = new Egenskap(egenskap);
-            this.egenskaper.add(nyEgenskap);
-        }
-         
-        for (InputStream bilde : bilder){
-            Bilde nyttBilde = new Bilde(bilde);
-            this.bilder.add(nyttBilde);
-        }
+        this.egenskaper = egenskaper;
+        this.bilder = bilder;
     }
+    
     public String getNavn() {
         return navn;
     }

@@ -5,8 +5,10 @@
  */
 package Klasser;
 
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -15,7 +17,8 @@ import java.util.ArrayList;
 public class BoenhetsTypeDAO {
     private Connection conn;
     private BildeDAO bilderDAO;
-    private EgenskapDAO egenskaperDAO;
+    private EgenskapDAO egenskapDAO;
+    private BoenhetsType boenhetsType; 
     
     public void Insert(BoenhetsType boenhetsType){
         DbTool dbTool = new DbTool();
@@ -37,7 +40,7 @@ public class BoenhetsTypeDAO {
             if (idRs.next()){
             int id = idRs.getInt(1);
             for (Egenskap egenskap : boenhetsType.getEgenskaper()){
-                egenskaperDAO.Insert(conn, egenskap, id);
+                egenskapDAO.Insert(conn, egenskap, id);
             }
             for (Bilde bilde : boenhetsType.getBilder()){
                 bilderDAO.Insert(conn, bilde, id);
@@ -52,33 +55,25 @@ public class BoenhetsTypeDAO {
         }
     }
    public void read () {
-       DbTool dbTool = new DbTool();
-       conn = dbTool.loggInn();
-       
-       
-       
-       try {
-       Statement stm =conn.createStatement();
-       String query ="SELECT * From LeilighetsType";
-       ResultSet rs = stm.executeQuery(query);
-       ArrayList<BoenhetsType> list = new ArrayList<BoenhetsType>();
-       
-       
-       
-       while (rs.next()) {
-         
-
-       list.add(new BoenhetsType(rs.getString("navn"), rs.getString("enkeltSenger"), rs.getString("DobeltSenger"), rs.getString("Beskrivelse"), rs.getString("Pris"), EgenskapDAO.readEgenskaper(conn,rs.getString("Leilighet_ID"))));   
+        DbTool dbTool = new DbTool();
+        conn = dbTool.loggInn();
         
+        try {
+            Statement stm =conn.createStatement();
+            String query ="SELECT * From LeilighetsType";
+            ResultSet rs = stm.executeQuery(query);
+            ArrayList<BoenhetsType> list = new ArrayList<BoenhetsType>();
        
-       
-       
-       }
-       
-       }catch(Exception e) {
-           
-           
-       }
+            while (rs.next()) {
+                List<Bilde> bilder = new ArrayList();
+                boenhetsType = new BoenhetsType(rs.getString("Navn"), rs.getString("Kategori") , rs.getString("EnkeltSenger"), rs.getString("DobeltSenger"), rs.getString("Beskrivelse"), rs.getString("Pris"), egenskapDAO.readAll(conn,rs.getString("Leilighet_ID")), bilder);
+                list.add(boenhetsType);   
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
        
    }
     
