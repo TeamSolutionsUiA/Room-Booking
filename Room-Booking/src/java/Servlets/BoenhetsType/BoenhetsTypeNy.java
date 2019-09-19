@@ -91,7 +91,7 @@ public class BoenhetsTypeNy extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("newleilightstype.html");
+        response.sendRedirect("ny.html");
     }
 
     /**
