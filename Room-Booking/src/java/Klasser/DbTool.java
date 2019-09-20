@@ -4,7 +4,6 @@
 package Klasser;
 
 
-import java.io.PrintWriter;
 import java.sql.*;
 import javax.naming.*;
 import javax.sql.DataSource;
@@ -21,15 +20,15 @@ public class DbTool {
     /*
         Vil etablere kontakt med databsen og returner et Connection objekt. 
     */
-    public Connection loggInn(PrintWriter out) {
+    public Connection loggInn() {
         try {
         // Step 1: Allocate a database 'Connection' object
         Context cont = new InitialContext();
-         out.println(cont);
-        DataSource ds = (DataSource)cont.lookup("java:comp/env/jdbc/localhostDS");  
-        out.println(ds);
+        
+        DataSource ds = (DataSource)cont.lookup("java:comp/env/jdbc/localhostDS");
+        
         conn = ds.getConnection();
-        out.println(conn);
+        
         return conn; 
  
         } catch (SQLException e){
