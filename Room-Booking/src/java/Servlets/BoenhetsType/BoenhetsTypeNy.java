@@ -80,7 +80,6 @@ public class BoenhetsTypeNy extends HttpServlet {
             
             BoenhetsType boenhetsType;
             boenhetsType = new BoenhetsType(navn, kategori, enkeltsenger, dobeltsenger, beskrivelse, pris , egenskaperList, bilder);
-            out.println("Test");
             boenhetsTypeDAO = new BoenhetsTypeDAO();
             boenhetsTypeDAO.Insert(boenhetsType);
         }
