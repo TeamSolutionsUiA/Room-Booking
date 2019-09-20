@@ -5,6 +5,7 @@
  */
 package Servlets.BoenhetsType;
 
+import Klasser.BoenhetsType;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -50,16 +51,17 @@ public class BoenhetsTypeIndex extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>BoenhetsTyper</h1>");
+            boenhetsTypeDAO = new BoenhetsTypeDAO();
             List<String> kategorier = boenhetsTypeDAO.readAllKategorier();
-            List<Klasser.BoenhetsType> boenhetsTyper= boenhetsTypeDAO.readAll();
+            List<BoenhetsType> boenhetsTyper= boenhetsTypeDAO.readAll(out);
+            
             for (String kategori: kategorier ) {
                 out.println("<div>");
                     out.println("<h2>");
                         out.println(kategori);
                     out.println("</h2>");
-                
-            
-                    for (Klasser.BoenhetsType boenhetsType : boenhetsTyper){
+                    
+                    for (BoenhetsType boenhetsType : boenhetsTyper){
                         if(kategori.equals(boenhetsType.getKategori())){
                             out.println("<div>");
                                 out.println("<h3>");
@@ -82,11 +84,11 @@ public class BoenhetsTypeIndex extends HttpServlet {
                             out.println("<p>");
                                 out.println("Pris" + boenhetsType.getPris() + "Nok");
                             out.println("</p>");
-                            List<Egenskap> egenskaper =boenhetsType.getEgenskaper();
+                            List<Egenskap> egenskaper = boenhetsType.getEgenskaper();
                             out.println("<p>");
                                 out.println("<h4>Egenskaper:</h4>");
                                 for(Egenskap egenskap : egenskaper ){
-                                    out.println(egenskap);
+                                    out.println(egenskap.getEgenskap());
                                }
                             out.println("</p>");
                             out.println("</div>");

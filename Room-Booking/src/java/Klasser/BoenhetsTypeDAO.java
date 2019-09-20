@@ -59,7 +59,7 @@ public class BoenhetsTypeDAO {
             e.printStackTrace();
         }
     }
-   public List<BoenhetsType> readAll () {
+   public List<BoenhetsType> readAll (PrintWriter out) {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
         
@@ -68,19 +68,20 @@ public class BoenhetsTypeDAO {
             String query ="SELECT * From LeilighetsType";
             ResultSet rs = stm.executeQuery(query);
             List<BoenhetsType> boenhetsTyper = new ArrayList<BoenhetsType>();
-       
+            egenskapDAO = new EgenskapDAO();
+            bildeDAO = new BildeDAO();
             while (rs.next()) {
                 boenhetsType = new BoenhetsType(rs.getString("Navn"), rs.getString("Kategori"),
                     rs.getInt("EnkeltSenger"), rs.getInt("DobeltSenger"),
                     rs.getString("Beskrivelse"), rs.getInt("Pris"),
-                    egenskapDAO.readAll(conn,rs.getString("Leilighet_ID")), 
-                    bildeDAO.readAll(conn, rs.getString("Leilighet_ID")));
-                boenhetsTyper.add(boenhetsType);   
+                    egenskapDAO.readAll(conn,rs.getString("ID")), 
+                    bildeDAO.readAll(conn, rs.getString("ID")));
+                boenhetsTyper.add(boenhetsType);
             }
             return boenhetsTyper;
         } catch (SQLException e){
             e.printStackTrace();
-        } catch (Exception e){
+        } catch (Exception e){ 
             e.printStackTrace();
         }
         return null;
@@ -107,7 +108,7 @@ public class BoenhetsTypeDAO {
         }
         return null;
     }
-    public List<BoenhetsType> readBoenhet(String id){
+    public List<BoenhetsType> readBoenhet(String id, PrintWriter out){
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
         

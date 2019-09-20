@@ -5,6 +5,7 @@
  */
 package Klasser;
 
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -43,11 +44,15 @@ public class EgenskapDAO {
     public List<Egenskap> readAll (Connection conn, String LelighetsID) {
         
         try {
-            Statement stm =conn.createStatement();
-            String query = "SELECT * FROM Egenskap where Leilighet_ID=" +LelighetsID;
-            ResultSet rs = stm.executeQuery(query);
-       
-            egenskaper.add(new Egenskap(rs.getString(query)));
+            String query = "SELECT * FROM Egenskap WHERE Leilighet_ID = ?";
+            PreparedStatement stm =conn.prepareStatement(query);
+            stm.setString(1,LelighetsID);
+            
+            ResultSet rs = stm.executeQuery();
+            egenskaper = new ArrayList();
+            while (rs.next()) {
+                egenskaper.add(new Egenskap(rs.getString("Egenskap")));
+            }
         } catch (SQLException e){
             e.printStackTrace();
         } catch (Exception e){
