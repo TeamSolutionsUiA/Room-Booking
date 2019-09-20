@@ -5,7 +5,6 @@
  */
 package Servlets.BoenhetsType;
 
-import Klasser.Egenskap;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -14,15 +13,19 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import Klasser.BoenhetsType;
 import Klasser.BoenhetsTypeDAO;
 import Klasser.Egenskap;
+import javax.servlet.annotation.MultipartConfig;
 
 /**
  *
  * @author arefj
  */
 @WebServlet(name = "BoenhetsType", urlPatterns = {"/boenhetstype"})
+@MultipartConfig(fileSizeThreshold = 6291456, // 6 MB
+		maxFileSize = 10485760L, // 10 MB
+		maxRequestSize = 20971520L // 20 MB
+)
 public class BoenhetsTypeIndex extends HttpServlet {
     
     private BoenhetsTypeDAO boenhetsTypeDAO;

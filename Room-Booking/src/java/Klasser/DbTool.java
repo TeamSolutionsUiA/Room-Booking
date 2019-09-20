@@ -21,14 +21,16 @@ public class DbTool {
     /*
         Vil etablere kontakt med databsen og returner et Connection objekt. 
     */
-    public Connection loggInn() {
+    public Connection loggInn(PrintWriter out) {
         try {
-         // Step 1: Allocate a database 'Connection' object
-         Context cont = new InitialContext();
-         DataSource ds = (DataSource)cont.lookup("java:comp/env/jdbc/localhostDS");  
-
-         conn = ds.getConnection();
-         return conn; 
+        // Step 1: Allocate a database 'Connection' object
+        Context cont = new InitialContext();
+         out.println(cont);
+        DataSource ds = (DataSource)cont.lookup("java:comp/env/jdbc/localhostDS");  
+        out.println(ds);
+        conn = ds.getConnection();
+        out.println(conn);
+        return conn; 
  
         } catch (SQLException e){
             e.printStackTrace();
