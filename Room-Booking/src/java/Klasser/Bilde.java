@@ -13,9 +13,15 @@ import java.io.InputStream;
  */
 public class Bilde {
     InputStream bilde;
+    int ID;
 
     public Bilde(InputStream bilde) {
         this.bilde = bilde;
+    }
+
+    public Bilde(InputStream bilde, int ID) {
+        this.bilde = bilde;
+        this.ID = ID;
     }
 
     public InputStream getBilde() {
@@ -25,4 +31,14 @@ public class Bilde {
     public void setBilde(InputStream bilde) {
         this.bilde = bilde;
     }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+    
+    
 }

@@ -5,6 +5,7 @@
  */
 package Servlets.BoenhetsType;
 
+import Klasser.Bilde;
 import Klasser.BoenhetsType;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -71,26 +72,36 @@ public class BoenhetsTypeIndex extends HttpServlet {
                                     out.println(boenhetsType.getBeskrivelse());
                                 out.println("</p>");
                                 
-                            int eSeng=boenhetsType.getEnkeltsenger();
-                            int dSeng=boenhetsType.getDobeltsenger();
-                            int sengTotal=eSeng+dSeng;
-                            if(sengTotal>0) {
+                                int eSeng=boenhetsType.getEnkeltsenger();
+                                int dSeng=boenhetsType.getDobeltsenger();
+                                int sengTotal=eSeng+dSeng;
+                                if(sengTotal>0) {
+                                    out.println("<p>");
+                                        out.println("Antall enkeltsenger" +eSeng);
+                                        out.println("Antall dobbelsenger" + dSeng);
+                                        out.println("Antall sengeplasser " +sengTotal);
+                                    out.println("</p>");
+                                }
                                 out.println("<p>");
-                                    out.println("Antall enkeltsenger" +eSeng);
-                                    out.println("Antall dobbelsenger" + dSeng);
-                                    out.println("Antall sengeplasser " +sengTotal);
+                                    out.println("Pris" + boenhetsType.getPris() + "Nok");
                                 out.println("</p>");
-                            }
-                            out.println("<p>");
-                                out.println("Pris" + boenhetsType.getPris() + "Nok");
-                            out.println("</p>");
-                            List<Egenskap> egenskaper = boenhetsType.getEgenskaper();
-                            out.println("<p>");
-                                out.println("<h4>Egenskaper:</h4>");
-                                for(Egenskap egenskap : egenskaper ){
-                                    out.println(egenskap.getEgenskap());
-                               }
-                            out.println("</p>");
+                                List<Egenskap> egenskaper = boenhetsType.getEgenskaper();
+                                out.println("<p>");
+                                    out.println("<h4>Egenskaper:</h4>");
+                                    for(Egenskap egenskap : egenskaper ){
+                                        out.println(egenskap.getEgenskap());
+                                   }
+                                out.println("</p>");
+                                List<Bilde> bilder = boenhetsType.getBilder();
+                                out.println(bilder);
+                                if(bilder != null){
+                                out.println("<div>");
+                                    out.println("<h4>Bilder:</h4>");
+                                    for(Bilde bilde : bilder){
+                                        out.println("<img src=\"" + request.getContextPath() +"/bilde?ID=" + bilde.getID() + "\" width=\"400px\" />");
+                                    }
+                                out.println("</div>");
+                                }
                             out.println("</div>");
                         }
                     }

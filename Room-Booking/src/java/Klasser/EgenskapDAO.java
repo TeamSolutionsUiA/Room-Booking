@@ -41,12 +41,12 @@ public class EgenskapDAO {
             e.printStackTrace();
         }
     }
-    public List<Egenskap> readAll (Connection conn, String LelighetsID) {
+    public List<Egenskap> readAll (Connection conn, int LelighetsID) {
         
         try {
             String query = "SELECT * FROM Egenskap WHERE Leilighet_ID = ?";
             PreparedStatement stm =conn.prepareStatement(query);
-            stm.setString(1,LelighetsID);
+            stm.setInt(1,LelighetsID);
             
             ResultSet rs = stm.executeQuery();
             egenskaper = new ArrayList();

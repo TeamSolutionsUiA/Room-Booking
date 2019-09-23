@@ -22,7 +22,8 @@ import java.nio.file.Files;
  */
 public class BildeDAO {
     
-       private List<Bilde> liste;
+    private List<Bilde> liste;
+    private Connection conn;
         
     public void Insert(Connection conn, Bilde bilde, int id){
         try {
@@ -40,17 +41,18 @@ public class BildeDAO {
         }
     }
     
-    public List<Bilde> readAll(Connection conn, String LelighetsID){
+    public List<Bilde> readAll(Connection conn, int LelighetsID){
         
-     
+        liste = new ArrayList();
+        
         try {
             String query = "SELECT * FROM Bilde where Leilighet_ID=?";
             PreparedStatement stm =conn.prepareStatement(query);
-            stm.setString(1,LelighetsID);
+            stm.setInt(1,LelighetsID);
             ResultSet rs = stm.executeQuery();
        
             while(rs.next()){
-                liste.add(new Bilde(rs.getBinaryStream("Bilde")));
+                liste.add(new Bilde(rs.getBinaryStream("Bilde"), rs.getInt("ID")));
             }
         } catch (SQLException e){
             e.printStackTrace();
@@ -58,7 +60,30 @@ public class BildeDAO {
             e.printStackTrace();
         }
         return liste;
-        }
     }
+    
+    public Bilde read(int ID){
+        DbTool dbTool = new DbTool();
+        conn = dbTool.loggInn();
+        try {
+            String query = "SELECT * FROM Bilde where ID=?";
+            PreparedStatement stm =conn.prepareStatement(query);
+            stm.setInt(1,ID);
+            ResultSet rs = stm.executeQuery();
+       
+            rs.next();
+            Bilde bilde = new Bilde(rs.getBinaryStream("Bilde"), rs.getInt("ID"));
+            return bilde;
+        } catch (SQLException e){
+            e.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    }
+
+    
     
 

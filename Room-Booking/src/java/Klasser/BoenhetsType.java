@@ -96,5 +96,4 @@ public class BoenhetsType {
     public void setEgenskaper(List<Egenskap> egenskaper) {
         this.egenskaper = egenskaper;
     }
-    
 }
