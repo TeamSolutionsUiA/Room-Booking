@@ -14,14 +14,17 @@ and open the template in the editor.
     <body>
         <div class="login">
             <h1>Logg Inn</h1>
-            <form action="login" method="post">
+            <form action="j_security_check" method="post">
                 <p><input type="text" name="epost" placeholder="E-post"></p>
                 <p><input type="password" name="passord" placeholder="Passord"></p>
                 <p><input type="submit" value="Logg Inn"></p>
             </form>
             <p>Har du ikke en bruker? <button type="button"><a href="register.html" style="text-decoration: none; color: black;">Opprett konto</a></button></p>
             <p><a href="glemt_passord.html"> Glemt passord </a></p> 
+            <p>Request en sikker adminside <a href="/adminOmraade/adminSide.html">here!</a></p>
+            <p>Request en sikker ansattside <a href="/ansattOmraade/ansattSide.html" >here!</a></p>
+            <p>Request en sikker brukerside <a href="/brukerOmraade/brukerSide.html" >here!</a></p>
+            
         </div>
         
     </body>
-</html>
