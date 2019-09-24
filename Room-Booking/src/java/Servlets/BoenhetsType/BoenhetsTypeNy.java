@@ -45,7 +45,7 @@ public class BoenhetsTypeNy extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void insertBoenhetsType(HttpServletRequest request, HttpServletResponse response)
+    protected void insert(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -103,7 +103,8 @@ public class BoenhetsTypeNy extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("ny.html");
+        RequestDispatcher dispacher = request.getRequestDispatcher("ny.html");
+                dispacher.forward(request, response);
     }
 
     /**
@@ -117,7 +118,7 @@ public class BoenhetsTypeNy extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        insertBoenhetsType(request, response);
+        insert(request, response);
     }
 
     /**

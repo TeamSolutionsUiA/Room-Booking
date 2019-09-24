@@ -42,14 +42,18 @@ public class BoenhetsTypeDAO {
             if (idRs.next()) {
                 int id = idRs.getInt(1);
 
-                bildeDAO = new BildeDAO();
-                for (Bilde bilde : boenhetsType.getBilder()) {
-                    bildeDAO.Insert(conn, bilde, id);
+                if (!boenhetsType.getBilder().isEmpty()) {
+                    bildeDAO = new BildeDAO();
+                    for (Bilde bilde : boenhetsType.getBilder()) {
+                        bildeDAO.Insert(conn, bilde, id);
+                    }
                 }
 
-                egenskapDAO = new EgenskapDAO();
-                for (Egenskap egenskap : boenhetsType.getEgenskaper()) {
-                    egenskapDAO.Insert(conn, egenskap, id);
+                if (!boenhetsType.getEgenskaper().isEmpty()) {
+                    egenskapDAO = new EgenskapDAO();
+                    for (Egenskap egenskap : boenhetsType.getEgenskaper()) {
+                        egenskapDAO.Insert(conn, egenskap, id);
+                    }
                 }
                 return id;
             } else {
