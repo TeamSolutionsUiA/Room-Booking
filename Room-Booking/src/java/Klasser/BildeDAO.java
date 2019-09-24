@@ -22,7 +22,7 @@ public class BildeDAO {
     private List<Bilde> liste;
     private Connection conn;
 
-    public void Insert(Connection conn, Bilde bilde, int id) {
+    public void insert(Connection conn, Bilde bilde, int id) {
         try {
             InputStream nyttBilde = bilde.getBilde();
             String sql = "INSERT INTO Bilde (Bilde, Leilighet_ID)" + "VALUES(?, ?)";

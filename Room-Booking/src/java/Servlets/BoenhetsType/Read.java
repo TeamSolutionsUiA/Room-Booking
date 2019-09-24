@@ -123,11 +123,11 @@ public class Read extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
 
-            String IDStr = request.getParameter("id");
-            int ID = Integer.parseInt(IDStr);
+            String idStr = request.getParameter("id");
+            int id = Integer.parseInt(idStr);
 
             boenhetsTypeDAO = new BoenhetsTypeDAO();
-            BoenhetsType boenhetsType = boenhetsTypeDAO.read(ID);
+            BoenhetsType boenhetsType = boenhetsTypeDAO.read(id);
             out.println("<div>");
             out.println("<h1>" + boenhetsType.getNavn() + "</h1>");
 
@@ -188,7 +188,7 @@ public class Read extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getParameter("id") == null) {
+        if (request.getParameter("id") == null || request.getParameter("id").equals("null")) {
             readAll(request, response);
         } else {
             

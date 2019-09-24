@@ -81,7 +81,7 @@ public class Create extends HttpServlet {
             BoenhetsType boenhetsType;
             boenhetsType = new BoenhetsType(navn, kategori, enkeltsenger, dobeltsenger, beskrivelse, pris, bilder, egenskaperList);
             boenhetsTypeDAO = new BoenhetsTypeDAO();
-            int id = boenhetsTypeDAO.Insert(boenhetsType);
+            int id = boenhetsTypeDAO.insert(boenhetsType);
 
             if (id != 0) {
                 String reDir = "../boenhetstype?id=" + id;

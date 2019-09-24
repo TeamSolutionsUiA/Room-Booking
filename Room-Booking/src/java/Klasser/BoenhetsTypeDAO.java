@@ -21,7 +21,7 @@ public class BoenhetsTypeDAO {
     private EgenskapDAO egenskapDAO;
     private BoenhetsType boenhetsType;
 
-    public int Insert(BoenhetsType boenhetsType) {
+    public int insert(BoenhetsType boenhetsType) {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
 
@@ -45,14 +45,14 @@ public class BoenhetsTypeDAO {
                 if (!boenhetsType.getBilder().isEmpty()) {
                     bildeDAO = new BildeDAO();
                     for (Bilde bilde : boenhetsType.getBilder()) {
-                        bildeDAO.Insert(conn, bilde, id);
+                        bildeDAO.insert(conn, bilde, id);
                     }
                 }
 
                 if (!boenhetsType.getEgenskaper().isEmpty()) {
                     egenskapDAO = new EgenskapDAO();
                     for (Egenskap egenskap : boenhetsType.getEgenskaper()) {
-                        egenskapDAO.Insert(conn, egenskap, id);
+                        egenskapDAO.insert(conn, egenskap, id);
                     }
                 }
                 return id;
@@ -145,5 +145,52 @@ public class BoenhetsTypeDAO {
         return null;
 
     }
-    //private void read(){}
+
+    public void update(BoenhetsType boenhetsType) {
+        DbTool dbTool = new DbTool();
+        conn = dbTool.loggInn();
+
+        try {
+            String sql = "UPDATE LeilighetsType SET Navn=?, Kategori=?, Enkeltsenger=?, Dobeltsenger=?, Beskrivelse=?, Pris=? WHERE ID=?";
+
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, boenhetsType.getNavn());
+            statement.setString(2, boenhetsType.getKategori());
+            statement.setInt(3, boenhetsType.getEnkeltsenger());
+            statement.setInt(4, boenhetsType.getDobeltsenger());
+            statement.setString(5, boenhetsType.getBeskrivelse());
+            statement.setInt(6, boenhetsType.getPris());
+            statement.setInt(7, boenhetsType.getID());
+
+            int rowsInserted = statement.executeUpdate();
+            ResultSet rs = statement.getGeneratedKeys();
+
+            /*  med egenskaper og bilder må vi nok finne en måte å fjerne de som 
+                ikke lenger er med og å legge til de som er nye, funker kanskje 
+                å lage en liste med det som er i databasen og sammenligne den
+                med den som er sendt med. Må kanskje overwrite equals og hashcode
+                på bilde og egenskap klassen.
+                - Are
+            
+            
+                if (!boenhetsType.getBilder().isEmpty()) {
+                    bildeDAO = new BildeDAO();
+                    for (Bilde bilde : boenhetsType.getBilder()) {
+                        bildeDAO.insert(conn, bilde, boenhetsType.getID());
+                    }
+                }
+
+                if (!boenhetsType.getEgenskaper().isEmpty()) {
+                    egenskapDAO = new EgenskapDAO();
+                    for (Egenskap egenskap : boenhetsType.getEgenskaper()) {
+                        egenskapDAO.insert(conn, egenskap, boenhetsType.getID());
+                    }
+                }
+             */
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
