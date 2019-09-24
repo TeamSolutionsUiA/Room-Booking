@@ -13,6 +13,8 @@ import java.util.List;
  * @author Are
  */
 public class BoenhetsType {
+
+    private int ID;
     private String navn;
     private String kategori;
     private int enkeltsenger;
@@ -22,17 +24,37 @@ public class BoenhetsType {
     private List<Bilde> bilder;
     private List<Egenskap> egenskaper;
 
-    public BoenhetsType(String navn, String kategori, int enkeltsenger, int dobeltsenger, String beskrivelse, int pris, List<Egenskap> egenskaper, List<Bilde> bilder) {
+    public BoenhetsType(String navn, String kategori, int enkeltsenger, int dobeltsenger, String beskrivelse, int pris, List<Bilde> bilder, List<Egenskap> egenskaper) {
         this.navn = navn;
         this.kategori = kategori;
         this.enkeltsenger = enkeltsenger;
         this.dobeltsenger = dobeltsenger;
         this.beskrivelse = beskrivelse;
         this.pris = pris;
-        this.egenskaper = egenskaper;
         this.bilder = bilder;
+        this.egenskaper = egenskaper;
     }
-    
+
+    public BoenhetsType(int ID, String navn, String kategori, int enkeltsenger, int dobeltsenger, String beskrivelse, int pris, List<Bilde> bilder, List<Egenskap> egenskaper) {
+        this.ID = ID;
+        this.navn = navn;
+        this.kategori = kategori;
+        this.enkeltsenger = enkeltsenger;
+        this.dobeltsenger = dobeltsenger;
+        this.beskrivelse = beskrivelse;
+        this.pris = pris;
+        this.bilder = bilder;
+        this.egenskaper = egenskaper;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
     public String getNavn() {
         return navn;
     }

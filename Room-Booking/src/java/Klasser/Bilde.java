@@ -12,6 +12,7 @@ import java.io.InputStream;
  * @author arefj
  */
 public class Bilde {
+
     InputStream bilde;
     int ID;
 
@@ -39,6 +40,5 @@ public class Bilde {
     public void setID(int ID) {
         this.ID = ID;
     }
-    
-    
+
 }

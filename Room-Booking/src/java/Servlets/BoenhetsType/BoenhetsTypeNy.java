@@ -28,13 +28,13 @@ import javax.servlet.http.Part;
  */
 @WebServlet(name = "BoenhetsTypeNy", urlPatterns = {"/boenhetstype/ny"})
 @MultipartConfig(fileSizeThreshold = 6291456, // 6 MB
-		maxFileSize = 10485760L, // 10 MB
-		maxRequestSize = 20971520L // 20 MB
+        maxFileSize = 10485760L, // 10 MB
+        maxRequestSize = 20971520L // 20 MB
 )
 public class BoenhetsTypeNy extends HttpServlet {
 
     private BoenhetsTypeDAO boenhetsTypeDAO;
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -49,37 +49,37 @@ public class BoenhetsTypeNy extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String navn = request.getParameter("Navn");
-            
+
             String enkeltsengerStr = request.getParameter("Enkeltsenger");
             int enkeltsenger = Integer.parseInt(enkeltsengerStr);
-            
+
             String dobeltsengerStr = request.getParameter("Dobeltsenger");
             int dobeltsenger = Integer.parseInt(dobeltsengerStr);
-            
+
             String beskrivelse = request.getParameter("Beskrivelse");
-            
+
             String prisStr = request.getParameter("Pris");
             int pris = Integer.parseInt(prisStr);
-            
+
             String kategori = request.getParameter("Kategori");
             String egenskaper = request.getParameter("Egenskaper");
-            
+
             List<Egenskap> egenskaperList = new ArrayList();
-            for (String egenskap : egenskaper.split(",")){
-            Egenskap nyEgenskap = new Egenskap(egenskap);
-            egenskaperList.add(nyEgenskap);
+            for (String egenskap : egenskaper.split(",")) {
+                Egenskap nyEgenskap = new Egenskap(egenskap);
+                egenskaperList.add(nyEgenskap);
             }
-            
+
             List<Bilde> bilder = new ArrayList<>();
-            for (Part bilde : request.getParts()){
-                if (bilde.getContentType() != null){
+            for (Part bilde : request.getParts()) {
+                if (bilde.getContentType() != null) {
                     InputStream inputStream = bilde.getInputStream();
                     bilder.add(new Bilde(inputStream));
                 }
             }
-            
+
             BoenhetsType boenhetsType;
-            boenhetsType = new BoenhetsType(navn, kategori, enkeltsenger, dobeltsenger, beskrivelse, pris , egenskaperList, bilder);
+            boenhetsType = new BoenhetsType(navn, kategori, enkeltsenger, dobeltsenger, beskrivelse, pris, bilder, egenskaperList);
             boenhetsTypeDAO = new BoenhetsTypeDAO();
             boenhetsTypeDAO.Insert(boenhetsType);
         }

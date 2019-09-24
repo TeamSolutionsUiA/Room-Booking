@@ -46,7 +46,7 @@ public class BildeDAO {
         liste = new ArrayList();
         
         try {
-            String query = "SELECT * FROM Bilde where Leilighet_ID=?";
+            String query = "SELECT * FROM Bilde WHERE Leilighet_ID = ?";
             PreparedStatement stm =conn.prepareStatement(query);
             stm.setInt(1,LelighetsID);
             ResultSet rs = stm.executeQuery();

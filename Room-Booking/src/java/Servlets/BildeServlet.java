@@ -22,6 +22,7 @@ import sun.misc.IOUtils;
  */
 @WebServlet(name = "BildeServlet", urlPatterns = {"/bilde"})
 public class BildeServlet extends HttpServlet {
+
     BildeDAO bildeDAO;
 
     /**
@@ -35,14 +36,14 @@ public class BildeServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String bildeIDStr = request.getParameter("ID");
+
+        String bildeIDStr = request.getParameter("id");
         int bildeID = Integer.parseInt(bildeIDStr);
-        
+
         bildeDAO = new BildeDAO();
         Bilde bilde = bildeDAO.read(bildeID);
         byte[] bildeByte = IOUtils.readFully(bilde.getBilde(), -1, false);
-        
+
         response.setContentType("image/*");
         try (OutputStream os = response.getOutputStream()) {
             os.write(bildeByte);

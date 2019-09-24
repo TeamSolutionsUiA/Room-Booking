@@ -10,12 +10,13 @@ package Klasser;
  * @author arefj
  */
 public class Egenskap {
+
     String egenskap;
 
     public Egenskap(String egenskap) {
         this.egenskap = egenskap.trim();
     }
-    
+
     public String getEgenskap() {
         return egenskap;
     }
