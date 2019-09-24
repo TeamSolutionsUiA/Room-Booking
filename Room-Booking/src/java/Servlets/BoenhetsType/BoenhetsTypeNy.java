@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -44,7 +45,7 @@ public class BoenhetsTypeNy extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void insertBoenhetsType(HttpServletRequest request, HttpServletResponse response)
+    protected void insert(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -81,7 +82,12 @@ public class BoenhetsTypeNy extends HttpServlet {
             BoenhetsType boenhetsType;
             boenhetsType = new BoenhetsType(navn, kategori, enkeltsenger, dobeltsenger, beskrivelse, pris, bilder, egenskaperList);
             boenhetsTypeDAO = new BoenhetsTypeDAO();
-            boenhetsTypeDAO.Insert(boenhetsType);
+            int id = boenhetsTypeDAO.Insert(boenhetsType);
+
+            if (id != 0) {
+                String reDir = "../boenhetstype?id=" + id;
+                response.sendRedirect(reDir);
+            }
         }
     }
 
@@ -97,7 +103,8 @@ public class BoenhetsTypeNy extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("ny.html");
+        RequestDispatcher dispacher = request.getRequestDispatcher("ny.html");
+                dispacher.forward(request, response);
     }
 
     /**
@@ -111,7 +118,7 @@ public class BoenhetsTypeNy extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        insertBoenhetsType(request, response);
+        insert(request, response);
     }
 
     /**

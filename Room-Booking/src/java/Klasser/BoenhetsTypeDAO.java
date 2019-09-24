@@ -21,7 +21,7 @@ public class BoenhetsTypeDAO {
     private EgenskapDAO egenskapDAO;
     private BoenhetsType boenhetsType;
 
-    public void Insert(BoenhetsType boenhetsType) {
+    public int Insert(BoenhetsType boenhetsType) {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
 
@@ -42,15 +42,20 @@ public class BoenhetsTypeDAO {
             if (idRs.next()) {
                 int id = idRs.getInt(1);
 
-                bildeDAO = new BildeDAO();
-                for (Bilde bilde : boenhetsType.getBilder()) {
-                    bildeDAO.Insert(conn, bilde, id);
+                if (!boenhetsType.getBilder().isEmpty()) {
+                    bildeDAO = new BildeDAO();
+                    for (Bilde bilde : boenhetsType.getBilder()) {
+                        bildeDAO.Insert(conn, bilde, id);
+                    }
                 }
 
-                egenskapDAO = new EgenskapDAO();
-                for (Egenskap egenskap : boenhetsType.getEgenskaper()) {
-                    egenskapDAO.Insert(conn, egenskap, id);
+                if (!boenhetsType.getEgenskaper().isEmpty()) {
+                    egenskapDAO = new EgenskapDAO();
+                    for (Egenskap egenskap : boenhetsType.getEgenskaper()) {
+                        egenskapDAO.Insert(conn, egenskap, id);
+                    }
                 }
+                return id;
             } else {
                 throw new SQLException("Ingen ID returnert");
             }
@@ -59,6 +64,7 @@ public class BoenhetsTypeDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return 0;
     }
 
     public List<BoenhetsType> readAll() {
