@@ -27,18 +27,17 @@ import javax.servlet.http.Part;
  *
  * @author arefj
  */
-@WebServlet(name = "BoenhetsTypeNy", urlPatterns = {"/boenhetstype/ny"})
+@WebServlet(name = "BoenhetsType_Create", urlPatterns = {"/boenhetstype/ny"})
 @MultipartConfig(fileSizeThreshold = 6291456, // 6 MB
         maxFileSize = 10485760L, // 10 MB
         maxRequestSize = 20971520L // 20 MB
 )
-public class BoenhetsTypeNy extends HttpServlet {
+public class Create extends HttpServlet {
 
     private BoenhetsTypeDAO boenhetsTypeDAO;
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * Beskrivelse
      *
      * @param request servlet request
      * @param response servlet response
@@ -63,8 +62,8 @@ public class BoenhetsTypeNy extends HttpServlet {
             int pris = Integer.parseInt(prisStr);
 
             String kategori = request.getParameter("Kategori");
+            
             String egenskaper = request.getParameter("Egenskaper");
-
             List<Egenskap> egenskaperList = new ArrayList();
             for (String egenskap : egenskaper.split(",")) {
                 Egenskap nyEgenskap = new Egenskap(egenskap);
