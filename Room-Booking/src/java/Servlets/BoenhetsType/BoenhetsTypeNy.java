@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -81,7 +82,12 @@ public class BoenhetsTypeNy extends HttpServlet {
             BoenhetsType boenhetsType;
             boenhetsType = new BoenhetsType(navn, kategori, enkeltsenger, dobeltsenger, beskrivelse, pris, bilder, egenskaperList);
             boenhetsTypeDAO = new BoenhetsTypeDAO();
-            boenhetsTypeDAO.Insert(boenhetsType);
+            int id = boenhetsTypeDAO.Insert(boenhetsType);
+
+            if (id != 0) {
+                String reDir = "../boenhetstype?id=" + id;
+                response.sendRedirect(reDir);
+            }
         }
     }
 

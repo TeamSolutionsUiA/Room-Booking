@@ -21,7 +21,7 @@ public class BoenhetsTypeDAO {
     private EgenskapDAO egenskapDAO;
     private BoenhetsType boenhetsType;
 
-    public void Insert(BoenhetsType boenhetsType) {
+    public int Insert(BoenhetsType boenhetsType) {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
 
@@ -51,6 +51,7 @@ public class BoenhetsTypeDAO {
                 for (Egenskap egenskap : boenhetsType.getEgenskaper()) {
                     egenskapDAO.Insert(conn, egenskap, id);
                 }
+                return id;
             } else {
                 throw new SQLException("Ingen ID returnert");
             }
@@ -59,6 +60,7 @@ public class BoenhetsTypeDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return 0;
     }
 
     public List<BoenhetsType> readAll() {

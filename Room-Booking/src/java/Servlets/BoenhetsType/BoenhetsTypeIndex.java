@@ -75,7 +75,7 @@ public class BoenhetsTypeIndex extends HttpServlet {
 
                         int eSeng = boenhetsType.getEnkeltsenger();
                         int dSeng = boenhetsType.getDobeltsenger();
-                        int sengTotal = eSeng + dSeng;
+                        int sengTotal = eSeng + dSeng * 2;
                         if (sengTotal > 0) {
                             out.println("<p>");
                             out.println("Antall enkeltsenger" + eSeng);
@@ -148,7 +148,7 @@ public class BoenhetsTypeIndex extends HttpServlet {
 
             int eSeng = boenhetsType.getEnkeltsenger();
             int dSeng = boenhetsType.getDobeltsenger();
-            int sengTotal = eSeng + dSeng;
+            int sengTotal = eSeng + dSeng * 2;
             if (sengTotal > 0) {
                 out.println("<p>");
                 out.println("Antall enkeltsenger" + eSeng);
