@@ -23,18 +23,17 @@ import javax.servlet.annotation.MultipartConfig;
  *
  * @author arefj
  */
-@WebServlet(name = "BoenhetsType", urlPatterns = {"/boenhetstype"})
+@WebServlet(name = "BoenhetsType_Read", urlPatterns = {"/boenhetstype"})
 @MultipartConfig(fileSizeThreshold = 6291456, // 6 MB
         maxFileSize = 10485760L, // 10 MB
         maxRequestSize = 20971520L // 20 MB
 )
-public class BoenhetsTypeIndex extends HttpServlet {
+public class Read extends HttpServlet {
 
     private BoenhetsTypeDAO boenhetsTypeDAO;
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * Beskrivelse
      *
      * @param request servlet request
      * @param response servlet response
@@ -124,11 +123,11 @@ public class BoenhetsTypeIndex extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
 
-            String IDStr = request.getParameter("id");
-            int ID = Integer.parseInt(IDStr);
+            String idStr = request.getParameter("id");
+            int id = Integer.parseInt(idStr);
 
             boenhetsTypeDAO = new BoenhetsTypeDAO();
-            BoenhetsType boenhetsType = boenhetsTypeDAO.read(ID);
+            BoenhetsType boenhetsType = boenhetsTypeDAO.read(id);
             out.println("<div>");
             out.println("<h1>" + boenhetsType.getNavn() + "</h1>");
 
@@ -189,10 +188,12 @@ public class BoenhetsTypeIndex extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getParameter("id") == null) {
+        if (request.getParameter("id") == null || request.getParameter("id").equals("null")) {
             readAll(request, response);
+        } else {
+            
+            read(request, response);
         }
-        read(request, response);
     }
 
     /**

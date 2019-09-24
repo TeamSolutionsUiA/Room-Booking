@@ -22,7 +22,7 @@ public class EgenskapDAO {
 
     private List<Egenskap> egenskaper;
 
-    public void Insert(Connection conn, Egenskap egenskap, int id) {
+    public void insert(Connection conn, Egenskap egenskap, int id) {
         try {
             String sql = "INSERT INTO Egenskap (Egenskap, Leilighet_ID)" + "VALUES(?, ?)";
             PreparedStatement statement;

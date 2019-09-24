@@ -14,7 +14,6 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -27,28 +26,72 @@ import javax.servlet.http.Part;
  *
  * @author arefj
  */
-@WebServlet(name = "BoenhetsTypeNy", urlPatterns = {"/boenhetstype/ny"})
+@WebServlet(name = "BoenhetsType_Update", urlPatterns = {"/boenhetstype/oppdater"})
 @MultipartConfig(fileSizeThreshold = 6291456, // 6 MB
         maxFileSize = 10485760L, // 10 MB
         maxRequestSize = 20971520L // 20 MB
 )
-public class BoenhetsTypeNy extends HttpServlet {
+public class Update extends HttpServlet {
 
     private BoenhetsTypeDAO boenhetsTypeDAO;
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * Beskrivelse
      *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void insert(HttpServletRequest request, HttpServletResponse response)
+    protected void updateForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet Update</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<div class=\"Update\">");
+            out.println("<h1>Oppdater Boenhetstype</h1>");
+            out.println("<form action=\"oppdater\" method=\"post\" enctype=\"multipart/form-data\">");
+            String IDStr = request.getParameter("id");
+            int ID = Integer.parseInt(IDStr);
+
+            boenhetsTypeDAO = new BoenhetsTypeDAO();
+            BoenhetsType boenhetsType = boenhetsTypeDAO.read(ID);
+
+            List<String> egenskaperList = new ArrayList();
+            for (Egenskap egenskap : boenhetsType.getEgenskaper()) {
+                egenskaperList.add(egenskap.getEgenskap());
+            }
+            String egenskaper = String.join(", ", egenskaperList);
+
+            out.println("<p><input type=\"text\" name=\"Navn\" placeholder=\"Navn\" value=\"" + boenhetsType.getNavn() + "\" required></p>");
+            out.println("<p><input type=\"text\" name=\"id\" placeholder=\"ID\" value=\"" + boenhetsType.getID() + "\" readonly></p>");
+            out.println("<p><input type=\"text\" name=\"Kategori\" placeholder=\"Kategori\" value=\"" + boenhetsType.getKategori() + "\" required></p>");
+            out.println("<p><input type=\"number\" name=\"Enkeltsenger\" placeholder=\"Antall enkeltsenger\" min=\"0\" max=\"100\" value=\"" + boenhetsType.getEnkeltsenger() + "\"></p>");
+            out.println("<p><input type=\"number\" name=\"Dobeltsenger\" placeholder=\"Antall dobeltsenger\" min=\"0\" max=\"100\" value=\"" + boenhetsType.getDobeltsenger() + "\"></p>");
+            out.println("<p><input type=\"text\" name=\"Beskrivelse\" placeholder=\"Beskrivelse\" value=\"" + boenhetsType.getBeskrivelse() + "\"></p>");
+            //out.println("<p><input type=\"file\" name=\"Bilder\" multiple=\"multiple\" accept=\"image/*\"></p>");
+            out.println("<p><input type=\"number\" name=\"Pris\" placeholder=\"Pris per døgn\" min=\"50\" max=\"100000\" value=\"" + boenhetsType.getPris() + "\" required></p>");
+            out.println("<p><input type=\"text\" name=\"Egenskaper\" placeholder=\"Egenskaper separert med komma\" value=\"" + egenskaper + "\"></p>");
+            out.println("<p><input type=\"submit\" value=\"Oppdater romtype\"></p>");
+            out.println("</form>");
+            out.println("</div>");
+            out.println("</body>");
+            out.println("</html>");
+        }
+    }
+
+    protected void update(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            String idStr = request.getParameter("id");
+            int id = Integer.parseInt(idStr);
+            
             String navn = request.getParameter("Navn");
 
             String enkeltsengerStr = request.getParameter("Enkeltsenger");
@@ -56,7 +99,7 @@ public class BoenhetsTypeNy extends HttpServlet {
 
             String dobeltsengerStr = request.getParameter("Dobeltsenger");
             int dobeltsenger = Integer.parseInt(dobeltsengerStr);
-
+            
             String beskrivelse = request.getParameter("Beskrivelse");
 
             String prisStr = request.getParameter("Pris");
@@ -70,7 +113,7 @@ public class BoenhetsTypeNy extends HttpServlet {
                 Egenskap nyEgenskap = new Egenskap(egenskap);
                 egenskaperList.add(nyEgenskap);
             }
-
+            
             List<Bilde> bilder = new ArrayList<>();
             for (Part bilde : request.getParts()) {
                 if (bilde.getContentType() != null) {
@@ -80,14 +123,12 @@ public class BoenhetsTypeNy extends HttpServlet {
             }
 
             BoenhetsType boenhetsType;
-            boenhetsType = new BoenhetsType(navn, kategori, enkeltsenger, dobeltsenger, beskrivelse, pris, bilder, egenskaperList);
+            boenhetsType = new BoenhetsType(id, navn, kategori, enkeltsenger, dobeltsenger, beskrivelse, pris, bilder, egenskaperList);
             boenhetsTypeDAO = new BoenhetsTypeDAO();
-            int id = boenhetsTypeDAO.Insert(boenhetsType);
+            boenhetsTypeDAO.update(boenhetsType);
 
-            if (id != 0) {
-                String reDir = "../boenhetstype?id=" + id;
-                response.sendRedirect(reDir);
-            }
+            String reDir = "../boenhetstype?id=" + boenhetsType.getID();
+            response.sendRedirect(reDir);
         }
     }
 
@@ -103,8 +144,7 @@ public class BoenhetsTypeNy extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher dispacher = request.getRequestDispatcher("ny.html");
-                dispacher.forward(request, response);
+        updateForm(request, response);
     }
 
     /**
@@ -118,7 +158,7 @@ public class BoenhetsTypeNy extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        insert(request, response);
+        update(request, response);
     }
 
     /**
