@@ -26,4 +26,9 @@
               jdbcInterceptors="org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;
             org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer">
     </Resource>
+    <Realm className="org.apache.catalina.realm.DataSourceRealm" 
+         dataSourceName="jdbc/localhostDS" localDataSource="true"
+         userTable="Bruker"  userNameCol="Epost" userCredCol="Passord"
+         userRoleTable="Bruker" roleNameCol="Rolle"/> 
+
 </Context>
