@@ -21,11 +21,23 @@ public class Bruker {
     private String passord;
     private int telefon;
     
-public Bruker(int id,String rolle,String navn,String epost,String passord,int telefon){
+    public Bruker(String rolle,String navn,Date fodselsDato, String epost,String passord,int telefon){
     
     this.id = id;
     this.rolle = rolle;
     this.navn = navn;
+    this.fodselsDato = fodselsDato;
+    this.epost = epost;
+    this.passord = passord;
+    this.telefon = telefon;
+}
+    
+    public Bruker(int id, String rolle,String navn,Date fodselsDato, String epost,String passord,int telefon){
+    
+    this.id = id;
+    this.rolle = rolle;
+    this.navn = navn;
+    this.fodselsDato = fodselsDato;
     this.epost = epost;
     this.passord = passord;
     this.telefon = telefon;
@@ -49,6 +61,13 @@ public Bruker(int id,String rolle,String navn,String epost,String passord,int te
 
     public String getNavn() {
         return navn;
+    }
+    public Date getFodselsDato() {
+        return fodselsDato;
+    }
+
+    public void setFodselsDato(Date fodselsDato) {
+        this.fodselsDato = fodselsDato;
     }
 
     public void setNavn(String navn) {

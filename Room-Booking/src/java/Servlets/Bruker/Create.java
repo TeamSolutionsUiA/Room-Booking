@@ -5,6 +5,7 @@
  */
 package Servlets.Bruker;
 
+import Klasser.Bruker;
 import Klasser.BrukerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,6 +18,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 
 /**
@@ -57,11 +60,20 @@ import javax.servlet.RequestDispatcher;
             
             String passord = request.getParameter("Passord");
             System.out.println(passord);
+            
+            String rolle = "Bruker";
 
-   
+            Bruker bruker;
+            bruker = new Bruker(rolle, navn, fodselsDato, epost, passord, telefon);
+            brukerDAO = new BrukerDAO();
+            int id = brukerDAO.insert(bruker);
+
+            if (id != 0) {
+                String reDir = "../bruker?id=" + id;
+                response.sendRedirect(reDir);
         }
-       
     }
+}
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -90,7 +102,11 @@ import javax.servlet.RequestDispatcher;
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        insert(request, response);
+           try {
+               insert(request, response);
+           } catch (ParseException ex) {
+               Logger.getLogger(Create.class.getName()).log(Level.SEVERE, null, ex);
+           }
     }
 
     /**
