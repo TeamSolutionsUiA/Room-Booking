@@ -16,12 +16,12 @@ public class Bruker {
     private int id;
     private String rolle;
     private String navn;
-    private Date fodselsDato; 
+    private String fodselsDato; 
     private String epost;
     private String passord;
     private int telefon;
     
-    public Bruker(String rolle,String navn,Date fodselsDato, String epost,String passord,int telefon){
+    public Bruker(String rolle,String navn,String fodselsDato, String epost,String passord,int telefon){
     
     this.rolle = rolle;
     this.navn = navn;
@@ -31,7 +31,7 @@ public class Bruker {
     this.telefon = telefon;
 }
     
-    public Bruker(int id, String rolle,String navn,Date fodselsDato, String epost,String passord,int telefon){
+    public Bruker(int id, String rolle,String navn,String fodselsDato, String epost,String passord,int telefon){
     
     this.id = id;
     this.rolle = rolle;
@@ -61,11 +61,11 @@ public class Bruker {
     public String getNavn() {
         return navn;
     }
-    public Date getFodselsDato() {
+    public String getFodselsDato() {
         return fodselsDato;
     }
 
-    public void setFodselsDato(Date fodselsDato) {
+    public void setFodselsDato(String fodselsDato) {
         this.fodselsDato = fodselsDato;
     }
 

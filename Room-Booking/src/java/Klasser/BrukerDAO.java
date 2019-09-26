@@ -23,30 +23,25 @@ public class BrukerDAO {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
         
-            
-        try {
-            String sql = "INSERT INTO Bruker (ID, Rolle, Navn, Fodselsdato, Epost, Passord, Telefon)"
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?)";
-            
-            Date fodselsDato = bruker.getFodselsDato();
-            SimpleDateFormat formatter = new SimpleDateFormat();
-            String mysqlDateString = formatter.format(fodselsDato);
+            try {
+           
+                String sql = "INSERT INTO Bruker (Rolle, Navn, Fodsels_dato, Epost, Passord, Telefon)"
+                    + "VALUES (?, ?, ?, ?, ?, ?)";
 
-            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            statement.setInt(1, bruker.getId());
-            statement.setString(2, bruker.getRolle());
-            statement.setString(3, bruker.getNavn());
-            statement.setString(4, mysqlDateString);
-            statement.setString(5, bruker.getEpost());
-            statement.setString(6, bruker.getPassord());
-            statement.setInt(7, bruker.getTelefon());
-
-            int rowsInserted = statement.executeUpdate();
-            ResultSet idRs = statement.getGeneratedKeys();
-            if (idRs.next()) {
-                int id = idRs.getInt(1);
+                PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 
-                 
+                statement.setString(1, bruker.getRolle());
+                statement.setString(2, bruker.getNavn());
+                statement.setString(3, bruker.getFodselsDato());
+                statement.setString(4, bruker.getEpost());
+                statement.setString(5, bruker.getPassord());
+                statement.setInt(6, bruker.getTelefon());
+
+                int rowsInserted = statement.executeUpdate();
+                ResultSet idRs = statement.getGeneratedKeys();
+                if (idRs.next()) {
+                int id = idRs.getInt(1);
+            
                 return id;
             }
             

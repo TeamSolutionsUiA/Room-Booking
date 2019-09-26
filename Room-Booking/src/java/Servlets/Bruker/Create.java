@@ -9,8 +9,6 @@ import Klasser.Bruker;
 import Klasser.BrukerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -41,18 +39,18 @@ import javax.servlet.RequestDispatcher;
         response.setContentType("text/html;charset=UTF-8");
         
         try (PrintWriter out = response.getWriter()) {
-            System.out.println("getWriter = ok");
+out.println("getWriter = ok");
             
             String rolle = "Bruker";
             
             String forNavn = request.getParameter("Navn");
             String etterNavn = request.getParameter("Etternavn");
-            String navn = forNavn + "" + etterNavn;
-            System.out.println(navn);
+            String navn = forNavn + " " + etterNavn;
+out.println(navn);
            
-            String fodselsDatoString = request.getParameter("Fodselsdato");
-            Date fodselsDato = new SimpleDateFormat("yyyy-MM-dd").parse(fodselsDatoString);
-            System.out.println(fodselsDato);
+            String fodselsDato = request.getParameter("Fodselsdato");
+            
+out.println(fodselsDato);
 
             String epost = request.getParameter("Epost");
             System.out.println(epost);
@@ -66,12 +64,14 @@ import javax.servlet.RequestDispatcher;
 
             Bruker bruker;
             bruker = new Bruker(rolle, navn, fodselsDato, epost, passord, telefon);
+out.println(bruker);           
             brukerDAO = new BrukerDAO();
+out.println(brukerDAO);
             int id = brukerDAO.insert(bruker);
+out.println(id);
 
             if (id != 0) {
-                String reDir = "../bruker?id=" + id;
-                response.sendRedirect(reDir);
+                out.println("<h1>Registrering vellykket</h1>");
         }
     }
 }
@@ -107,6 +107,7 @@ import javax.servlet.RequestDispatcher;
                insert(request, response);
            } catch (ParseException ex) {
                Logger.getLogger(Create.class.getName()).log(Level.SEVERE, null, ex);
+               
            }
     }
 
