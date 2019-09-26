@@ -41,6 +41,9 @@ import javax.servlet.RequestDispatcher;
         response.setContentType("text/html;charset=UTF-8");
         
         try (PrintWriter out = response.getWriter()) {
+            System.out.println("getWriter = ok");
+            
+            String rolle = "Bruker";
             
             String forNavn = request.getParameter("Navn");
             String etterNavn = request.getParameter("Etternavn");
@@ -51,17 +54,15 @@ import javax.servlet.RequestDispatcher;
             Date fodselsDato = new SimpleDateFormat("yyyy-MM-dd").parse(fodselsDatoString);
             System.out.println(fodselsDato);
 
-            String telefonStr = request.getParameter("Mobilnummer");
-            int telefon = Integer.parseInt(telefonStr);
-            System.out.println(telefon);
-
             String epost = request.getParameter("Epost");
             System.out.println(epost);
             
             String passord = request.getParameter("Passord");
             System.out.println(passord);
             
-            String rolle = "Bruker";
+            String telefonStr = request.getParameter("Mobilnummer");
+            int telefon = Integer.parseInt(telefonStr);
+            System.out.println(telefon);
 
             Bruker bruker;
             bruker = new Bruker(rolle, navn, fodselsDato, epost, passord, telefon);
@@ -120,3 +121,4 @@ import javax.servlet.RequestDispatcher;
     }// </editor-fold>
 
 }
+

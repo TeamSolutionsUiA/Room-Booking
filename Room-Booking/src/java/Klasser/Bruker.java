@@ -23,7 +23,6 @@ public class Bruker {
     
     public Bruker(String rolle,String navn,Date fodselsDato, String epost,String passord,int telefon){
     
-    this.id = id;
     this.rolle = rolle;
     this.navn = navn;
     this.fodselsDato = fodselsDato;

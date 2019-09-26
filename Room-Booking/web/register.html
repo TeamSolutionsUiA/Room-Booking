@@ -15,7 +15,7 @@ and open the template in the editor.
     <body>
         <div class="Register">
             <h1>Opprett konto</h1>
-            <form action="login" method="post">
+            <form action="register" method="post" enctype="multipart/form-data">
                
                 <p> Fullt navn: <br><input type="text" name="Navn" placeholder="Fornavn: *"></p>
                 <p> <input type="text" name="Etternavn" placeholder="Etternavn: *"></p>
@@ -26,7 +26,7 @@ and open the template in the editor.
                 <p><input type="text" name="Epost" placeholder="E-post(brukernavn): *"></p>
                 <p> Opprett passord: <br><input type="password" name="Passord" placeholder="Passord: *"></p>
                 <p><input type="password" name="Re-passord" placeholder="Gjenta Passord: *"></p>
-                <p><input type="submit" value="Opprett Konto"></p>
+                <p><input type="submit" value="Opprett bruker"></p>
             </form>
                 <p>Har du allerede en bruker? <button type="button"><a href="login.html" style="text-decoration: none; color: black;">Logg Inn</a></button></p>
                 <p><a href="index.html"> Tilbake</a></p>
