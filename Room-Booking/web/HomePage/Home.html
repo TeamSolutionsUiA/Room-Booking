@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+
+<head>
+    <title>CampingTitle</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</head>
+
+<body id="ter">
+    <header id="header">
+        <div class="img" id ="img"></div>
+        <nav>
+            <div class="log">
+                <div class="loggin">
+                    <a class='nav-link1' href='' data-toggle="tooltip" title="logg inn her"> logg inn</a>
+                    <a class='nav-link1' href="Web Pages/register.html" data-toggle="tooltip" title="register nytt konto"> register</a>
+                </div>
+            </div>
+
+            <div class="container ">
+                <div class='logo'>
+                    <a class=""> Brokke</a>
+                </div>
+
+                <div id="navbar">
+
+                    <ul>
+
+                        <li><a href="about.html" data-toggle="tooltip" title="bli kjent med oss">Hva er Brokke</a></li>
+                        
+                        <li><a href="Room-Booking/boenhetstype/read.java" data-toggle="tooltip" title=" Se leilightene">leilighter</a></li>
+                        <li><a href="" data-toggle="tooltip" title="Se Aktiveter">Aktiveter</a></li>
+                        <li><a href="news.html" data-toggle="tooltip" title="Nyheter">Nyheter</a></li>
+                        <li><a href="egenskaper.html" data-toggle="tooltip" title="Egenskaper">Kontant oss</a></li>
+                        <a class="pp" data-toggle="tooltip" title="Bestill Nå"> Bestill Nå</a>
+
+                    </ul>
+                      
+
+                </div>
+                <div class="nav-bar">
+                    <ul class="">
+                        <li class="nav-item"><a href="about.html" class="nav-link" data-toggle="tooltip" title="bli kjent med oss">Hva er Brokke</a></li>
+                    
+
+                        <li class="nav-item"><a href="Room-Booking/boenhetstype/read.java" class="nav-link" data-toggle="tooltip" title=" Se leilightene">leilighter</a></li>
+                        <li class="nav-item"><a href="" class="nav-link" data-toggle="tooltip" title="Se Aktiveter">Aktiveter</a></li>
+                        <li class="nav-item"><a href="news.html" class="nav-link" data-toggle="tooltip" title="Nyheter">Nyheter</a></li>
+                           <li class="nav-item"><a href="egenskaper.html" class="nav-link" data-toggle="tooltip" title="Kontant oss">Kontant oss</a></li>
+                    </ul>
+                </div>
+
+                <div class="bestilling">
+                    <i data-toggle="tooltip" title="Bestill Nå" class="icons"> Bestill Nå</i>
+                    <i class="fas fa-search , icons"   onclick="myFunction()" data-toggle="tooltip" title="search" ></i>
+                    <i class="fas fa-phone , icons" data-toggle="tooltip" title="00043434"></i>
+
+                </div>
+            </div>
+            <div id="search">
+                <p>
+                    <input type="text" name="Navn" id="rr" class="search" placeholder="search: ">
+                </p>
+
+            </div>
+
+         </nav>
+        <div class="omo">
+                <p> Her finner du en fin plass for å kose deg masse </p>
+
+        </div>
+
+    </header>
+
+    <script>
+        var i = 0;
+        var col = new Array("red", "black");
+        var soso23 = new Array("images/ww.jpg", "images/www.jpg", "images/123.jpg");
+
+        function change() {
+
+            document.getElementById("img").style.backgroundImage = "url('" + soso23[i] + "')";
+         
+            i++;
+            if (i > col.length) {
+                i = 0;
+            }
+            window.setTimeout("change()", 5000);
+
+        }
+
+        window.onload = change();
+        window.onscroll = function() {
+            scrollFunction();
+        };
+
+        function scrollFunction() {
+            var soso = document.getElementById("navbar");
+            var sara = document.getElementsByClassName("nav-bar");
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                soso.style.top = "0";
+                soso.style.display = "inline";
+                sara.style.display = "none";
+
+            } else {
+
+                soso.style.display = "none";
+                sara.style.display = "inline-block";
+            }
+
+        }
+
+        function myFunction() {
+            var ser = document.getElementById("rr");
+            if (ser.style.display === "none") {
+                ser.style.display = "inline";
+
+            } else {
+                ser.style.display = "none";
+            }
+        }
+           
+
+        $(document).ready(function() {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+
+</body>
+
+</html>
