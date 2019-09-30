@@ -8,6 +8,8 @@ package Klasser;
 import java.sql.*;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -52,4 +54,30 @@ public class BrukerDAO {
         }
         return 0;
     }
+public List<Bruker> readAll() {
+        DbTool dbTool = new DbTool();
+        conn = dbTool.loggInn();
+
+        try {
+            Statement stm = conn.createStatement();
+            String query = "SELECT * From Bruker";
+            ResultSet rs = stm.executeQuery(query);
+            List<Bruker> brukere = new ArrayList<Bruker>();
+            
+            while (rs.next()) {
+                bruker = new Bruker(rs.getInt("ID"), rs.getString("Rolle"), rs.getString("Navn"), rs.getString("Fodsels_Dato"),
+                        rs.getString("Epost"), rs.getString("Passord"),
+                        rs.getInt("Telefon"));
+                        
+                brukere.add(bruker);
+            }
+            return brukere;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
 }
+}
+       
