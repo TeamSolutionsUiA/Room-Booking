@@ -24,7 +24,7 @@ import javax.servlet.RequestDispatcher;
  *
  * @author Jonathans
  */
-   @WebServlet(name = "Bruker_Create", urlPatterns = {"/register"})
+   @WebServlet(name = "Bruker_Create", urlPatterns = {"/bruker/register"})
     @MultipartConfig(fileSizeThreshold = 6291456, // 6 MB
         maxFileSize = 10485760L, // 10 MB
         maxRequestSize = 20971520L // 20 MB
@@ -53,14 +53,16 @@ out.println(navn);
 out.println(fodselsDato);
 
             String epost = request.getParameter("Epost");
-            System.out.println(epost);
+out.println(epost);
             
+
             String passord = request.getParameter("Passord");
-            System.out.println(passord);
+            String passordBekreft = request.getParameter("Re-passord");
+out.println(passord);
             
             String telefonStr = request.getParameter("Mobilnummer");
             int telefon = Integer.parseInt(telefonStr);
-            System.out.println(telefon);
+out.println(telefon);
 
             Bruker bruker;
             bruker = new Bruker(rolle, navn, fodselsDato, epost, passord, telefon);
@@ -68,11 +70,18 @@ out.println(bruker);
             brukerDAO = new BrukerDAO();
 out.println(brukerDAO);
             int id = brukerDAO.insert(bruker);
-out.println(id);
+out.println("ID: " + id);
 
             if (id != 0) {
-                out.println("<h1>Registrering vellykket</h1>");
+    
+                String reDirBruker = "../bruker?id=" + id;
+                response.sendRedirect(reDirBruker);
         }
+            else{
+                
+                String reDirToRegister = "../bruker/register.html";
+                response.sendRedirect(reDirToRegister);
+            }
     }
 }
 

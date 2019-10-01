@@ -31,14 +31,12 @@ public class Bruker {
     this.telefon = telefon;
 }
     
-    public Bruker(int id, String rolle,String navn,String fodselsDato, String epost,String passord,int telefon){
+    public Bruker(int id,String navn,String fodselsDato, String epost,int telefon){
     
     this.id = id;
-    this.rolle = rolle;
     this.navn = navn;
     this.fodselsDato = fodselsDato;
     this.epost = epost;
-    this.passord = passord;
     this.telefon = telefon;
 }
 

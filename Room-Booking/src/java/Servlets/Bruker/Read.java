@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author mohamedjabokji
  */
-@WebServlet(name = "Bruker_Read", urlPatterns = {"/Read"})
+@WebServlet(name = "Bruker_Read", urlPatterns = {"/bruker"})
 public class Read extends HttpServlet {
     
     private BrukerDAO brukerDAO;
@@ -68,6 +68,40 @@ public class Read extends HttpServlet {
             out.println("</html>");
         }
     }
+    
+    protected void read(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Bruker</title>");
+            out.println("</head>");
+            out.println("<body>");
+
+            String idStr = request.getParameter("id");
+            int id = Integer.parseInt(idStr);
+            
+            brukerDAO = new BrukerDAO();
+            Bruker bruker = brukerDAO.read(id);
+            out.println("<div>");
+            out.println("<h1>" + bruker.getNavn() + "</h1>");
+            out.println("</div>");
+            out.println("<div>");
+            out.println("Fødselsdato: "+ bruker.getFodselsDato());
+            out.println("</div>");
+            out.println("<div>");
+            out.println("Epost/brukernavn: " + bruker.getEpost());
+            out.println("</div>");
+            out.println("<div>");
+            out.println("Telefon: " + bruker.getTelefon());
+            out.println("</div>");
+
+            out.println("</body>");
+            out.println("</html>");
+        }
+    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -80,7 +114,13 @@ public class Read extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        readAll(request, response);
+        
+        if (request.getParameter("id") == null || request.getParameter("id").equals("null")) {
+            readAll(request, response);
+        } else {
+            
+            read(request, response);
+        }
     }
 
     /**

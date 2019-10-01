@@ -54,7 +54,7 @@ public class BrukerDAO {
         }
         return 0;
     }
-public List<Bruker> readAll() {
+    public List<Bruker> readAll() {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
 
@@ -65,13 +65,36 @@ public List<Bruker> readAll() {
             List<Bruker> brukere = new ArrayList<Bruker>();
             
             while (rs.next()) {
-                bruker = new Bruker(rs.getInt("ID"), rs.getString("Rolle"), rs.getString("Navn"), rs.getString("Fodsels_Dato"),
-                        rs.getString("Epost"), rs.getString("Passord"),
-                        rs.getInt("Telefon"));
+                bruker = new Bruker(rs.getInt("ID"), rs.getString("Navn"), rs.getString("Fodsels_Dato"),
+                        rs.getString("Epost"),rs.getInt("Telefon"));
                         
                 brukere.add(bruker);
             }
             return brukere;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+}
+
+    public Bruker read(int ID) {
+        DbTool dbTool = new DbTool();
+        conn = dbTool.loggInn();
+
+        try {
+            String query = "SELECT * FROM Bruker WHERE ID = ?";
+            PreparedStatement stm = conn.prepareStatement(query);
+            stm.setInt(1, ID);
+            ResultSet rs = stm.executeQuery();
+
+            rs.next();
+           bruker = new Bruker(rs.getInt("ID"), rs.getString("Navn"), rs.getString("Fodsels_Dato"),
+                    rs.getString("Epost"), rs.getInt("Telefon"));
+                    
+
+            return bruker;
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
