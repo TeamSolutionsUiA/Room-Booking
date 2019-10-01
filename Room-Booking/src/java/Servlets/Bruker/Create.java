@@ -55,9 +55,12 @@ out.println(fodselsDato);
             String epost = request.getParameter("Epost");
 out.println(epost);
             
-
+            String verifPassord = "";
             String passord = request.getParameter("Passord");
             String passordBekreft = request.getParameter("Re-passord");
+            if(passordBekreft.equals(passord)){
+                verifPassord = passord;
+            }
 out.println(passord);
             
             String telefonStr = request.getParameter("Mobilnummer");
@@ -65,7 +68,7 @@ out.println(passord);
 out.println(telefon);
 
             Bruker bruker;
-            bruker = new Bruker(rolle, navn, fodselsDato, epost, passord, telefon);
+            bruker = new Bruker(rolle, navn, fodselsDato, epost, verifPassord, telefon);
 out.println(bruker);           
             brukerDAO = new BrukerDAO();
 out.println(brukerDAO);
