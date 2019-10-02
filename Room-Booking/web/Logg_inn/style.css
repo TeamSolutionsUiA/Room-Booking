@@ -277,6 +277,17 @@ background: rgba(241, 89, 34, 1);
 	padding: 10px; 
 	border-radius: 5px !important
 }
+.info{
+    
+    margin-left: 5%;;
+    width: 70%;
+    color:black;
+}
+.inn{
+    text-align: center;
+    font-size: 20px;
+    color:black;
+}
 
 
 

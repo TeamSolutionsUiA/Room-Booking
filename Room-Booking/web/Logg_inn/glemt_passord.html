@@ -9,10 +9,147 @@ and open the template in the editor.
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-         <link rel="stylesheet" type="text/css" href="Web Pages/style.css">
+         <link rel="stylesheet" type="text/css" href="style.css">
+          <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     </head>
     <body>
-        <div  class="">
+        
+         
+         
+        
+        
+         <nav>
+            <div class="log">
+                <div class="loggin">
+                    <a class='nav-link1' href='login.html' data-toggle="tooltip" title="logg inn her"> logg inn</a>
+                    <a class='nav-link1' href="/Room-Booking/bruker/register.html" data-toggle="tooltip" title="register nytt konto"> register</a>
+                </div>
+            </div>
+
+            <div class="container " id="124">
+                <div class='logo'>
+                    <a href="/Room-Booking/HomePage/Home.html"> Brokke</a>
+                </div>
+
+                <div id="navbar">
+
+                    <ul>
+
+                        <li><a href="about.html" data-toggle="tooltip" title="bli kjent med oss">Hva er Brokke</a></li>
+                        
+                        <li><a href="Room-Booking/boenhetstype/read.java" data-toggle="tooltip" title=" Se leilightene">leilighter</a></li>
+                        <li><a href="" data-toggle="tooltip" title="Se Aktiveter">Aktiveter</a></li>
+                        <li><a href="news.html" data-toggle="tooltip" title="Nyheter">Nyheter</a></li>
+                        <li><a href="egenskaper.html" data-toggle="tooltip" title="Egenskaper">Kontakt oss</a></li>
+                     
+
+                    </ul>
+                      
+
+                </div>
+                <div class="nav-bar">
+                    <ul class="">
+                        <li class="nav-item"><a href="about.html" class="nav-link" data-toggle="tooltip" title="bli kjent med oss">Hva er Brokke</a></li>
+                    
+
+                        <li class="nav-item"><a href="Room-Booking/boenhetstype/read.java" class="nav-link" data-toggle="tooltip" title=" Se leilightene">leilighter</a></li>
+                        <li class="nav-item"><a href="" class="nav-link" data-toggle="tooltip" title="Se Aktiveter">Aktiveter</a></li>
+                        <li class="nav-item"><a href="news.html" class="nav-link" data-toggle="tooltip" title="Nyheter">Nyheter</a></li>
+                           <li class="nav-item"><a href="egenskaper.html" class="nav-link" data-toggle="tooltip" title="Kontant oss">Kontakt oss</a></li>
+                    </ul>
+                </div>
+
+                <div class="bestilling">
+                  
+                    <i class="fas fa-search , icons"   onclick="myFunction()" data-toggle="tooltip" title="search" ></i>
+                    <i class="fas fa-phone , icons" data-toggle="tooltip" title="00043434"></i>
+
+                </div>
+            </div>
+            <div id="search">
+                <p>
+                    <input type="text" name="Navn" id="rr" class="search" placeholder="search: ">
+                </p>
+
+            </div>
+             
+        <div class="loginn">
+            
+             <div class="info">
+                
+                <p> <div class="inn">Glemt passordet?</div><br>
+                    
+                Skriv inn e-postadressen som er tilknyttet kontoen din. 
+                Klikk på Send for å få en tilbakestilling av passord via e-post til deg. </p>
+            </div>
+            
+            <form action="" method="post">
+              <div class="col-login"> 
+                <div class="form-group">
+                <label class="control-label" for="input-email" id="email">E-postadresse</label>
+                <input type="text" name="E-postE-post" value="" placeholder="E-postadresse" id="input-email" class="form-control" />
+                </div>
+              
+             </form>
+              <div class="buttons">
+                   <div class="pull-right">
+                  <button  id="button" type="submit" class="btn " data-loading-text="<span>Login</span>">
+                      <a style="color:white; text-decoration: none;">Nullstill passord</a></button>
+                </div>
+              </div>
+             </div>
+                
+           
+           <!-- <p>Har du ikke en bruker? <button type="button"><a href="register.html" style="text-decoration: none; color: black;">Opprett konto</a></button></p>
+            
+            <p>Request en sikker adminside <a href="/adminOmraade/adminSide.html">here!</a></p>
+            <p>Request en sikker ansattside <a href="/ansattOmraade/ansattSide.html" >here!</a></p>
+            <p>Request en sikker brukerside <a href="/brukerOmraade/brukerSide.html" >here!</a></p>**/-->
+            
+        
+             
+             
+      <script>
+                 window.onscroll = function() { scrollFunction();   };
+                  function scrollFunction() {
+            var soso = document.getElementById("navbar");
+            var sara = document.getElementsByClassName("nav-bar");
+            if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
+                soso.style.top = "0";
+                soso.style.display = "inline";
+                sara.style.display = "none";
+
+            } else {
+
+                soso.style.display = "none";
+                sara.style.display = "inline-block";
+            }
+
+              }
+              var i = 0;
+          var col = new Array("rgba(241, 89, 34, 1)", "#9e009e");
+       
+
+        function changebar() {
+               document.getElementById("124").style.backgroundColor= col[i];
+             document.getElementById("navbar").style.backgroundColor= col[i];
+            document.getElementById("email").style.color= col[i];
+           
+            document.getElementById("button").style.backgroundColor= col[i];
+             
+             i++;
+            if (i > col.length) {
+                i = 0;
+            }
+            window.setTimeout("changebar()", 3000);
+
+           }
+
+              window.onload = changebar();
+        </script>
+        
+    
+       <!-- <div  class="">
             <h1> Nullstilling av passord </h1>
             <form>
                 <p>Legg inn e-postadresse og få tilsendt e-post for nullstilling av passord!</p>
@@ -22,6 +159,6 @@ and open the template in the editor.
                 <a href="" style="text-decoration: none; color: black; "> Nullstill passord</a> </button>
             </p>
            
-        </div>  
+        </div>  -->
     </body>
 </html>
