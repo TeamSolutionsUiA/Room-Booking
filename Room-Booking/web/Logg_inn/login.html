@@ -72,9 +72,9 @@ and open the template in the editor.
 
             </div>
              
-        <div class="loginn">
+        <div class="login">
             
-            <form action="" method="post">
+            <form action="login" method="post">
               <div class="col-login"> 
                 <div class="form-group">
                 <label class="control-label" for="input-email" id="email">E-postadresse</label>
@@ -89,7 +89,7 @@ and open the template in the editor.
              </form>
               <div class="buttons">
                    <div class="pull-right">
-                  <button  id="button" type="submit" class="btn " data-loading-text="<span>Login</span>">
+                  <button value="" id="button" type="submit" class="btn " data-loading-text="<span>Login</span>">
                       <a style="color:white; text-decoration: none;">Login</a></button>
                 </div>
               </div>
@@ -97,10 +97,10 @@ and open the template in the editor.
                 <div class="buttons-register">
                 <div class="pull-right">    
                     <span style="color :black; text-decoration: underline;">Har du ikke en bruker? <span>
-                  <button  id="button1" type="submit" class="btn" data-loading-text="<span>opprett</span>">
+                     <button   id="button1" type="submit" class="btn" data-loading-text="<span>opprett</span>">
                       <a href="/Room-Booking/bruker/register.html" style="color:white; text-decoration: none;" >Opprett konto</a></button>
                 </div>
-        
+      
                 </div>  
            
            <!-- <p>Har du ikke en bruker? <button type="button"><a href="register.html" style="text-decoration: none; color: black;">Opprett konto</a></button></p>
@@ -129,17 +129,18 @@ and open the template in the editor.
             }
 
               }
-              var i = 0;
-          var col = new Array("rgba(241, 89, 34, 1)", "#9e009e");
-       
+         
+        var i = 0;
+                var col = new Array("rgba(241, 89, 34, 1)", "#9e009e");
 
         function changebar() {
-               document.getElementById("124").style.backgroundColor= col[i];
-             document.getElementById("navbar").style.backgroundColor= col[i];
-            document.getElementById("email").style.color= col[i];
-            document.getElementById("passord").style.color= col[i];
-            document.getElementById("button").style.backgroundColor= col[i];
-              document.getElementById("button1").style.backgroundColor= col[i];
+                
+         document.getElementById("124").style.backgroundColor= col[i];
+         document.getElementById("navbar").style.backgroundColor= col[i];
+         document.getElementById("email").style.color= col[i];
+         document.getElementById("passord").style.color= col[i];
+         document.getElementById("button").style.backgroundColor= col[i];
+         document.getElementById("button1").style.backgroundColor= col[i];
              i++;
             if (i > col.length) {
                 i = 0;
