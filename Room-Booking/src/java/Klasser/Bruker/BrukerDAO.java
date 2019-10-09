@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Klasser;
+package Klasser.Bruker;
 
+import Klasser.Bruker.Bruker;
+import Klasser.DbTool;
 import java.sql.*;
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -24,10 +26,10 @@ public class BrukerDAO {
     public int insert(Bruker bruker) {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
-        
-            try {
+
+           try {
            
-                String sql = "INSERT INTO Bruker (Rolle, Navn, Fodsels_dato, Epost, Passord, Telefon)"
+                String sql = "INSERT INTO Bruker (Rolle, Navn, Fodsels_Dato, Epost, Passord, Telefon)"
                     + "VALUES (?, ?, ?, ?, ?, ?)";
 
                 PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -102,5 +104,27 @@ public class BrukerDAO {
         }
         return null;
 }
+    
+    public boolean sjekkBrukerEksist(String epost){
+
+        DbTool dbTool = new DbTool();
+        conn = dbTool.loggInn();
+        boolean brukerEksist = false;
+        
+        try {
+        PreparedStatement stm = conn.prepareStatement("SELECT * FROM Bruker WHERE Epost = ?");
+        stm.setString(1, epost);
+        ResultSet r1=stm.executeQuery();
+            if(r1.next()) {
+                brukerEksist = true;
+            }
+        }
+            catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return brukerEksist;
+         }
 }
        

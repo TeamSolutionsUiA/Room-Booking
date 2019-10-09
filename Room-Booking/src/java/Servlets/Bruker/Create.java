@@ -5,8 +5,7 @@
  */
 package Servlets.Bruker;
 
-import Klasser.Bruker;
-import Klasser.BrukerDAO;
+import Klasser.Bruker.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -16,9 +15,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
+
 
 /**
  *
@@ -33,14 +35,22 @@ import javax.servlet.RequestDispatcher;
    public class Create extends HttpServlet {
        
        private BrukerDAO brukerDAO;
+       private InputErrorBehandler inputBehandler;
+       
+       // Maps med alle errormeldinger og alle input-verdier som skal 
+       //gjenbrukes hvis feil oppstår
+        Map<String, String> errors; 
+        Map<String, String> afters; 
        
        protected void insert(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
         
+ 
         try (PrintWriter out = response.getWriter()) {
 out.println("getWriter = ok");
             
+            //Innhenting av alle parametere
             String rolle = "Bruker";
             
             String forNavn = request.getParameter("Navn");
@@ -51,8 +61,10 @@ out.println(navn);
             String fodselsDato = request.getParameter("Fodselsdato");
             
 out.println(fodselsDato);
-
+            
+           
             String epost = request.getParameter("Epost");
+            
 out.println(epost);
             
             String verifPassord = "";
@@ -61,33 +73,59 @@ out.println(epost);
             if(passordBekreft.equals(passord)){
                 verifPassord = passord;
             }
-out.println(passord);
+out.println(verifPassord);
             
             String telefonStr = request.getParameter("Mobilnummer");
             int telefon = Integer.parseInt(telefonStr);
-out.println(telefon);
-
-            Bruker bruker;
-            bruker = new Bruker(rolle, navn, fodselsDato, epost, verifPassord, telefon);
-out.println(bruker);           
-            brukerDAO = new BrukerDAO();
-out.println(brukerDAO);
-            int id = brukerDAO.insert(bruker);
+out.println(telefon);          
+            // Legger inn alle parametere i liste (after) for gjenbruk i tilfelle error.
+            afters = new HashMap();
+           
+            afters.put("Navn",forNavn);
+            afters.put("Etternavn",etterNavn);
+            afters.put("Fodselsdato", fodselsDato);
+            afters.put("Epost",epost);
+            afters.put("Mobilnummer",telefonStr);
+            
+out.println(afters);
+            // Verifisering av parametere og opprettelse av error.
+            inputBehandler = new InputErrorBehandler();
+            errors = new HashMap(); 
+            
+            if(inputBehandler.sjekkEpost(epost))
+                errors.put("Epost", "Det finnes allerede en bruker med denne epostadressen! Vennligst gå til innlogging.");            
+out.println(errors);
+            //Opprettelse av ny bruker, dersom det ikke er errors.
+            
+            if(errors.isEmpty()){   
+                Bruker bruker;
+                bruker = new Bruker(rolle, navn, fodselsDato, epost, verifPassord, telefon);
+out.println(bruker); 
+                brukerDAO = new BrukerDAO();
+                int id = brukerDAO.insert(bruker);
 out.println("ID: " + id);
-
-            if (id != 0) {
+            
+                if (id != 0) {
     
-                String reDirBruker = "../bruker?id=" + id;
-                response.sendRedirect(reDirBruker);
-        }
-            else{
-                
-                String reDirToRegister = "../bruker/register.html";
-                response.sendRedirect(reDirToRegister);
+                    String reDirBruker = "../bruker?id=" + id;
+                    response.sendRedirect(reDirBruker);
+                }
             }
-    }
-}
-
+                    else{
+                
+                        // Legger inn errors og after-verdier i felt  
+                        // i opprinnelig jsp form og presenterer for bruker.
+                        request.setAttribute("after", afters); 
+                        request.setAttribute("errors", errors);
+                        request.getRequestDispatcher("register.jsp").forward(request, response);
+                       
+         
+                    }
+                }
+       
+        }  
+       
+       
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

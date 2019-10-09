@@ -12,8 +12,6 @@ function visPassord1() {
     } else {
         pass1.type = "password";
     }
-
-
 }
 
 function visPassord2() {
@@ -36,7 +34,7 @@ var sjekkPassord = function() {
         document.getElementById('message').style.color = 'red';
         document.getElementById('message').innerHTML = 'Passordene er ikke like';
     }
-}
+};
 
 
 

@@ -6,12 +6,11 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="styleRegister.css">
-        <link rel="stylesheet" href="CSS/intlTelInput.css">
          <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
          <script type="text/javascript" src="regFunk.js"></script>
          <script type="text/javascript" src="regStyle.js"></script>
-         <script src="js/intlTelInput.js"></script>
-
     </head>
     <body>
         
@@ -74,7 +73,7 @@
                 
                 <p><div class="inn">Registrer Konto</div><br>
                     
-                   Hvis du allerede har en konto hos oss, kan du logge inn pÃ¥ innloggingssiden </p>
+                   Hvis du allerede har en konto hos oss, kan du logge inn på innloggingssiden </p>
             </div>
      
             
@@ -84,33 +83,33 @@
               <div class="col-login"> 
                 <div class="form-group">
                 <label class="control-label" for="input-fornavn" id="fornavn">Fornavn*</label>
-                <input type="text" name="Navn" value="" placeholder="Fornavn" id="input-fornavn" class="form-control" />
+                <input type="text" name="Navn" value="${after.Navn}" placeholder="Fornavn" id="input-fornavn" class="form-control" />
                 </div>
                 <div class="form-group">
                 <label class="control-label" for="input-etternavn" id="etternavn">Etternavn*</label>
-                <input type="text" name="Etternavn" value="" placeholder="Etternavn" id="input-etternavn" class="form-control" />
+                <input type="text" name="Etternavn" value="${after.Etternavn}" placeholder="Etternavn" id="input-etternavn" class="form-control" />
                 
                 </div>
                    <div class="form-group">
-                <label class="control-label" for="input-etternavn" id="fodsldato">FÃ¸dselsdato*</label>
-                <input type="text" name="Fodselsdato" value="" id="input-foselsdato" class="form-control" placeholder="Ã…Ã…Ã…Ã…-MM-DD" required 
+                <label class="control-label" for="input-etternavn" id="fodsldato">Fødselsdato*</label>
+                <input type="text" name="Fodselsdato" value="${after.Fodselsdato}" id="input-foselsdato" class="form-control" placeholder="ÅÅÅÅ-MM-DD" required 
                     pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" 
                     title="Enter a date in this format YYYY-MM-DD"/>
                 
                 </div>
                   <div class="form-group">
                 <label class="control-label" for="input-etternavn" id="mobil">Mobilnummer*</label>
-                <input type="nummber" name="Mobilnummer" value="+47" placeholder="Mobilnummer" id="input-Mobilnummer" class="form-control" />
+                <input type="number" name="Mobilnummer" value="${after.Mobilnummer}" placeholder="Mobilnummer" id="input-Mobilnummer" class="form-control" />
                 
                 </div>
                    <div class="form-group">
                 <label class="control-label" for="input-email" id="email">E-postadresse*</label>
-                <input type="email" name="Epost" value="" placeholder="E-postadresse" id="input-email" class="form-control" />
-                 <label  for="email-valid" id="email-valid" style="color:red;visibility: hidden;" >Invalid</label>
-                 
-                   </div>
+                <input type="email" value="${after.Epost}" name="Epost" placeholder="Epost-adresse" id="input-email" class="form-control"/>
+                <span name="epostError">${errors.Epost}</span>
+                </div>
              <fieldset>
-                <div class="form-group">
+                
+                 <div class="form-group">
                 <label class="control-label" for="input-password" id="passord">Passord*</label>
                 <input type="password" name="Passord" value=""  id="pass1" placeholder="Passord" id="input-password" required
                           pattern=".{6,}" title="Minimum 6 karakterer" class="form-control" />
@@ -138,13 +137,6 @@
                 </div>
               </div>
              </div>
-        <script>
-        var input = document.querySelector("#input-Mobilnummer");
-        window.intlTelInput(input, {
-        utilsScript: "js/utils.js"
-                        });
-         </script>
-   
              
      
     </body>

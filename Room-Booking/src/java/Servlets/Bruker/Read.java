@@ -7,8 +7,8 @@ package Servlets.Bruker;
 
 
 
-import Klasser.Bruker;
-import Klasser.BrukerDAO;
+import Klasser.Bruker.Bruker;
+import Klasser.Bruker.BrukerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
