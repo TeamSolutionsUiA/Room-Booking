@@ -208,7 +208,7 @@ public class BoenhetsTypeDAO {
             String query = "DELETE FROM LeilighetsType WHERE ID = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, id);
-            ResultSet rs = stm.executeQuery();
+            stm.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
