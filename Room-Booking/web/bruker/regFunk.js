@@ -37,10 +37,7 @@ var sjekkPassord = function() {
         document.getElementById('message').innerHTML = 'Passordene er ikke like';
     }
 }
-var input = document.querySelector("#input-Mobilnummer");
-window.intlTelInput(input, {
-    utilsScript: "js/utils.js"
-});
+
 
 
 
