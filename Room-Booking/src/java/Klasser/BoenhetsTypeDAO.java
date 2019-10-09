@@ -117,14 +117,14 @@ public class BoenhetsTypeDAO {
         return null;
     }
 
-    public BoenhetsType read(int ID) {
+    public BoenhetsType read(int id) {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
 
         try {
             String query = "SELECT * FROM LeilighetsType WHERE ID = ?";
             PreparedStatement stm = conn.prepareStatement(query);
-            stm.setInt(1, ID);
+            stm.setInt(1, id);
             ResultSet rs = stm.executeQuery();
 
             egenskapDAO = new EgenskapDAO();
@@ -187,6 +187,28 @@ public class BoenhetsTypeDAO {
                     }
                 }
              */
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void delete(int id) {
+        DbTool dbTool = new DbTool();
+        conn = dbTool.loggInn();
+
+        try {
+            egenskapDAO = new EgenskapDAO();
+            bildeDAO = new BildeDAO();
+            
+            egenskapDAO.delete(conn, id);
+            bildeDAO.delete(conn, id);
+            
+            String query = "DELETE FROM LeilighetsType WHERE ID = ?";
+            PreparedStatement stm = conn.prepareStatement(query);
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {

@@ -58,4 +58,18 @@ public class EgenskapDAO {
 
         return egenskaper;
     }
+
+    public void delete(Connection conn, int LelighetsID) {
+        try {
+            String query = "DELETE FROM Egenskap WHERE Leilighet_ID = ?";
+            PreparedStatement stm = conn.prepareStatement(query);
+            stm.setInt(1, LelighetsID);
+
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
