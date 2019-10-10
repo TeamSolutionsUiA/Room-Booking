@@ -42,6 +42,3 @@ var sjekkPassord = function() {
 
 
 
-
-
-
