@@ -18,22 +18,22 @@
             <div class="log">
                 <div class="loggin">
                     <a class='nav-link1' href="/Room-Booking/Logg_inn/login.html" data-toggle="tooltip" title="logg inn her"> logg inn</a>
-                    <a class='nav-link1' href="/Room-Booking/bruker/register.html" data-toggle="tooltip" title="register nytt konto"> register</a>
+                    <a class='nav-link1' href="/Room-Booking/bruker/register.html" data-toggle="tooltip" title="register nytt konto"> registrer</a>
                 </div>
             </div>
 
             <div class="container " id="124">
                 <div class='logo'>
-                    <a href="/Room-Booking/HomePage/Home.html"> Brokke</a>
+                    <a href="/Room-Booking/HomePage/index.html"> Brokke</a>
                 </div>
 
                 <div id="navbar">
 
                     <ul>
 
-                        <li><a href="about.html" data-toggle="tooltip" title="bli kjent med oss">Hva er Brokke</a></li>
+                        <li><a href="about.html" data-toggle="tooltip" title="bli kjent med oss">Om Brokke</a></li>
                         
-                        <li><a href="Room-Booking/boenhetstype/read.java" data-toggle="tooltip" title=" Se leilightene">leilighter</a></li>
+                        <li><a href="Room-Booking/boenhetstype/read.java" data-toggle="tooltip" title=" Se leilightene">Boenheter</a></li>
                         <li><a href="" data-toggle="tooltip" title="Se Aktiveter">Aktiveter</a></li>
                         <li><a href="news.html" data-toggle="tooltip" title="Nyheter">Nyheter</a></li>
                         <li><a href="egenskaper.html" data-toggle="tooltip" title="Egenskaper">Kontakt oss</a></li>
@@ -45,11 +45,11 @@
                 </div>
                 <div class="nav-bar">
                     <ul class="">
-                        <li class="nav-item"><a href="about.html" class="nav-link" data-toggle="tooltip" title="bli kjent med oss">Hva er Brokke</a></li>
+                        <li class="nav-item"><a href="about.html" class="nav-link" data-toggle="tooltip" title="bli kjent med oss">Om Brokke</a></li>
                     
 
-                        <li class="nav-item"><a href="Room-Booking/boenhetstype/read.java" class="nav-link" data-toggle="tooltip" title=" Se leilightene">leilighter</a></li>
-                        <li class="nav-item"><a href="" class="nav-link" data-toggle="tooltip" title="Se Aktiveter">Aktiveter</a></li>
+                        <li class="nav-item"><a href="Room-Booking/boenhetstype/read.java" class="nav-link" data-toggle="tooltip" title=" Se leilightene">Boenheter</a></li>
+                        <li class="nav-item"><a href="" class="nav-link" data-toggle="tooltip" title="Se Aktiveter">Aktiviteter</a></li>
                         <li class="nav-item"><a href="news.html" class="nav-link" data-toggle="tooltip" title="Nyheter">Nyheter</a></li>
                            <li class="nav-item"><a href="egenskaper.html" class="nav-link" data-toggle="tooltip" title="Kontant oss">Kontakt oss</a></li>
                     </ul>
