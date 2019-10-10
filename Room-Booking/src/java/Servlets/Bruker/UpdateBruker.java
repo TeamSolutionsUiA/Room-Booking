@@ -5,8 +5,7 @@
  */
 package Servlets.Bruker;
 
-import Klasser.Bruker;
-import Klasser.BrukerDAO;
+import Klasser.Bruker.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;

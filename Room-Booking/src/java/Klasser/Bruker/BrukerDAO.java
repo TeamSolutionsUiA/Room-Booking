@@ -5,11 +5,8 @@
  */
 package Klasser.Bruker;
 
-import Klasser.Bruker.Bruker;
 import Klasser.DbTool;
 import java.sql.*;
-import java.util.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,5 +123,27 @@ public class BrukerDAO {
         }
         return brukerEksist;
          }
+    
+    public void update(Bruker bruker) {
+        DbTool dbTool = new DbTool();
+        conn=dbTool.loggInn();
+        try {
+            String sql = "update bruker set navn=? , fodselsDato=? , epost=? , telefon=?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, bruker.getNavn());
+            statement.setString(2, bruker.getFodselsDato());
+            statement.setString(3, bruker.getEpost());
+            statement.setInt(4, bruker.getTelefon());
+            
+            int rowsInserted = statement.executeUpdate();
+            ResultSet rs = statement.getGeneratedKeys();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
        
