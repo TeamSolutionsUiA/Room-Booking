@@ -1,6 +1,8 @@
 package Klasser.Bruker;
 
-import Klasser.Bruker.BrukerDAO;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -13,15 +15,46 @@ import Klasser.Bruker.BrukerDAO;
  */
 public class InputErrorBehandler {
     
- private BrukerDAO brukerDAO;
+ private final BrukerDAO brukerDAO;
     
  public InputErrorBehandler() {
     
      brukerDAO = new BrukerDAO();
  }
-    public boolean sjekkEpost(String epost){
+    public boolean sjekkBrukerEksist(String epost){
     
-        boolean godkjentEpost = brukerDAO.sjekkBrukerEksist(epost);
-        return godkjentEpost;
+       boolean brukerEksisterer = false;
+        
+        if(brukerDAO.sjekkBrukerEksist(epost)){
+            brukerEksisterer = true;
+        
+        }
+        return brukerEksisterer;
+    }
+    public boolean validEpostFormat(String epost){
+        
+        boolean godkjentFormat = true;
+        Pattern pattern = Pattern.compile("^.+@.+\\..+$");
+        Matcher matcher = pattern.matcher(epost);
+        
+        if(!matcher.matches()){
+            godkjentFormat = false;
+        }
+        return godkjentFormat;
+    }
+    public boolean validFodselsDato(String fodselsDato){
+        
+        boolean godkjentFormat = true;
+        String pattern = "(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-"
+                + "(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|"
+                + "(?:(?:0[13578]|1[02])-31))";
+        
+        Pattern godkjentPattern = Pattern.compile(pattern);
+        Matcher matcher = godkjentPattern.matcher(fodselsDato);
+        
+         if(!matcher.matches()){
+            godkjentFormat = false;
+        }
+         return godkjentFormat;
     }
 }

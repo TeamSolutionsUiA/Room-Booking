@@ -92,8 +92,9 @@ out.println(afters);
             inputBehandler = new InputErrorBehandler();
             errors = new HashMap(); 
             
-            if(inputBehandler.sjekkEpost(epost))
+            if(inputBehandler.sjekkBrukerEksist(epost))
                 errors.put("Epost", "Det finnes allerede en bruker med denne epostadressen! Vennligst gå til innlogging.");            
+            
 out.println(errors);
             //Opprettelse av ny bruker, dersom det ikke er errors.
             
