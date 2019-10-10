@@ -3,14 +3,14 @@
 <html>
     <head>
         <title>Opprett konto</title>
-        <meta charset="UTF-8">
+   <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="styleRegister.css">
-         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
-         <script type="text/javascript" src="regFunk.js"></script>
-         <script type="text/javascript" src="regStyle.js"></script>
+        <link rel="stylesheet" href="CSS/intlTelInput.css">
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+        <script type="text/javascript" src="regFunk.js"></script>
+        <script type="text/javascript" src="regStyle.js"></script>
+        <script src="js/intlTelInput.js"></script>
     </head>
     <body>
         
@@ -91,14 +91,14 @@
                 
                 </div>
                    <div class="form-group">
-                <label class="control-label" for="input-etternavn" id="fodsldato">Fødselsdato*</label>
+                <label class="control-label" for="input-fodselsdato" id="fodsldato">Fødselsdato*</label>
                 <input type="text" name="Fodselsdato" value="${after.Fodselsdato}" id="input-foselsdato" class="form-control" placeholder="ÅÅÅÅ-MM-DD" required 
                     pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" 
                     title="Enter a date in this format YYYY-MM-DD"/>
                 
                 </div>
                   <div class="form-group">
-                <label class="control-label" for="input-etternavn" id="mobil">Mobilnummer*</label>
+                <label class="control-label" for="input-Mobilnummer" id="mobil">Mobilnummer*</label>
                 <input type="number" name="Mobilnummer" value="${after.Mobilnummer}" placeholder="Mobilnummer" id="input-Mobilnummer" class="form-control" />
                 
                 </div>
@@ -137,7 +137,12 @@
                 </div>
               </div>
              </div>
-             
-     
+               <script>
+        var input = document.querySelector("#input-Mobilnummer");
+        window.intlTelInput(input, {
+        utilsScript: "js/utils.js"
+                        });
+         </script>
+                    
     </body>
 </html>
