@@ -95,6 +95,17 @@ out.println(afters);
             if(inputBehandler.sjekkBrukerEksist(epost))
                 errors.put("Epost", "Det finnes allerede en bruker med denne epostadressen! Vennligst gå til innlogging.");            
             
+            if(!inputBehandler.validEpostFormat(epost))
+                errors.put("Epost", "Dette er ikke en epostadresse.");
+            
+            if(!inputBehandler.validFodselsDato(fodselsDato))
+                errors.put("Fodselsdato", "Vennligst bruk dette formatet: åååå/mm/dd");
+            
+            if(!inputBehandler.validNavn(forNavn))
+                errors.put("Navn", "Vennligst legg til fornavn.");
+                        
+            if(!inputBehandler.validNavn(etterNavn))
+                errors.put("Etternavn", "Vennligst legg til etternavn.");
 out.println(errors);
             //Opprettelse av ny bruker, dersom det ikke er errors.
             

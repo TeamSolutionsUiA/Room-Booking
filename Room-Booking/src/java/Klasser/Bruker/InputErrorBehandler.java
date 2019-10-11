@@ -57,4 +57,31 @@ public class InputErrorBehandler {
         }
          return godkjentFormat;
     }
+    
+    //https://www.tutorialspoint.com/name-validation-using-java-regular-expressions
+    public boolean validNavn(String navn){
+     
+      boolean validNavn = true; 
+        
+      //String inputNavn = navn;
+      //String patternNavn = "\\p{Upper}(\\p{Lower}+\\s?)";
+      //String patternFulltNavn = "(" + patternNavn + "){2,3,4}";
+      
+        if(navn.isEmpty())
+            validNavn = false;
+        
+        return validNavn; 
+      
+   }
+   //https://java2blog.com/validate-phone-number-java/
+   // Sjekk format før implementering i Servlet.
+    public boolean validTLF(String telefon){
+      
+      Pattern p = Pattern.compile("^\\+(?:[0-9] ?){6,14}[0-9]$"); 
+ 
+      Matcher m = p.matcher(telefon); 
+		
+      return (m.find() && m.group().equals(telefon)); 
 }
+}
+    
