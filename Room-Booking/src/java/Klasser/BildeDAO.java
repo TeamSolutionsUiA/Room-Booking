@@ -79,5 +79,18 @@ public class BildeDAO {
         }
         return null;
     }
+    
+    public void delete(Connection conn, int LelighetsID) {
+        try {
+            String query = "DELETE FROM Bilde WHERE Leilighet_ID = ?";
+            PreparedStatement stm = conn.prepareStatement(query);
+            stm.setInt(1, LelighetsID);
 
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

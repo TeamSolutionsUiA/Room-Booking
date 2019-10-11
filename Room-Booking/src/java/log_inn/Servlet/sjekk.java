@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Servlets.BoenhetsType;
+package log_inn.Servlet;
 
-import Klasser.BoenhetsTypeDAO;
+import Klasser.loginDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,14 +17,18 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author arefj
+ * @author altee
  */
-@WebServlet(name = "BoenhetsType_Delete", urlPatterns = {"/boenhetstype/delete"})
-public class Delete extends HttpServlet {
-
-    private BoenhetsTypeDAO boenhetsTypeDAO;
-
-    /**
+@WebServlet(name = "sjekk", urlPatterns = {"/Logg_inn/login"})
+ @MultipartConfig(fileSizeThreshold = 6291456, // 6 MB
+        maxFileSize = 10485760L, // 10 MB
+        maxRequestSize = 20971520L // 20 MB
+        )
+public class sjekk extends HttpServlet {
+    private loginDAO dao;
+   
+  
+       /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
@@ -32,21 +37,42 @@ public class Delete extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void delete(HttpServletRequest request, HttpServletResponse response)
+    
+    protected void checking(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String idStr = request.getParameter("id");
-        int id = Integer.parseInt(idStr);
-
-        boenhetsTypeDAO = new BoenhetsTypeDAO();
-        boenhetsTypeDAO.delete(id);
-
-        String reDir = "../boenhetstype";
-        response.sendRedirect(reDir);
-
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet kjekk_loginn</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet kjekk_loginn at " + request.getContextPath() + "</h1>");
+           
+            
+          String post=request.getParameter("epost");
+          String pass =request.getParameter("passord");
+          
+           dao = new  loginDAO();
+        
+            if(dao.check(post , pass)){
+                
+              
+                response.sendRedirect("/Room-Booking/HomePage/Home.html");
+        }
+            else{
+                response.sendRedirect("login.html");
+                
+                
+            }
+             out.println("</body>");
+            out.println("</html>");
+        }
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -58,7 +84,7 @@ public class Delete extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        delete(request, response);
+        checking(request, response);
     }
 
     /**
@@ -72,7 +98,7 @@ public class Delete extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        delete(request, response);
+          checking(request, response);
     }
 
     /**

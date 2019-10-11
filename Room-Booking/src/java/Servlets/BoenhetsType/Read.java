@@ -168,7 +168,10 @@ public class Read extends HttpServlet {
                 }
                 out.println("</p>");
             }
-
+            
+            out.println("<form action=\"boenhetstype/delete\" method=\"post\">");
+            out.println("<p><input type=\"hidden\" name=\"id\" placeholder=\"ID\" value=\"" + boenhetsType.getID() + "\" readonly></p>");
+            out.println("<p><input type=\"submit\" value=\"Slett\"></p>");
             out.println("</div>");
 
             out.println("</body>");
