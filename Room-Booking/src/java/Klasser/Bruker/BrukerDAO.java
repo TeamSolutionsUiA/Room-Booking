@@ -26,7 +26,7 @@ public class BrukerDAO {
 
            try {
            
-                String sql = "INSERT INTO Bruker (Rolle, Navn, Fodsels_Dato, Epost, Passord, Telefon)"
+                String sql = "INSERT INTO Bruker (Rolle, Navn, DOB, Epost, Passord, Telefon)"
                     + "VALUES (?, ?, ?, ?, ?, ?)";
 
                 PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -89,7 +89,7 @@ public class BrukerDAO {
             ResultSet rs = stm.executeQuery();
 
             rs.next();
-           bruker = new Bruker(rs.getInt("ID"), rs.getString("Navn"), rs.getString("Fodsels_Dato"),
+           bruker = new Bruker(rs.getInt("ID"), rs.getString("Navn"), rs.getString("DOB"),
                     rs.getString("Epost"), rs.getInt("Telefon"));
                     
 
@@ -128,7 +128,7 @@ public class BrukerDAO {
         DbTool dbTool = new DbTool();
         conn=dbTool.loggInn();
         try {
-            String sql = "update bruker set navn=? , fodselsDato=? , epost=? , telefon=?";
+            String sql = "update bruker set Navn=? , DOB=? , Epost=? , Telefon=?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, bruker.getNavn());
             statement.setString(2, bruker.getFodselsDato());
