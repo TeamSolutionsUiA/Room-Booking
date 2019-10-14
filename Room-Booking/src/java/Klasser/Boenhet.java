@@ -14,16 +14,16 @@ package Klasser;
 
 
 public class Boenhet {
-private int boenhetsnummer;    
-
-   
+private int boenhetsnummer;       
 private int boenhetstypeID;
 
-public void Boenhet(int boenhetsnummer, int BoenhetstypeID) {
+public Boenhet(int boenhetsnummer, int BoenhetstypeID) {
     this.boenhetsnummer = boenhetsnummer;
     this.boenhetstypeID =BoenhetstypeID;
     
 }
+
+
  public int getBoenhetsnummer() {
         return boenhetsnummer;
     }

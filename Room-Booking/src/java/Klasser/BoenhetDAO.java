@@ -10,6 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -18,6 +20,7 @@ import java.sql.Statement;
 public class BoenhetDAO {
     private Connection conn;
     private BoenhetDAO boenhetDAO;
+    private Boenhet boenhet;
     
     private void insert (Boenhet boenhet) {
        DbTool dbTool = new DbTool();
@@ -37,5 +40,29 @@ public class BoenhetDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public List<Boenhet> readAll() {
+        DbTool dbTool = new DbTool();
+        conn = dbTool.loggInn();
+
+        try {
+            Statement stm = conn.createStatement();
+            String query = "SELECT * From Boenhet";
+            ResultSet rs = stm.executeQuery(query);
+            List<Boenhet> boenheter = new ArrayList<Boenhet>();
+            
+            
+            while (rs.next()) {
+                boenhet = new Boenhet(rs.getInt("Boenhetsnummer"), rs.getInt("BoenhetsTypeID"));
+                        
+                boenheter.add(boenhet);
+            }
+            return boenheter;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
