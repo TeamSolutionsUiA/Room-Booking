@@ -36,6 +36,7 @@ import javax.servlet.RequestDispatcher;
        
        private BrukerDAO brukerDAO;
        private InputErrorBehandler inputBehandler;
+       private PassordHasher passordHasher;
        
        // Maps med alle errormeldinger og alle input-verdier som skal 
        //gjenbrukes hvis feil oppstår
@@ -67,11 +68,15 @@ out.println(fodselsDato);
             
 out.println(epost);
             
+            // Innhenting og kryptering av passord:
+            passordHasher = new PassordHasher();
+            
             String verifPassord = "";
-            String passord = request.getParameter("Passord");
-            String passordBekreft = request.getParameter("Re-passord");
+            String passord = passordHasher.krypterPassord(request.getParameter("Passord"));
+            String passordBekreft = passordHasher.krypterPassord(request.getParameter("Re-passord"));
             if(passordBekreft.equals(passord)){
                 verifPassord = passord;
+                
             }
 out.println(verifPassord);
             

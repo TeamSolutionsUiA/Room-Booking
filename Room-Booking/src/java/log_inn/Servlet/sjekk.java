@@ -6,6 +6,7 @@
 package log_inn.Servlet;
 
 import Klasser.loginDAO;
+import Klasser.Bruker.PassordHasher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -26,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
         )
 public class sjekk extends HttpServlet {
     private loginDAO dao;
+    private PassordHasher passordHasher;
    
   
        /**
@@ -51,13 +53,14 @@ public class sjekk extends HttpServlet {
             out.println("<body>");
             out.println("<h1>Servlet kjekk_loginn at " + request.getContextPath() + "</h1>");
            
+          passordHasher = new PassordHasher();
             
-          String post=request.getParameter("epost");
-          String pass =request.getParameter("passord");
+          String epost=request.getParameter("epost");
+          String passord = passordHasher.krypterPassord(request.getParameter("passord"));
           
            dao = new  loginDAO();
         
-            if(dao.check(post , pass)){
+            if(dao.check(epost , passord)){
                 
               
                 response.sendRedirect("/Room-Booking/HomePage/Home.html");
