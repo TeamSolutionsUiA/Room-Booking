@@ -26,17 +26,18 @@ public class BrukerDAO {
 
            try {
            
-                String sql = "INSERT INTO Bruker (Rolle, Navn, DOB, Epost, Passord, Telefon)"
-                    + "VALUES (?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO Bruker (Rolle, Fornavn, Etternavn, DOB, Epost, Passord, Telefon)"
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
                 PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 
                 statement.setString(1, bruker.getRolle());
-                statement.setString(2, bruker.getNavn());
-                statement.setString(3, bruker.getFodselsDato());
-                statement.setString(4, bruker.getEpost());
-                statement.setString(5, bruker.getPassord());
-                statement.setInt(6, bruker.getTelefon());
+                statement.setString(2, bruker.getFornavn());
+                statement.setString(3, bruker.getEtternavn());
+                statement.setString(4, bruker.getFodselsDato());
+                statement.setString(5, bruker.getEpost());
+                statement.setString(6, bruker.getPassord());
+                statement.setString(7, bruker.getTelefon());
 
                 int rowsInserted = statement.executeUpdate();
                 ResultSet idRs = statement.getGeneratedKeys();
@@ -64,8 +65,8 @@ public class BrukerDAO {
             List<Bruker> brukere = new ArrayList<Bruker>();
             
             while (rs.next()) {
-                bruker = new Bruker(rs.getInt("ID"), rs.getString("Navn"), rs.getString("Fodsels_Dato"),
-                        rs.getString("Epost"),rs.getInt("Telefon"));
+                bruker = new Bruker(rs.getInt("ID"), rs.getString("Fornavn"), rs.getString("Etternavn"), rs.getString("DOB"),
+                        rs.getString("Epost"),rs.getString("Telefon"));
                         
                 brukere.add(bruker);
             }
@@ -89,8 +90,8 @@ public class BrukerDAO {
             ResultSet rs = stm.executeQuery();
 
             rs.next();
-           bruker = new Bruker(rs.getInt("ID"), rs.getString("Navn"), rs.getString("DOB"),
-                    rs.getString("Epost"), rs.getInt("Telefon"));
+           bruker = new Bruker(rs.getInt("ID"),rs.getString("Fornavn"), rs.getString("Etternavn"), rs.getString("DOB"),
+                    rs.getString("Epost"), rs.getString("Telefon"));
                     
 
             return bruker;
@@ -128,12 +129,14 @@ public class BrukerDAO {
         DbTool dbTool = new DbTool();
         conn=dbTool.loggInn();
         try {
-            String sql = "update bruker set Navn=? , DOB=? , Epost=? , Telefon=?";
+            String sql = "update bruker set Fornavn=?, Etternavn=?, DOB=?, Epost=?, Passord=?, Telefon=?";
             PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, bruker.getNavn());
-            statement.setString(2, bruker.getFodselsDato());
-            statement.setString(3, bruker.getEpost());
-            statement.setInt(4, bruker.getTelefon());
+            statement.setString(1, bruker.getFornavn());
+            statement.setString(2, bruker.getEtternavn());
+            statement.setString(3, bruker.getFodselsDato());
+            statement.setString(4, bruker.getEpost());
+            statement.setString(5, bruker.getPassord());
+            statement.setString(6, bruker.getTelefon());
             
             int rowsInserted = statement.executeUpdate();
             ResultSet rs = statement.getGeneratedKeys();

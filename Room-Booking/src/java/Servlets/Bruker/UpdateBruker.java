@@ -8,6 +8,10 @@ package Servlets.Bruker;
 import Klasser.Bruker.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -19,25 +23,33 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author mohamedjabokji
  */
-@WebServlet(name = "Bruker_Update", urlPatterns = {"/bruker/update.html"})
+@WebServlet(name = "Bruker_Update", urlPatterns = {"/bruker/profil.jsp"})
 @MultipartConfig(fileSizeThreshold = 6291456, // 6 MB
         maxFileSize = 10485760L, // 10 MB
         maxRequestSize = 20971520L // 20 MB
 )
 public class UpdateBruker extends HttpServlet {
     private BrukerDAO brukerDAO;
+    private InputErrorBehandler inputBehandler;
+    private PassordHasher passordHasher;
+       
+       // Maps med alle errormeldinger og alle input-verdier som skal 
+       //gjenbrukes hvis feil oppstår
+        Map<String, String> errors; 
+        Map<String, String> afters; 
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
-     *
+     * Viser registreringsskjema for bruker med ferdig utfyllt data
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * @throws SQLException
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void visUpdateForm(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
            
@@ -45,26 +57,32 @@ public class UpdateBruker extends HttpServlet {
             String IDStr = request.getParameter("id");
             int ID = Integer.parseInt(IDStr);
             
+            
+            //Innhenting av brukerdata fra databasen:
             brukerDAO = new BrukerDAO();
-            Bruker bruker = brukerDAO.read(ID);
-            out.println("<p><input type=\"text\" name=\"Navn\" placeholder=\"Navn\" value=\"" + bruker.getNavn() + "\" required></p>");
-            out.println("<p><input type=\"number\" name=\"Id\" placeholder=\"ID\" value=\"" + bruker.getId() + "\" readonly></p>");
-            out.println("<p><input type=\"text\" name=\"Fodselsdato\" placeholder=\"Fodselsdato\" value=\"" + bruker.getFodselsDato() + "\" required></p>");
-            out.println("<p><input type=\"text  \" name=\"Epost\" placeholder=\"Epost\" value=\"" + bruker.getEpost() + "\"></p>");
-            out.println("<p><input type=\"text  \" name=\"Passord\" placeholder=\"Passord\" value=\"" + bruker.getPassord() + "\"></p>");
-            out.println("<p><input type=\"number\" name=\"Telefon\" placeholder=\"Telefon\" value=\"" + bruker.getTelefon() + "\"></p>");
-            //out.println("<p><input type=\"file\" name=\"Bilder\" multiple=\"multiple\" accept=\"image/*\"></p>");
-            out.println("<p><input type=\"submit\" value=\"Oppdater romtype\"></p>");
-            out.println("</form>");
-            out.println("</div>");
-            out.println("</body>");
-            out.println("</html>");
+            Bruker brukerFraDB = brukerDAO.read(ID);
+            
+            // Lagre brukerdata i "afters" for utfylling av skjema.
+            afters = new HashMap();
+            
+            afters.put("Fornavn", brukerFraDB.getFornavn());
+            afters.put("Etternavn", brukerFraDB.getEtternavn());
+            afters.put("Fodselsdato", brukerFraDB.getFodselsDato());
+            afters.put("Epost", brukerFraDB.getEpost());
+            afters.put("Mobilnummer", brukerFraDB.getTelefon());
+            
+            //Henter skjema for å endre bruker.
+            RequestDispatcher dispatcher = request.getRequestDispatcher("register.jsp");
+            // Fyller inn formen med lagrede data fra brukeren.
+            request.setAttribute("afters", afters);
+            dispatcher.forward(request, response);
+            
         }
     }
     
             
         protected void update(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+        throws SQLException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String idStr = request.getParameter("Id");
@@ -74,17 +92,14 @@ public class UpdateBruker extends HttpServlet {
             
             String etterNavn = request.getParameter("Etternavn");
             
-            String navn = forNavn + " " + etterNavn;
-
             String fodselsDato = request.getParameter("fodselsDato");
             
             String epost = request.getParameter("Epost");
             
-            String telefonStr = request.getParameter("Telefon");
-            int telefon = Integer.parseInt(telefonStr);
-            
+            String telefon = request.getParameter("Telefon");
+         
             Bruker bruker;
-            bruker = new Bruker( id,navn,fodselsDato,epost,telefon);
+            bruker = new Bruker( id,forNavn, etterNavn, fodselsDato,epost,telefon);
             brukerDAO = new BrukerDAO();
             brukerDAO.update(bruker);
 
@@ -92,11 +107,8 @@ public class UpdateBruker extends HttpServlet {
             response.sendRedirect(reDir);
 
         }
-    }
-
-        
+    }    
  
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -109,9 +121,24 @@ public class UpdateBruker extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String action = request.getServletPath();
+        
+        try {
+            switch (action) {
+                
+                /*case "/delete":
+                    deleteUser(request, response);
+                    break;*/
+                case "/bruker":
+                        visUpdateForm(request, response);
+                    break;
+                }
+        } 
+        catch (SQLException ex) {
+            throw new ServletException(ex);
+        }
     }
-
+   
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -123,7 +150,7 @@ public class UpdateBruker extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        doGet(request, response);
     }
 
     /**
