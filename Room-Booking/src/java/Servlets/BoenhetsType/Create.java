@@ -5,10 +5,11 @@
  */
 package Servlets.BoenhetsType;
 
-import Klasser.Bilde;
-import Klasser.BoenhetsType;
-import Klasser.BoenhetsTypeDAO;
-import Klasser.Egenskap;
+import Klasser.BoenhetsType.Bilde;
+import Klasser.BoenhetsType.BoenhetsType;
+import Klasser.BoenhetsType.BoenhetsTypeDAO;
+import Klasser.BoenhetsType.Egenskap;
+import Klasser.BoenhetsType.Kategori;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -61,7 +62,7 @@ public class Create extends HttpServlet {
             String prisStr = request.getParameter("Pris");
             int pris = Integer.parseInt(prisStr);
 
-            String kategori = request.getParameter("Kategori");
+            Kategori kategori = new Kategori(request.getParameter("Kategori"));
             
             String egenskaper = request.getParameter("Egenskaper");
             List<Egenskap> egenskaperList = new ArrayList();

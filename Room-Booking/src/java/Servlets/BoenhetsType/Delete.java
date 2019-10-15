@@ -5,7 +5,7 @@
  */
 package Servlets.BoenhetsType;
 
-import Klasser.BoenhetsTypeDAO;
+import Klasser.BoenhetsType.BoenhetsTypeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;

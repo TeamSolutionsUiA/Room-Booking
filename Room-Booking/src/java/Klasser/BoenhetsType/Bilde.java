@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Klasser;
+package Klasser.BoenhetsType;
 
 import java.io.InputStream;
 
@@ -13,16 +13,16 @@ import java.io.InputStream;
  */
 public class Bilde {
 
-    InputStream bilde;
-    int ID;
+    private InputStream bilde;
+    private String hash;
 
     public Bilde(InputStream bilde) {
         this.bilde = bilde;
     }
 
-    public Bilde(InputStream bilde, int ID) {
+    public Bilde(InputStream bilde, String hash) {
         this.bilde = bilde;
-        this.ID = ID;
+        this.hash = hash;
     }
 
     public InputStream getBilde() {
@@ -33,12 +33,11 @@ public class Bilde {
         this.bilde = bilde;
     }
 
-    public int getID() {
-        return ID;
+    public String getHash() {
+        return hash;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setHash(String hash) {
+        this.hash = hash;
     }
-
 }

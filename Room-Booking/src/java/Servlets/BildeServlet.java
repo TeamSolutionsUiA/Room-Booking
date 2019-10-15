@@ -5,8 +5,8 @@
  */
 package Servlets;
 
-import Klasser.Bilde;
-import Klasser.BildeDAO;
+import Klasser.BoenhetsType.Bilde;
+import Klasser.BoenhetsType.BildeDAO;
 import java.io.IOException;
 import java.io.OutputStream;
 import javax.servlet.ServletException;

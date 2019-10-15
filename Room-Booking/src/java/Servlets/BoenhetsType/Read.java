@@ -5,8 +5,8 @@
  */
 package Servlets.BoenhetsType;
 
-import Klasser.Bilde;
-import Klasser.BoenhetsType;
+import Klasser.BoenhetsType.Bilde;
+import Klasser.BoenhetsType.BoenhetsType;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -15,8 +15,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import Klasser.BoenhetsTypeDAO;
-import Klasser.Egenskap;
+import Klasser.BoenhetsType.BoenhetsTypeDAO;
+import Klasser.BoenhetsType.Egenskap;
 import javax.servlet.annotation.MultipartConfig;
 
 /**
