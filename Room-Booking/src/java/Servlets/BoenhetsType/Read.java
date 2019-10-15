@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Klasser.BoenhetsType.BoenhetsTypeDAO;
 import Klasser.BoenhetsType.Egenskap;
+import Klasser.BoenhetsType.KategoriDAO;
 import javax.servlet.annotation.MultipartConfig;
 
 /**
@@ -31,6 +32,7 @@ import javax.servlet.annotation.MultipartConfig;
 public class Read extends HttpServlet {
 
     private BoenhetsTypeDAO boenhetsTypeDAO;
+    private KategoriDAO kategoriDAO;
 
     /**
      * Beskrivelse
@@ -52,7 +54,8 @@ public class Read extends HttpServlet {
             out.println("<body>");
             out.println("<h1>BoenhetsTyper</h1>");
             boenhetsTypeDAO = new BoenhetsTypeDAO();
-            List<String> kategorier = boenhetsTypeDAO.readAllKategorier();
+            kategoriDAO = new KategoriDAO();
+            List<String> kategorier = kategoriDAO.readAll();
             List<BoenhetsType> boenhetsTyper = boenhetsTypeDAO.readAll();
 
             for (String kategori : kategorier) {
@@ -97,7 +100,7 @@ public class Read extends HttpServlet {
                             out.println("<div>");
                             out.println("<h4>Bilder:</h4>");
                             for (Bilde bilde : bilder) {
-                                out.println("<img src=\"" + request.getContextPath() + "/bilde?id=" + bilde.getID() + "\" width=\"400px\" />");
+                                out.println("<img src=\"" + request.getContextPath() + "/bilde?id=" + bilde.getHash() + "\" width=\"400px\" />");
                             }
                             out.println("</div>");
                         }
@@ -136,7 +139,7 @@ public class Read extends HttpServlet {
                 out.println("<div>");
                 out.println("<h4>Bilder:</h4>");
                 for (Bilde bilde : bilder) {
-                    out.println("<img src=\"" + request.getContextPath() + "/bilde?id=" + bilde.getID() + "\" width=\"400px\" />");
+                    out.println("<img src=\"" + request.getContextPath() + "/bilde?id=" + bilde.getHash() + "\" width=\"400px\" />");
                 }
                 out.println("</div>");
             }

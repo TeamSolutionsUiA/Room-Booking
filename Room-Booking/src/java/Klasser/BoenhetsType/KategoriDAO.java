@@ -81,7 +81,7 @@ public class KategoriDAO {
     
     public Kategori read(Connection conn, int LelighetsID){
         try {
-            String query = "SELECT * FROM kategori WHERE Leilighet_ID = ?";
+            String query = "SELECT Kategori FROM kategorilink WHERE BoenhetsType_ID = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, LelighetsID);
 
@@ -98,7 +98,7 @@ public class KategoriDAO {
         return kategori;
     }
     
-    public List<String> readAll(Connection conn) {
+    public List<String> readAll() {
 
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
@@ -107,12 +107,12 @@ public class KategoriDAO {
             Statement stm = conn.createStatement();
             String query = "SELECT Kategori FROM kategori";
             ResultSet rs = stm.executeQuery(query);
-            List<String> kategori = new ArrayList<String>();
+            List<String> kategoriList = new ArrayList<>();
 
             while (rs.next()) {
-                kategori.add(rs.getString("Kategori"));
+                kategoriList.add(rs.getString("Kategori"));
             }
-            return kategori;
+            return kategoriList;
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {

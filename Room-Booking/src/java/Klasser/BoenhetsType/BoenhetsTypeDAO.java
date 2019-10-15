@@ -38,7 +38,7 @@ public class BoenhetsTypeDAO {
             statement.setString(4, boenhetsType.getBeskrivelse());
             statement.setInt(5, boenhetsType.getPris());
 
-            int rowsInserted = statement.executeUpdate();
+            statement.executeUpdate();
             ResultSet idRs = statement.getGeneratedKeys();
             if (idRs.next()) {
                 int id = idRs.getInt(1);
