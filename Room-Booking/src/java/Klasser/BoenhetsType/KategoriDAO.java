@@ -78,8 +78,8 @@ public class KategoriDAO {
         }
         return exsists;
     }
-    
-    public Kategori read(Connection conn, int LelighetsID){
+
+    public Kategori read(Connection conn, int LelighetsID) {
         try {
             String query = "SELECT Kategori FROM kategorilink WHERE BoenhetsType_ID = ?";
             PreparedStatement stm = conn.prepareStatement(query);
@@ -88,7 +88,7 @@ public class KategoriDAO {
             ResultSet rs = stm.executeQuery();
             rs.next();
             kategori = new Kategori(rs.getString("Kategori"));
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -97,7 +97,7 @@ public class KategoriDAO {
 
         return kategori;
     }
-    
+
     public List<String> readAll() {
 
         DbTool dbTool = new DbTool();
@@ -120,40 +120,61 @@ public class KategoriDAO {
         }
         return null;
     }
-    
-    public void delete(Connection conn, int LelighetsID) {
-        kategori =read(conn, LelighetsID);
+
+    public void delete(Connection conn, Kategori kategori, int id) {
+        deleteLink(conn, kategori, id);
+        if (!iBruk(conn, kategori)) {
+            deleteKategori(conn, kategori);
+        }
+
+    }
+
+    private void deleteLink(Connection conn, Kategori kategori, int id) {
         try {
             String query = "DELETE FROM Kategorilink WHERE boenhetstype_ID = ? AND Katagori = ?";
             PreparedStatement stm = conn.prepareStatement(query);
-            stm.setInt(1, LelighetsID);
+            stm.setInt(1, id);
             stm.setString(2, kategori.getKategori());
             stm.executeQuery(query);
-            iBruk(conn, kategori.getKategori());
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void iBruk(Connection conn, String katagori) {
-           
-           try {
-           String query = "SELECT FROM Kategorilink WHERE Katagori = ?";
-           PreparedStatement stm = conn.prepareStatement(query);
-           stm.setString(1, kategori.getKategori());
-           ResultSet rs = stm.executeQuery();
-            
-            if(rs.next()==false) {
-             query = "DELETE FROM KATEGORI WHERE Katagori = ?";   
-             stm.setString(1, kategori.getKategori());
-             stm.executeQuery(query);
-            }
-            
+
+    private void deleteKategori(Connection conn, Kategori kategori) {
+        try {
+            String sql = "DELETE FROM KATEGORI WHERE Katagori = ?";
+            PreparedStatement stm = conn.prepareStatement(sql);
+            stm.setString(1, kategori.getKategori());
+            stm.executeQuery(sql);
+
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean iBruk(Connection conn, Kategori kategori) {
+        boolean iBruk = false;
+
+        try {
+            String query = "SELECT FROM Kategorilink WHERE Katagori = ?";
+            PreparedStatement stm = conn.prepareStatement(query);
+            stm.setString(1, kategori.getKategori());
+            ResultSet rs = stm.executeQuery();
+
+            if (rs.next()) {
+                iBruk = true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return iBruk;
     }
 }
