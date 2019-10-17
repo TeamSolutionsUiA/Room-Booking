@@ -112,14 +112,11 @@ public class BoenhetsTypeDAO {
 
             egenskapDAO = new EgenskapDAO();
             bildeDAO = new BildeDAO();
+            kategoriDAO = new KategoriDAO();
             
             rs.next();
             
-            Kategori kategori = new Kategori("Hytte");
-            List<Bilde> bilde = bildeDAO.readAll(conn, id);
-            List<Egenskap> egenskaper = egenskapDAO.readAll(conn, id);
-            
-            boenhetsType = new BoenhetsType(id, rs.getString("Navn"), kategori,
+            boenhetsType = new BoenhetsType(id, rs.getString("Navn"), kategoriDAO.read(conn, id),
                     rs.getInt("Enkeltsenger"), rs.getInt("Dobeltsenger"),
                     rs.getString("Beskrivelse"), rs.getInt("Pris"),
                     bildeDAO.readAll(conn, id),
