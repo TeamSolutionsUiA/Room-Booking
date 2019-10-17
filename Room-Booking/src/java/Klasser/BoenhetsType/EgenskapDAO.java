@@ -98,17 +98,61 @@ public class EgenskapDAO {
         return egenskaper;
     }
 
-    public void delete(Connection conn, int LelighetsID) {
-        try {
-            String query = "DELETE FROM Egenskap WHERE Leilighet_ID = ?";
-            PreparedStatement stm = conn.prepareStatement(query);
-            stm.setInt(1, LelighetsID);
+   public void delete(Connection conn, Egenskap egenskap, int id) {
+        deleteLink(conn, egenskap, id);
+        if (!iBruk(conn, egenskap)) {
+            deleteKategori(conn, egenskap);
+        }
 
-            stm.executeUpdate();
+    }
+
+    private void deleteLink(Connection conn, Egenskap egenskap, int id) {
+        try {
+            String query = "DELETE FROM Egenskaplink WHERE boenhetstype_ID = ? AND Egenskap = ?";
+            PreparedStatement stm = conn.prepareStatement(query);
+            stm.setInt(1, id);
+            stm.setString(2, egenskap.getEgenskap());
+            stm.executeQuery(query);
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-}
+
+    private void deleteKategori(Connection conn, Egenskap egenskap) {
+        try {
+            String sql = "DELETE FROM Egenskap WHERE Egenskap = ?";
+            PreparedStatement stm = conn.prepareStatement(sql);
+            stm.setString(1, egenskap.getEgenskap());
+            stm.executeQuery(sql);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean iBruk(Connection conn, Egenskap Egenskap) {
+        boolean iBruk = false;
+
+        try {
+            String query = "SELECT FROM Egenskaplink WHERE Egenskap = ?";
+            PreparedStatement stm = conn.prepareStatement(query);
+            stm.setString(1, Egenskap.getEgenskap());
+            ResultSet rs = stm.executeQuery();
+
+            if (rs.next()) {
+                iBruk = true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return iBruk;
+    }
+    }
+
