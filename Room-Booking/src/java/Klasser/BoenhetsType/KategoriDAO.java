@@ -128,6 +128,7 @@ public class KategoriDAO {
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, LelighetsID);
             stm.setString(2, kategori.getKategori());
+            stm.executeQuery(query);
             iBruk(conn, kategori.getKategori());
         } catch (SQLException e) {
             e.printStackTrace();
@@ -146,12 +147,9 @@ public class KategoriDAO {
             if(rs.next()==false) {
              query = "DELETE FROM KATEGORI WHERE Katagori = ?";   
              stm.setString(1, kategori.getKategori());
-             stm.executeQuery();
+             stm.executeQuery(query);
             }
             
-           
-           
-           
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
