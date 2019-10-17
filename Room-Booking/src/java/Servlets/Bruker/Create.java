@@ -49,8 +49,20 @@ import javax.servlet.RequestDispatcher;
         
         try (PrintWriter out = response.getWriter()) {
 out.println("getWriter = ok");
+
+// Sjekker om requesten kommer fra en eksisterende bruker(read).
+// Brukes for å vurdere om man skal bruke Insert eller Update i BrukerDAO.
+            int reqId = 0;
             
+            if (request.getParameterMap().containsKey("id")) {
+            String idStr = request.getParameter("id");
+            reqId = Integer.parseInt(idStr);
+
+out.println(reqId);
+            }    
             //Innhenting av alle parametere
+            String action = request.getParameter("action");
+            
             String rolle = "Bruker";
             
             String forNavn = request.getParameter("Navn");
@@ -122,7 +134,14 @@ out.println(errors);
                 bruker = new Bruker(rolle, forNavn, etterNavn, fodselsDato, epost, verifPassord, telefon);
 out.println(bruker); 
                 brukerDAO = new BrukerDAO();
-                int id = brukerDAO.insert(bruker);
+                int id = 0;
+                
+                if(reqId == 0){
+                    id = brukerDAO.insert(bruker);
+                    
+                } else {
+                        id = brukerDAO.update(bruker);
+                            }
 out.println("ID: " + id);
             
                 if (id != 0) {

@@ -11,7 +11,6 @@ import Klasser.Bruker.Bruker;
 import Klasser.Bruker.BrukerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -97,7 +96,8 @@ public class Read extends HttpServlet {
             out.println("<div>");
             out.println("Telefon: " + bruker.getTelefon());
             out.println("</div>");
-            out.println("<form action=\"bruker/updatebruker\" method=\"post\">");
+            
+            out.println("<form action=\"bruker/register.jsp\" method=\"post\">");
             out.println("<p><input type=\"hidden\" name=\"id\" placeholder=\"ID\" value=\"" + bruker.getId() + "\" readonly></p>");
           //out.println("<p><input type=\"submit\" value=\"Slett\"></p>");
             out.println("<p><input type=\"submit\" value=\"Endre\"></p>");

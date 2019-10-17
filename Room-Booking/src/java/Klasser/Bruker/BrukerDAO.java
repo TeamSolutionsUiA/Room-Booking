@@ -125,7 +125,7 @@ public class BrukerDAO {
         return brukerEksist;
          }
     
-    public void update(Bruker bruker) {
+    public int update(Bruker bruker) {
         DbTool dbTool = new DbTool();
         conn=dbTool.loggInn();
         try {
@@ -140,12 +140,21 @@ public class BrukerDAO {
             
             int rowsInserted = statement.executeUpdate();
             ResultSet rs = statement.getGeneratedKeys();
+      
+            if (rs.next()) {
+                int id = rs.getInt(bruker.getId());
+           return id;
+            } else {
+                throw new SQLException("Ingen ID returnert");
+            }
         }
-        catch (SQLException e) {
+          catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return 0;
+       
     }
 
 }

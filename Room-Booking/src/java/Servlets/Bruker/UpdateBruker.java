@@ -11,6 +11,8 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -23,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author mohamedjabokji
  */
-@WebServlet(name = "Bruker_Update", urlPatterns = {"/bruker/profil.jsp"})
+@WebServlet(name = "Bruker_Update", urlPatterns = {"/bruker/oppdater"})
 @MultipartConfig(fileSizeThreshold = 6291456, // 6 MB
         maxFileSize = 10485760L, // 10 MB
         maxRequestSize = 20971520L // 20 MB
@@ -98,6 +100,7 @@ public class UpdateBruker extends HttpServlet {
             
             String telefon = request.getParameter("Telefon");
          
+  
             Bruker bruker;
             bruker = new Bruker( id,forNavn, etterNavn, fodselsDato,epost,telefon);
             brukerDAO = new BrukerDAO();
@@ -121,23 +124,13 @@ public class UpdateBruker extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getServletPath();
-        
         try {
-            switch (action) {
-                
-                /*case "/delete":
-                    deleteUser(request, response);
-                    break;*/
-                case "/bruker":
-                        visUpdateForm(request, response);
-                    break;
-                }
-        } 
-        catch (SQLException ex) {
-            throw new ServletException(ex);
+            visUpdateForm(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(UpdateBruker.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
+        } 
+      
    
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -150,7 +143,11 @@ public class UpdateBruker extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
+        try {
+            update(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(UpdateBruker.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
