@@ -138,7 +138,7 @@ public class BoenhetsTypeDAO {
 
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, boenhetsType.getNavn());
-            statement.setString(2, boenhetsType.getKategori());
+            statement.setString(2, boenhetsType.getKategori().getKategori());
             statement.setInt(3, boenhetsType.getEnkeltsenger());
             statement.setInt(4, boenhetsType.getDobeltsenger());
             statement.setString(5, boenhetsType.getBeskrivelse());
