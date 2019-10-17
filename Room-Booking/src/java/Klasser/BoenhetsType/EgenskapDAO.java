@@ -28,7 +28,7 @@ public class EgenskapDAO {
         }
         insertLink(conn, egenskap, id);
     }
-    
+
     private void insertNy(Connection conn, Egenskap egenskap) {
         try {
             String sql = "INSERT INTO egenskap (Egenskap)" + "VALUES(?)";
@@ -59,7 +59,7 @@ public class EgenskapDAO {
             e.printStackTrace();
         }
     }
-    
+
     private boolean exists(Connection conn, Egenskap egenskap) {
         boolean exsists = false;
 
@@ -77,7 +77,7 @@ public class EgenskapDAO {
         }
         return exsists;
     }
-    
+
     public List<Egenskap> readAll(Connection conn, int boenhetsTypeID) {
         try {
             String query = "SELECT Egenskap FROM egenskaplink WHERE BoenhetsType_ID = ?";
@@ -98,10 +98,14 @@ public class EgenskapDAO {
         return egenskaper;
     }
 
-   public void delete(Connection conn, Egenskap egenskap, int id) {
-        deleteLink(conn, egenskap, id);
-        if (!iBruk(conn, egenskap)) {
-            deleteKategori(conn, egenskap);
+    public void delete(Connection conn, int id) {
+        List<Egenskap> liste = readAll(conn, id);
+
+        for (Egenskap egenskap : liste) {
+            deleteLink(conn, egenskap, id);
+            if (!iBruk(conn, egenskap)) {
+                deleteegenskap(conn, egenskap);
+            }
         }
 
     }
@@ -120,7 +124,7 @@ public class EgenskapDAO {
         }
     }
 
-    private void deleteKategori(Connection conn, Egenskap egenskap) {
+    private void deleteegenskap(Connection conn, Egenskap egenskap) {
         try {
             String sql = "DELETE FROM Egenskap WHERE Egenskap = ?";
             PreparedStatement stm = conn.prepareStatement(sql);
@@ -154,5 +158,4 @@ public class EgenskapDAO {
         }
         return iBruk;
     }
-    }
-
+}

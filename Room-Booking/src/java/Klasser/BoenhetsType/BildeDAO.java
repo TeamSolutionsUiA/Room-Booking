@@ -151,10 +151,14 @@ public class BildeDAO {
         }
         return null;
     }
-public void delete(Connection conn, Bilde bilde, int id) {
-        deleteLink(conn, bilde, id);
-        if (!iBruk(conn, bilde)) {
-            deleteKategori(conn, bilde);
+public void delete(Connection conn, int id) {
+        List<Bilde> liste = readAll(conn, id);
+
+        for (Bilde bilde : liste) {
+            deleteLink(conn, bilde, id);
+            if (!iBruk(conn, bilde)) {
+                deletebilde(conn, bilde);
+            }
         }
 
     }
@@ -173,7 +177,7 @@ public void delete(Connection conn, Bilde bilde, int id) {
         }
     }
 
-    private void deleteKategori(Connection conn, Bilde bilde) {
+    private void deletebilde(Connection conn, Bilde bilde) {
         try {
             String sql = "DELETE FROM bilde WHERE Bilde_hash = ?";
             PreparedStatement stm = conn.prepareStatement(sql);

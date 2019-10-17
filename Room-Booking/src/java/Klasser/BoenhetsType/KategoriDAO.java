@@ -121,7 +121,10 @@ public class KategoriDAO {
         return null;
     }
 
-    public void delete(Connection conn, Kategori kategori, int id) {
+    public void delete(Connection conn, int id) {
+        Kategori kategori = read(conn, id);
+        
+        
         deleteLink(conn, kategori, id);
         if (!iBruk(conn, kategori)) {
             deleteKategori(conn, kategori);
