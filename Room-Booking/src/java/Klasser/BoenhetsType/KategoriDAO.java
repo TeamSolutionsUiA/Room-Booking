@@ -120,18 +120,42 @@ public class KategoriDAO {
         }
         return null;
     }
-    /*
+    
     public void delete(Connection conn, int LelighetsID) {
+        kategori =read(conn, LelighetsID);
         try {
-            String query = "DELETE FROM Egenskap WHERE Leilighet_ID = ?";
+            String query = "DELETE FROM Kategorilink WHERE boenhetstype_ID = ? AND Katagori = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, LelighetsID);
-
-            stm.executeUpdate();
+            stm.setString(2, kategori.getKategori());
+            iBruk(conn, kategori.getKategori());
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
-    } */
+    }
+    public void iBruk(Connection conn, String katagori) {
+           
+           try {
+           String query = "SELECT FROM Kategorilink WHERE Katagori = ?";
+           PreparedStatement stm = conn.prepareStatement(query);
+           stm.setString(1, kategori.getKategori());
+           ResultSet rs = stm.executeQuery();
+            
+            if(rs.next()==false) {
+             query = "DELETE FROM KATEGORI WHERE Katagori = ?";   
+             stm.setString(1, kategori.getKategori());
+             stm.executeQuery();
+            }
+            
+           
+           
+           
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
