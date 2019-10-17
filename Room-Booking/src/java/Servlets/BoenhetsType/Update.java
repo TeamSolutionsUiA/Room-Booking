@@ -9,6 +9,7 @@ import Klasser.BoenhetsType.Bilde;
 import Klasser.BoenhetsType.BoenhetsType;
 import Klasser.BoenhetsType.BoenhetsTypeDAO;
 import Klasser.BoenhetsType.Egenskap;
+import Klasser.BoenhetsType.Kategori;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -105,9 +106,14 @@ public class Update extends HttpServlet {
             String prisStr = request.getParameter("Pris");
             int pris = Integer.parseInt(prisStr);
 
-            String kategori = request.getParameter("Kategori");
+            
             String egenskaper = request.getParameter("Egenskaper");
 
+            
+            
+          
+            Kategori kategori = new Kategori (request.getParameter("Kategori"));
+                    
             List<Egenskap> egenskaperList = new ArrayList();
             for (String egenskap : egenskaper.split(",")) {
                 Egenskap nyEgenskap = new Egenskap(egenskap);
