@@ -79,13 +79,14 @@ public class EgenskapDAO {
     }
 
     public List<Egenskap> readAll(Connection conn, int boenhetsTypeID) {
+        egenskaper = new ArrayList();
         try {
             String query = "SELECT Egenskap FROM egenskaplink WHERE BoenhetsType_ID = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, boenhetsTypeID);
 
             ResultSet rs = stm.executeQuery();
-            egenskaper = new ArrayList();
+            
             while (rs.next()) {
                 egenskaper.add(new Egenskap(rs.getString("Egenskap")));
             }

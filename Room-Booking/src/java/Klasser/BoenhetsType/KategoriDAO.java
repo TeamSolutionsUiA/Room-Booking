@@ -79,22 +79,21 @@ public class KategoriDAO {
         return exsists;
     }
 
-    public Kategori read(Connection conn, int LelighetsID) {
+    public Kategori read(Connection conn, int id) {
         try {
             String query = "SELECT Kategori FROM kategorilink WHERE BoenhetsType_ID = ?";
             PreparedStatement stm = conn.prepareStatement(query);
-            stm.setInt(1, LelighetsID);
+            stm.setInt(1, id);
 
             ResultSet rs = stm.executeQuery();
-            rs.next();
-            kategori = new Kategori(rs.getString("Kategori"));
-
+            if(rs.next()){
+                kategori = new Kategori(rs.getString("Kategori"));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return kategori;
     }
 

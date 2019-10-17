@@ -112,12 +112,18 @@ public class BoenhetsTypeDAO {
 
             egenskapDAO = new EgenskapDAO();
             bildeDAO = new BildeDAO();
+            
             rs.next();
-            boenhetsType = new BoenhetsType(rs.getInt("ID"), rs.getString("Navn"), kategoriDAO.read(conn, rs.getInt("ID")),
-                    rs.getInt("EnkeltSenger"), rs.getInt("DobeltSenger"),
+            
+            Kategori kategori = new Kategori("Hytte");
+            List<Bilde> bilde = bildeDAO.readAll(conn, id);
+            List<Egenskap> egenskaper = egenskapDAO.readAll(conn, id);
+            
+            boenhetsType = new BoenhetsType(id, rs.getString("Navn"), kategori,
+                    rs.getInt("Enkeltsenger"), rs.getInt("Dobeltsenger"),
                     rs.getString("Beskrivelse"), rs.getInt("Pris"),
-                    bildeDAO.readAll(conn, rs.getInt("ID")),
-                    egenskapDAO.readAll(conn, rs.getInt("ID")));
+                    bildeDAO.readAll(conn, id),
+                    egenskapDAO.readAll(conn, id));
 
             return boenhetsType;
         } catch (SQLException e) {
