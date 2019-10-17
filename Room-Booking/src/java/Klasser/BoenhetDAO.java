@@ -26,9 +26,9 @@ public class BoenhetDAO {
        DbTool dbTool = new DbTool();
        conn = dbTool.loggInn(); 
        try {
-           String sql = "Insert into Boenhet (boenhetsnummer, BoenhetsTypeID)" + "VALUES (?,?)";
+           String sql = "Insert into Boenhet (boenhetsnummer, BoenhetsType_ID)" + "VALUES (?,?)";
            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-           statement.setInt(1, boenhet.getBoenhetsnummer());
+           statement.setString(1, boenhet.getBoenhetsnummer());
            statement.setInt(2, boenhet.getBoenhetstypeID());
            
             int rowsInserted = statement.executeUpdate();
@@ -53,7 +53,7 @@ public class BoenhetDAO {
             
             
             while (rs.next()) {
-                boenhet = new Boenhet(rs.getInt("Boenhetsnummer"), rs.getInt("BoenhetsTypeID"));
+                boenhet = new Boenhet(rs.getString("Boenhetsnummer"), rs.getInt("BoenhetsTypeID"));
                         
                 boenheter.add(boenhet);
             }
@@ -64,5 +64,41 @@ public class BoenhetDAO {
             e.printStackTrace();
         }
         return null;
+    }
+    public void delete(Connection conn, int Boenhetsnummer) {
+       
+        try {
+            String query = "DELETE FROM Boenhet WHERE Boenhetsnummer = ? ";
+            PreparedStatement stm = conn.prepareStatement(query);
+            stm.setInt(1, Boenhetsnummer);
+           
+            stm.executeQuery(query);
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+     public void update(Connection conn, Boenhet boenhet) {
+        
+        
+
+        try {
+            String sql = "UPDATE boenhetstype SET Boenhetsnummer=?, Boenhetstype_ID=?,";
+
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, boenhet.getBoenhetsnummer());
+            statement.setInt(2, boenhet.getBoenhetstypeID());
+            
+            int rowsInserted = statement.executeUpdate();
+            ResultSet rs = statement.getGeneratedKeys();
+
+           
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
