@@ -151,18 +151,60 @@ public class BildeDAO {
         }
         return null;
     }
+public void delete(Connection conn, Bilde bilde, int id) {
+        deleteLink(conn, bilde, id);
+        if (!iBruk(conn, bilde)) {
+            deleteKategori(conn, bilde);
+        }
 
-    public void delete(Connection conn, int LelighetsID) {
+    }
+
+    private void deleteLink(Connection conn, Bilde bilde, int id) {
         try {
-            String query = "DELETE FROM Bilde WHERE Leilighet_ID = ?";
+            String query = "DELETE FROM bilde WHERE boenhetstype_ID = ? AND Bilde_hash = ?";
             PreparedStatement stm = conn.prepareStatement(query);
-            stm.setInt(1, LelighetsID);
-
-            stm.executeUpdate();
+            stm.setInt(1, id);
+            stm.setString(2, (bilde.getHash()));
+            stm.executeQuery(query);
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void deleteKategori(Connection conn, Bilde bilde) {
+        try {
+            String sql = "DELETE FROM bilde WHERE Bilde_hash = ?";
+            PreparedStatement stm = conn.prepareStatement(sql);
+            stm.setString(1, bilde.getHash());
+            stm.executeQuery(sql);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean iBruk(Connection conn, Bilde bilde) {
+        boolean iBruk = false;
+
+        try {
+            String query = "SELECT FROM bildelink WHERE Bilde_hash = ?";
+            PreparedStatement stm = conn.prepareStatement(query);
+            stm.setString(1, bilde.getHash());
+            ResultSet rs = stm.executeQuery();
+
+            if (rs.next()) {
+                iBruk = true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return iBruk;
     }
 }
