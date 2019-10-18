@@ -1,28 +1,29 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
+
+
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Logg Inn</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-         <link rel="stylesheet" type="text/css" href="style.css">
-          <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css">
+         <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+          crossorigin="anonymous"></script>
+        <script type="text/javascript"
+    src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.min.js"></script>
     </head>
     <body>
-        
-         
          
         
         
          <nav>
             <div class="log">
                 <div class="loggin">
-                    <a class='nav-link1' href='login.html' data-toggle="tooltip" title="logg inn her"> logg inn</a>
-                    <a class='nav-link1' href="/Room-Booking/bruker/register.html" data-toggle="tooltip" title="register nytt konto"> register</a>
+                    <a class='nav-link1' href='' data-toggle="tooltip" title="logg inn her"> logg inn</a>
+                    <a class='nav-link1' href="../bruker/register.jsp" data-toggle="tooltip" title="register nytt konto"> register</a>
                 </div>
             </div>
 
@@ -60,7 +61,7 @@ and open the template in the editor.
                 </div>
 
                 <div class="bestilling">
-                  
+                   
                     <i class="fas fa-search , icons"   onclick="myFunction()" data-toggle="tooltip" title="search" ></i>
                     <i class="fas fa-phone , icons" data-toggle="tooltip" title="00043434"></i>
 
@@ -73,32 +74,41 @@ and open the template in the editor.
 
             </div>
              
-        <div class="loginn">
+        <div class="login">
             
-             <div class="info">
-                
-                <p> <div class="inn">Glemt passordet?</div><br>
-                    
-                Skriv inn e-postadressen som er tilknyttet kontoen din. 
-                Klikk på Send for å få en tilbakestilling av passord via e-post til deg. </p>
-            </div>
-            
-            <form action="" method="post">
+            <form action="login" method="post">
               <div class="col-login"> 
                 <div class="form-group">
                 <label class="control-label" for="input-email" id="email">E-postadresse</label>
-                <input type="text" name="E-postE-post" value="" placeholder="E-postadresse" id="input-email" class="form-control" />
+                <input type="text" name="epost" value="" placeholder="E-postadresse" id="input-email" class="form-control" />
                 </div>
-              
-             </form>
+                <div class="form-group">
+                <label class="control-label" for="input-password" id="passord">Passord</label>
+                <input type="passord" name="passord" value="" placeholder="Passord" id="input-password" class="form-control" />
+                <br>${message}
+                <br><br>  
+                <div><a  target="_top" href="glemt_passord.html">Glemt Passord</a>
+                     
+                </div>
+                </div>
+                   
+            
               <div class="buttons">
                    <div class="pull-right">
-                  <button  id="button" type="submit" class="btn " data-loading-text="<span>Login</span>">
-                      <a style="color:white; text-decoration: none;">Nullstill passord</a></button>
+                  <button value="" id="button" type="submit" class="btn " data-loading-text="<span>Login</span>">
+                      <a style="color:white; text-decoration: none;">Login</a></button>
                 </div>
               </div>
              </div>
-                
+            </form>
+                <div class="buttons-register">
+                <div class="pull-right">    
+                    <span style="color :black; text-decoration: underline;">Har du ikke en bruker? <span>
+                     <button   id="button1" type="submit" class="btn" data-loading-text="<span>opprett</span>">
+                      <a href="/Room-Booking/bruker/register.jsp" style="color:white; text-decoration: none;" >Opprett konto</a></button>
+                </div>
+      
+                </div>  
            
            <!-- <p>Har du ikke en bruker? <button type="button"><a href="register.html" style="text-decoration: none; color: black;">Opprett konto</a></button></p>
             
@@ -126,17 +136,18 @@ and open the template in the editor.
             }
 
               }
-              var i = 0;
-          var col = new Array("rgba(241, 89, 34, 1)", "#9e009e");
-       
+         
+        var i = 0;
+                var col = new Array("rgba(241, 89, 34, 1)", "#9e009e");
 
         function changebar() {
-               document.getElementById("124").style.backgroundColor= col[i];
-             document.getElementById("navbar").style.backgroundColor= col[i];
-            document.getElementById("email").style.color= col[i];
-           
-            document.getElementById("button").style.backgroundColor= col[i];
-             
+                
+         document.getElementById("124").style.backgroundColor= col[i];
+         document.getElementById("navbar").style.backgroundColor= col[i];
+         document.getElementById("email").style.color= col[i];
+         document.getElementById("passord").style.color= col[i];
+         document.getElementById("button").style.backgroundColor= col[i];
+         document.getElementById("button1").style.backgroundColor= col[i];
              i++;
             if (i > col.length) {
                 i = 0;
@@ -146,19 +157,31 @@ and open the template in the editor.
            }
 
               window.onload = changebar();
+              
+              
+                $(document).ready(function() {
+                   $("#loginForm").validate({
+                      rules: {
+                            email: {
+                           required: true,
+                            email: true
+                            },
+         
+                            password: "required",
+                   },
+             
+                    messages: {
+                       email: {
+                    required: "Please enter email",
+                    email: "Please enter a valid email address"
+                      },
+                 
+                      password: "Please enter password"
+                   }
+             });
+  
+              });
         </script>
         
-    
-       <!-- <div  class="">
-            <h1> Nullstilling av passord </h1>
-            <form>
-                <p>Legg inn e-postadresse og få tilsendt e-post for nullstilling av passord!</p>
-                <p> <input type="text" name="E-post" placeholder="E-postadresse"></p>
-             </form>
-            <p><button type="button">
-                <a href="" style="text-decoration: none; color: black; "> Nullstill passord</a> </button>
-            </p>
-           
-        </div>  -->
     </body>
-</html>
+   </html>

@@ -20,6 +20,15 @@ public class Bruker {
     private String passord;
     private String telefon;
     
+    
+    
+    public Bruker( ){
+    
+     
+     
+    
+    }
+    
     public Bruker(String rolle,String fornavn, String etternavn, String fodselsDato, String epost,String passord,String telefon){
     
     this.rolle = rolle;

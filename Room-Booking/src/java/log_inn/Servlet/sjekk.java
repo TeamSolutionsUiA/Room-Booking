@@ -5,16 +5,19 @@
  */
 package log_inn.Servlet;
 
+import Klasser.Bruker.Bruker;
 import Klasser.loginDAO;
 import Klasser.Bruker.PassordHasher;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -26,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
         maxRequestSize = 20971520L // 20 MB
         )
 public class sjekk extends HttpServlet {
-    private loginDAO dao;
+   
     private PassordHasher passordHasher;
    
   
@@ -56,17 +59,31 @@ public class sjekk extends HttpServlet {
           passordHasher = new PassordHasher();
             
           String epost=request.getParameter("epost");
-          String passord = passordHasher.krypterPassord(request.getParameter("passord"));
+          String passord = request.getParameter("passord");
           
-           dao = new  loginDAO();
+          
+         /* String passord = passordHasher.krypterPassord(request.getParameter("passord"));*/
+          
+            loginDAO dao = new  loginDAO();
+           Bruker bruker = dao.check(epost, passord);
+            
+            String destPage = "login.jsp";
         
-            if(dao.check(epost , passord)){
+            if( dao.check(epost,passord)!= null ){
+                 HttpSession session = request.getSession();
+                session.setAttribute("epost", bruker.getFornavn());
+              
                 
               
-                response.sendRedirect("/Room-Booking/HomePage/Home.html");
+                response.sendRedirect("welcom.jsp");
         }
             else{
-                response.sendRedirect("login.html");
+                String message = "Invalid email/password";
+                request.setAttribute("message", message);
+                
+                /*response.sendRedirect("login.html");*/
+                RequestDispatcher dispatcher = request.getRequestDispatcher(destPage);
+                dispatcher.forward(request, response);
                 
                 
             }
