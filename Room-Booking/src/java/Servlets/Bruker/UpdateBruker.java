@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -38,7 +39,7 @@ public class UpdateBruker extends HttpServlet {
        // Maps med alle errormeldinger og alle input-verdier som skal 
        //gjenbrukes hvis feil oppstår
         Map<String, String> errors; 
-        Map<String, String> afters; 
+        Map<String, String> after; 
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -50,67 +51,148 @@ public class UpdateBruker extends HttpServlet {
      * @throws IOException if an I/O error occurs
      * @throws SQLException
      */
-    protected void visUpdateForm(HttpServletRequest request, HttpServletResponse response)
+    protected void updateForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-           
-           
+         try (PrintWriter out = response.getWriter()) {
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet Update</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<div class=\"Update\">");
+            out.println("<h1>Oppdater bruker</h1>");
+            out.println("<form action=\"oppdater\" method=\"post\" enctype=\"multipart/form-data\">");
             String IDStr = request.getParameter("id");
             int ID = Integer.parseInt(IDStr);
             
-            
+ out.println(ID);           
             //Innhenting av brukerdata fra databasen:
             brukerDAO = new BrukerDAO();
-            Bruker brukerFraDB = brukerDAO.read(ID);
+            Bruker bruker = brukerDAO.read(ID);
             
-            // Lagre brukerdata i "afters" for utfylling av skjema.
-            afters = new HashMap();
-            
-            afters.put("Fornavn", brukerFraDB.getFornavn());
-            afters.put("Etternavn", brukerFraDB.getEtternavn());
-            afters.put("Fodselsdato", brukerFraDB.getFodselsDato());
-            afters.put("Epost", brukerFraDB.getEpost());
-            afters.put("Mobilnummer", brukerFraDB.getTelefon());
-            
-            //Henter skjema for å endre bruker.
-            RequestDispatcher dispatcher = request.getRequestDispatcher("register.jsp");
-            // Fyller inn formen med lagrede data fra brukeren.
-            request.setAttribute("afters", afters);
-            dispatcher.forward(request, response);
+            out.println("<p><input type=\"hidden\" name=\"ID\" placeholder=\"ID\" hidden=\"hidden\" value=\"bruker.getId()\" readonly></p>");
+            out.println("<p><input type=\"text\" name=\"Fornavn\" placeholder=\"Fornavn\" value=\"" + bruker.getFornavn() + "\" required></p>");
+            out.println("<p><input type=\"text\" name=\"Etternavn\" placeholder=\"Etternavn\" value=\"" + bruker.getEtternavn() + "\" required></p>");
+            out.println("<p><input type=\"text\" name=\"Fodselsdato\" placeholder=\"Fødselsdato\" value=\"" + bruker.getFodselsDato() + "\" required></p>");
+            out.println("<p><input type=\"text\" name=\"Mobilnummer\" placeholder=\"Mobilnummer\" min=\"8\" max=\"14\" value=\"" + bruker.getTelefon() + "\"></p>");
+            out.println("<p><input type=\"email\" name=\"Epost\" placeholder=\"Epost-adresse\" min=\"6\" max=\"100\" value=\"" + bruker.getEpost() + "\"></p>");
+            out.println("<p><input type=\"password\" name=\"Passord\"  placeholder=\"Passord\" value=\"" + bruker.getPassord() + "\"required></p>");
+            out.println("<p><input type=\"password\" name=\"Re-Passord\"  placeholder=\"Bekreft passord\" value=\"" + bruker.getPassord() + "\"required></p>");
+       
+            out.println("<p><input type=\"submit\" value=\"Oppdater bruker\"></p>");
+            out.println("</form>");
+            out.println("</div>");
+            out.println("</body>");
+            out.println("</html>");
             
         }
     }
     
             
         protected void update(HttpServletRequest request, HttpServletResponse response)
-        throws SQLException, IOException {
+        throws SQLException, IOException, ServletException {
         response.setContentType("text/html;charset=UTF-8");
+  
         try (PrintWriter out = response.getWriter()) {
-            String idStr = request.getParameter("Id");
-            int id = Integer.parseInt(idStr);
+out.println("getWriter = ok");      
             
-            String forNavn = request.getParameter("Navn");
+            String rolle = "Bruker";
             
+            String forNavn = request.getParameter("Fornavn");
             String etterNavn = request.getParameter("Etternavn");
+        
+out.println(forNavn);
+out.println(etterNavn);
+           
+            String fodselsDato = request.getParameter("Fodselsdato");
             
-            String fodselsDato = request.getParameter("fodselsDato");
+out.println(fodselsDato);
             
+           
             String epost = request.getParameter("Epost");
             
-            String telefon = request.getParameter("Telefon");
-         
+out.println(epost);
+            
+            // Innhenting og kryptering av passord:
+            passordHasher = new PassordHasher();
+            
+            String verifPassord = "";
+            String passord = passordHasher.krypterPassord(request.getParameter("Passord"));
+            String passordBekreft = passordHasher.krypterPassord(request.getParameter("Re-Passord"));
+            if(passordBekreft.equals(passord)){
+                verifPassord = passord;
+                
+            }
+out.println(verifPassord);
+            
+            String telefon = request.getParameter("Mobilnummer");
+
+out.println(telefon);          
+            // Legger inn alle parametere i liste (after) for gjenbruk i tilfelle error.
+            after = new HashMap();
+           
+            after.put("Navn",forNavn);
+            after.put("Etternavn",etterNavn);
+            after.put("Fodselsdato", fodselsDato);
+            after.put("Epost",epost);
+            after.put("Mobilnummer",telefon);
+            
+out.println(after);
+            // Verifisering av parametere og opprettelse av error.
+            inputBehandler = new InputErrorBehandler();
+            errors = new HashMap(); 
+            
+            if(inputBehandler.sjekkBrukerEksist(epost))
+                errors.put("Epost", "Det finnes allerede en bruker med denne epostadressen! Vennligst gå til innlogging.");            
+            
+            if(!inputBehandler.validEpostFormat(epost))
+                errors.put("Epost", "Dette er ikke en epostadresse.");
+            
+            if(!inputBehandler.validFodselsDato(fodselsDato))
+                errors.put("Fodselsdato", "Vennligst bruk dette formatet: åååå/mm/dd");
+            
+            if(!inputBehandler.validNavn(forNavn))
+                errors.put("Navn", "Vennligst legg til fornavn.");
+            
+            if(!inputBehandler.validNavn(etterNavn))
+                errors.put("Etternavn", "Vennligst legg til etternavn.");
+            if(verifPassord.equals(""))
+                errors.put("Passord", "Passordene er ikke like!");
+                
+out.println(errors);
+            //Opprettelse av ny bruker, dersom det ikke er errors.
+            
+            if(errors.isEmpty()){   
+                Bruker bruker;
+                bruker = new Bruker(rolle, forNavn, etterNavn, fodselsDato, epost, verifPassord, telefon);
+out.println(bruker); 
+                brukerDAO = new BrukerDAO();
+                
+                int id = brukerDAO.update(bruker);
   
-            Bruker bruker;
-            bruker = new Bruker( id,forNavn, etterNavn, fodselsDato,epost,telefon);
-            brukerDAO = new BrukerDAO();
-            brukerDAO.update(bruker);
-
-            String reDir = "../bruker?id=" + bruker.getId();
-            response.sendRedirect(reDir);
-
-        }
-    }    
+out.println("ID: " + id);
+            
+                if (id != 0) {
+    
+                    String reDirBruker = "../bruker?id=" + id;
+                    response.sendRedirect(reDirBruker);
+                }
+            }
+                    else{
+                
+                        // Legger inn errors og after-verdier i felt  
+                        // i opprinnelig jsp form og presenterer for bruker.
+                        request.setAttribute("after", after); 
+                        request.setAttribute("errors", errors);
+                        request.getRequestDispatcher("register.jsp").forward(request, response);
+                       
+         
+                    }
+                }
+       
+        }  
  
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -125,7 +207,7 @@ public class UpdateBruker extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            visUpdateForm(request, response);
+            updateForm(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(UpdateBruker.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -145,6 +227,7 @@ public class UpdateBruker extends HttpServlet {
             throws ServletException, IOException {
         try {
             update(request, response);
+            
         } catch (SQLException ex) {
             Logger.getLogger(UpdateBruker.class.getName()).log(Level.SEVERE, null, ex);
         }

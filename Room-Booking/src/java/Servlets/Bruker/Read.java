@@ -97,7 +97,7 @@ public class Read extends HttpServlet {
             out.println("Telefon: " + bruker.getTelefon());
             out.println("</div>");
             
-            out.println("<form action=\"bruker/register.jsp\" method=\"post\">");
+            out.println("<form action=\"bruker/oppdater\" method=\"post\">");
             out.println("<p><input type=\"hidden\" name=\"id\" placeholder=\"ID\" value=\"" + bruker.getId() + "\" readonly></p>");
           //out.println("<p><input type=\"submit\" value=\"Slett\"></p>");
             out.println("<p><input type=\"submit\" value=\"Endre\"></p>");

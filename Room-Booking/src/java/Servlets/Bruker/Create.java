@@ -41,27 +41,14 @@ import javax.servlet.RequestDispatcher;
        // Maps med alle errormeldinger og alle input-verdier som skal 
        //gjenbrukes hvis feil oppstår
         Map<String, String> errors; 
-        Map<String, String> afters; 
+        Map<String, String> after; 
        
        protected void insert(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
         
         try (PrintWriter out = response.getWriter()) {
-out.println("getWriter = ok");
-
-// Sjekker om requesten kommer fra en eksisterende bruker(read).
-// Brukes for å vurdere om man skal bruke Insert eller Update i BrukerDAO.
-            int reqId = 0;
-            
-            if (request.getParameterMap().containsKey("id")) {
-            String idStr = request.getParameter("id");
-            reqId = Integer.parseInt(idStr);
-
-out.println(reqId);
-            }    
-            //Innhenting av alle parametere
-            String action = request.getParameter("action");
+out.println("getWriter = ok");      
             
             String rolle = "Bruker";
             
@@ -96,15 +83,15 @@ out.println(verifPassord);
 
 out.println(telefon);          
             // Legger inn alle parametere i liste (after) for gjenbruk i tilfelle error.
-            afters = new HashMap();
+            after = new HashMap();
            
-            afters.put("Navn",forNavn);
-            afters.put("Etternavn",etterNavn);
-            afters.put("Fodselsdato", fodselsDato);
-            afters.put("Epost",epost);
-            afters.put("Mobilnummer",telefon);
+            after.put("Navn",forNavn);
+            after.put("Etternavn",etterNavn);
+            after.put("Fodselsdato", fodselsDato);
+            after.put("Epost",epost);
+            after.put("Mobilnummer",telefon);
             
-out.println(afters);
+out.println(after);
             // Verifisering av parametere og opprettelse av error.
             inputBehandler = new InputErrorBehandler();
             errors = new HashMap(); 
@@ -134,14 +121,9 @@ out.println(errors);
                 bruker = new Bruker(rolle, forNavn, etterNavn, fodselsDato, epost, verifPassord, telefon);
 out.println(bruker); 
                 brukerDAO = new BrukerDAO();
-                int id = 0;
                 
-                if(reqId == 0){
-                    id = brukerDAO.insert(bruker);
-                    
-                } else {
-                        id = brukerDAO.update(bruker);
-                            }
+                int id = brukerDAO.insert(bruker);
+  
 out.println("ID: " + id);
             
                 if (id != 0) {
@@ -154,7 +136,7 @@ out.println("ID: " + id);
                 
                         // Legger inn errors og after-verdier i felt  
                         // i opprinnelig jsp form og presenterer for bruker.
-                        request.setAttribute("after", afters); 
+                        request.setAttribute("after", after); 
                         request.setAttribute("errors", errors);
                         request.getRequestDispatcher("register.jsp").forward(request, response);
                        
@@ -178,8 +160,7 @@ out.println("ID: " + id);
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         RequestDispatcher dispacher = request.getRequestDispatcher("register.jsp");
-
-                dispacher.forward(request, response);
+            dispacher.forward(request, response);
     }
 
     /**
