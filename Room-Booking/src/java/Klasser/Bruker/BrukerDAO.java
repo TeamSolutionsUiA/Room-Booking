@@ -127,23 +127,26 @@ public class BrukerDAO {
     
     public int update(Bruker bruker) {
         DbTool dbTool = new DbTool();
-        conn=dbTool.loggInn();
+        conn = dbTool.loggInn();
         try {
-            String sql = "update bruker set Fornavn=?, Etternavn=?, DOB=?, Epost=?, Passord=?, Telefon=?";
+            String sql = "UPDATE Bruker SET Fornavn=?, Etternavn=?, DOB=?, Epost=?, Passord=?, Telefon=? WHERE ID=?";
             PreparedStatement statement = conn.prepareStatement(sql);
+            
             statement.setString(1, bruker.getFornavn());
             statement.setString(2, bruker.getEtternavn());
             statement.setString(3, bruker.getFodselsDato());
             statement.setString(4, bruker.getEpost());
             statement.setString(5, bruker.getPassord());
             statement.setString(6, bruker.getTelefon());
+            statement.setInt(7, bruker.getId());
             
-            int rowsInserted = statement.executeUpdate();
-            ResultSet rs = statement.getGeneratedKeys();
-      
-            if (rs.next()) {
-                int id = rs.getInt(bruker.getId());
-           return id;
+             int rowsInserted = statement.executeUpdate();
+            
+                if (rowsInserted != 0) {
+                    int id = bruker.getId();
+            
+                return id;
+            
             } else {
                 throw new SQLException("Ingen ID returnert");
             }

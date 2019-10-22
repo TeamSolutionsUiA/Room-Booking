@@ -31,7 +31,17 @@ public class Bruker {
     this.telefon = telefon;
 }
     
-    public Bruker(int id,String fornavn, String etternavn, String fodselsDato, String epost,String telefon){
+    public Bruker(int id,String fornavn, String etternavn, String fodselsDato, String epost, String passord, String telefon){
+    
+    this.id = id;
+    this.fornavn = fornavn;
+    this.etternavn = etternavn;
+    this.fodselsDato = fodselsDato;
+    this.epost = epost;
+    this.passord = passord;
+    this.telefon = telefon;
+}
+    public Bruker(int id,String fornavn, String etternavn, String fodselsDato, String epost, String telefon){
     
     this.id = id;
     this.fornavn = fornavn;

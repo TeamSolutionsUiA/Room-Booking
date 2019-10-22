@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author mohamedjabokji
  */
-@WebServlet(name = "Bruker_Update", urlPatterns = {"/bruker/oppdater"})
+@WebServlet(name = "Bruker_Update", urlPatterns = {"/bruker/oppdaterBruker"})
 @MultipartConfig(fileSizeThreshold = 6291456, // 6 MB
         maxFileSize = 10485760L, // 10 MB
         maxRequestSize = 20971520L // 20 MB
@@ -51,53 +51,18 @@ public class UpdateBruker extends HttpServlet {
      * @throws IOException if an I/O error occurs
      * @throws SQLException
      */
-    protected void updateForm(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-         try (PrintWriter out = response.getWriter()) {
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Update</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<div class=\"Update\">");
-            out.println("<h1>Oppdater bruker</h1>");
-            out.println("<form action=\"oppdater\" method=\"post\" enctype=\"multipart/form-data\">");
-            String IDStr = request.getParameter("id");
-            int ID = Integer.parseInt(IDStr);
-            
- out.println(ID);           
-            //Innhenting av brukerdata fra databasen:
-            brukerDAO = new BrukerDAO();
-            Bruker bruker = brukerDAO.read(ID);
-            
-            out.println("<p><input type=\"hidden\" name=\"ID\" placeholder=\"ID\" hidden=\"hidden\" value=\"bruker.getId()\" readonly></p>");
-            out.println("<p><input type=\"text\" name=\"Fornavn\" placeholder=\"Fornavn\" value=\"" + bruker.getFornavn() + "\" required></p>");
-            out.println("<p><input type=\"text\" name=\"Etternavn\" placeholder=\"Etternavn\" value=\"" + bruker.getEtternavn() + "\" required></p>");
-            out.println("<p><input type=\"text\" name=\"Fodselsdato\" placeholder=\"Fødselsdato\" value=\"" + bruker.getFodselsDato() + "\" required></p>");
-            out.println("<p><input type=\"text\" name=\"Mobilnummer\" placeholder=\"Mobilnummer\" min=\"8\" max=\"14\" value=\"" + bruker.getTelefon() + "\"></p>");
-            out.println("<p><input type=\"email\" name=\"Epost\" placeholder=\"Epost-adresse\" min=\"6\" max=\"100\" value=\"" + bruker.getEpost() + "\"></p>");
-            out.println("<p><input type=\"password\" name=\"Passord\"  placeholder=\"Passord\" value=\"" + bruker.getPassord() + "\"required></p>");
-            out.println("<p><input type=\"password\" name=\"Re-Passord\"  placeholder=\"Bekreft passord\" value=\"" + bruker.getPassord() + "\"required></p>");
-       
-            out.println("<p><input type=\"submit\" value=\"Oppdater bruker\"></p>");
-            out.println("</form>");
-            out.println("</div>");
-            out.println("</body>");
-            out.println("</html>");
-            
-        }
-    }
     
-            
+     
         protected void update(HttpServletRequest request, HttpServletResponse response)
         throws SQLException, IOException, ServletException {
         response.setContentType("text/html;charset=UTF-8");
   
         try (PrintWriter out = response.getWriter()) {
-out.println("getWriter = ok");      
-            
+out.println("getWriter = ok"); 
+
+            String idStr = request.getParameter("ID");
+            int id = Integer.parseInt(idStr);       
+out.println(id);            
             String rolle = "Bruker";
             
             String forNavn = request.getParameter("Fornavn");
@@ -143,10 +108,7 @@ out.println(after);
             // Verifisering av parametere og opprettelse av error.
             inputBehandler = new InputErrorBehandler();
             errors = new HashMap(); 
-            
-            if(inputBehandler.sjekkBrukerEksist(epost))
-                errors.put("Epost", "Det finnes allerede en bruker med denne epostadressen! Vennligst gå til innlogging.");            
-            
+                       
             if(!inputBehandler.validEpostFormat(epost))
                 errors.put("Epost", "Dette er ikke en epostadresse.");
             
@@ -158,6 +120,7 @@ out.println(after);
             
             if(!inputBehandler.validNavn(etterNavn))
                 errors.put("Etternavn", "Vennligst legg til etternavn.");
+            
             if(verifPassord.equals(""))
                 errors.put("Passord", "Passordene er ikke like!");
                 
@@ -166,17 +129,17 @@ out.println(errors);
             
             if(errors.isEmpty()){   
                 Bruker bruker;
-                bruker = new Bruker(rolle, forNavn, etterNavn, fodselsDato, epost, verifPassord, telefon);
+                bruker = new Bruker(id,forNavn, etterNavn, fodselsDato, epost, verifPassord, telefon);
 out.println(bruker); 
                 brukerDAO = new BrukerDAO();
                 
-                int id = brukerDAO.update(bruker);
+                int updateID = brukerDAO.update(bruker);
   
-out.println("ID: " + id);
+out.println("ID: " + updateID);
             
-                if (id != 0) {
-    
-                    String reDirBruker = "../bruker?id=" + id;
+                if (updateID != 0) {
+out.println("Vellykket");
+                    String reDirBruker = "../bruker?id=" + bruker.getId();
                     response.sendRedirect(reDirBruker);
                 }
             }
@@ -184,10 +147,10 @@ out.println("ID: " + id);
                 
                         // Legger inn errors og after-verdier i felt  
                         // i opprinnelig jsp form og presenterer for bruker.
-                        request.setAttribute("after", after); 
-                        request.setAttribute("errors", errors);
-                        request.getRequestDispatcher("register.jsp").forward(request, response);
-                       
+                        //request.setAttribute("after", after); 
+                        //request.setAttribute("errors", errors);
+                        //request.getRequestDispatcher("register.jsp").forward(request, response);
+    out.println("Noe gikk galt");
          
                     }
                 }
@@ -207,7 +170,8 @@ out.println("ID: " + id);
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            updateForm(request, response);
+            update(request, response);
+ 
         } catch (SQLException ex) {
             Logger.getLogger(UpdateBruker.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -226,8 +190,9 @@ out.println("ID: " + id);
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            update(request, response);
             
+            update(request, response);
+
         } catch (SQLException ex) {
             Logger.getLogger(UpdateBruker.class.getName()).log(Level.SEVERE, null, ex);
         }
