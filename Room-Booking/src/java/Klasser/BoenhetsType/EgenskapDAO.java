@@ -125,7 +125,7 @@ public class EgenskapDAO {
         }
     }
 
-    private void deleteegenskap(Connection conn, Egenskap egenskap) {
+    public void deleteegenskap(Connection conn, Egenskap egenskap) {
         try {
             String sql = "DELETE FROM Egenskap WHERE Egenskap = ?";
             PreparedStatement stm = conn.prepareStatement(sql);
@@ -139,7 +139,7 @@ public class EgenskapDAO {
         }
     }
 
-    private boolean iBruk(Connection conn, Egenskap Egenskap) {
+    public boolean iBruk(Connection conn, Egenskap Egenskap) {
         boolean iBruk = false;
 
         try {
