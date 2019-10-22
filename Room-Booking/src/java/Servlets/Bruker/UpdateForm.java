@@ -63,7 +63,7 @@ public class UpdateForm extends HttpServlet {
             brukerDAO = new BrukerDAO();
             Bruker bruker = brukerDAO.read(ID);
             
-            out.println("<p><input type=\"hidden\" name=\"ID\" placeholder=\"ID\" hidden=\"hidden\" value=\"" + bruker.getId() + "\" readonly></p>");
+            out.println("<p><input type=\"hidden\" name=\"ID\" value=\"" + bruker.getId() + "\" readonly></p>");
             out.println("<p><input type=\"text\" name=\"Fornavn\" placeholder=\"Fornavn\" value=\"" + bruker.getFornavn() + "\" required></p>");
             out.println("<p><input type=\"text\" name=\"Etternavn\" placeholder=\"Etternavn\" value=\"" + bruker.getEtternavn() + "\" required></p>");
             out.println("<p><input type=\"text\" name=\"Fodselsdato\" placeholder=\"Fødselsdato\" value=\"" + bruker.getFodselsDato() + "\" required></p>");

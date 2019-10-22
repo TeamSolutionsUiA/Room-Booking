@@ -18,7 +18,7 @@
             <div class="log">
                 <div class="loggin">
                     <a class='nav-link1' href="/Room-Booking/Logg_inn/login.html" data-toggle="tooltip" title="logg inn her"> logg inn</a>
-                    <a class='nav-link1' href="/Room-Booking/bruker/register.html" data-toggle="tooltip" title="register nytt konto"> registrer</a>
+                    <a class='nav-link1' href="/Room-Booking/bruker/register.jsp" data-toggle="tooltip" title="register nytt konto"> registrer</a>
                 </div>
             </div>
 
@@ -84,23 +84,25 @@
                 <div class="form-group">
                 <label class="control-label" for="input-Navn" id="fornavn">Fornavn*</label>
                 <input type="text" name="Navn" value="${after.Navn}" placeholder="Fornavn" id="input-fornavn" class="form-control" />
+                <span name="NavnError">${errors.Navn}</span>
                 </div>
                 <div class="form-group">
                 <label class="control-label" for="input-Etternavn" id="etternavn">Etternavn*</label>
                 <input type="text" name="Etternavn" value="${after.Etternavn}" placeholder="Etternavn" id="input-etternavn" class="form-control" />
-                
+                <span name="EtterNavnError">${errors.Etternavn}</span>
                 </div>
                    <div class="form-group">
                 <label class="control-label" for="input-Fodselsdato" id="fodsldato">Fødselsdato*</label>
                 <input type="text" name="Fodselsdato" value="${after.Fodselsdato}" id="input-foselsdato" class="form-control" placeholder="ÅÅÅÅ-MM-DD" required 
                     pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" 
                     title="Enter a date in this format YYYY-MM-DD"/>
+                <span name="DOBError">${errors.Fodselsdato}</span>
                 
                 </div>
                   <div class="form-group">
                 <label class="control-label" for="input-Mobilnummer" id="mobil">Mobilnummer*</label>
                 <input type="number" name="Mobilnummer" value="${after.Mobilnummer}" placeholder="Mobilnummer" id="input-Mobilnummer" class="form-control" />
-                
+                <span name="MobilError">${errors.Mobilnummer}</span>
                 </div>
                    <div class="form-group">
                 <label class="control-label" for="input-Epost" id="email">E-postadresse*</label>
@@ -115,7 +117,7 @@
                           pattern=".{6,}" title="Minimum 6 karakterer" class="form-control" />
                    <p><span id='message'></span></p>
                 <input type="checkbox" onclick="visPassord1()">Vis passord 
-                
+                <span name="passordError">${errors.Passord}</span>
                 
                 </div>
                 <div class="form-group">
@@ -132,8 +134,10 @@
             </form>         
               <div class="buttons">
                    <div class="pull-right">
-                  <button  id="button" type="submit"   class="btn " data-loading-text="<span>Opprett Konto</span>">
-                      <a style="color:white; text-decoration: none;">Opprett Konto</a></button>
+                  <button  id="button" type="submit" name="Submit"   class="btn " data-loading-text="<span>Opprett Konto</span>">
+                      <a style="color:white; text-decoration: none;">Registrer</a></button>
+                  <button  id="endre" type="submit" name="Lagre"   class="btn" data-loading-text="<span>Lagre</span>">
+                      <a style="color:white; text-decoration: none;">Lagre</a></button>
                 </div>
               </div>
              </div>

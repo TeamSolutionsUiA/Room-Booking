@@ -159,6 +159,33 @@ public class BrukerDAO {
         return 0;
        
     }
+    public boolean delete(int brukerID) {
+       
+        DbTool dbTool = new DbTool();
+        conn = dbTool.loggInn();
+
+        
+        try {
+            String query = "DELETE FROM Bruker WHERE ID = ? ";
+            PreparedStatement statement = conn.prepareStatement(query);
+            statement.setInt(1, brukerID);
+           
+            statement.executeUpdate();
+            
+            Bruker brukerSjekk = read(brukerID);
+            if(brukerSjekk == null) {
+                return true;
+            } else {
+                
+                throw new SQLException("Brukeren ble ikke slettet fra databasen");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }
        

@@ -98,14 +98,19 @@ public class Read extends HttpServlet {
             out.println("</div>");
             
             out.println("<form action=\"bruker/oppdater\" method=\"post\">");
-            out.println("<p><input type=\"hidden\" name=\"id\" placeholder=\"ID\" value=\"" + bruker.getId() + "\" readonly></p>");
-            out.println("<p><input type=\"submit\" value=\"Slett\"></p>");
-            out.println("<p><input type=\"submit\" value=\"Endre\"></p>");
+            out.println("<p><input type=\"hidden\" name=\"id\" placeholder=\"ID\" value=\"" + bruker.getId() + "\"></p>");
+            out.println("<p><input type=\"submit\" name=\"oppdater\" value=\"Oppdater\"></p>");
+            out.println("</form>");
+            
+            out.println("<form action=\"bruker/slett\" method=\"post\">");
+            out.println("<p><input type=\"hidden\" name=\"id\" placeholder=\"ID\" value=\"" + bruker.getId() + "\"></p>");
+            out.println("<p><input type=\"submit\" name=\"slett\" value=\"Slett\"></p>");
+            out.println("</form>");
+            
             out.println("</div>");
-
             out.println("</body>");
             out.println("</html>");
-            out.println("</html>");
+
         }
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
