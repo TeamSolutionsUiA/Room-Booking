@@ -177,7 +177,7 @@ public void delete(Connection conn, int id) {
         }
     }
 
-    private void deletebilde(Connection conn, Bilde bilde) {
+    public void deletebilde(Connection conn, Bilde bilde) {
         try {
             String sql = "DELETE FROM bilde WHERE Bilde_hash = ?";
             PreparedStatement stm = conn.prepareStatement(sql);
@@ -191,7 +191,7 @@ public void delete(Connection conn, int id) {
         }
     }
 
-    private boolean iBruk(Connection conn, Bilde bilde) {
+    public boolean iBruk(Connection conn, Bilde bilde) {
         boolean iBruk = false;
 
         try {
