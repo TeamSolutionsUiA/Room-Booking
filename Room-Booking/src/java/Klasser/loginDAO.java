@@ -29,7 +29,10 @@ public class loginDAO {
          Bruker bruker ;  
         if (rs.next()){
             bruker = new Bruker(); 
-            bruker.setFornavn(rs.getString("navn"));
+            bruker.setFornavn(rs.getString("fornavn"));
+            bruker.setEtternavn(rs.getString("etternavn"));
+           
+            
 
            return bruker;
            

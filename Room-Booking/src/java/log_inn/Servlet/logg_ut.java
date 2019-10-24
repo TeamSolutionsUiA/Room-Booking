@@ -5,14 +5,10 @@
  */
 package log_inn.Servlet;
 
-import Klasser.Bruker.Bruker;
-import Klasser.loginDAO;
-import Klasser.Bruker.PassordHasher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,17 +19,10 @@ import javax.servlet.http.HttpSession;
  *
  * @author altee
  */
-@WebServlet(name = "sjekk", urlPatterns = {"/Logg_inn/login"})
- @MultipartConfig(fileSizeThreshold = 6291456, // 6 MB
-        maxFileSize = 10485760L, // 10 MB
-        maxRequestSize = 20971520L // 20 MB
-        )
-public class sjekk extends HttpServlet {
-   
-    private PassordHasher passordHasher;
-   
-  
-       /**
+@WebServlet(name = "logg_ut", urlPatterns = {"/logg ut"})
+public class logg_ut extends HttpServlet {
+
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
@@ -42,8 +31,7 @@ public class sjekk extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
-    protected void checking(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -51,43 +39,18 @@ public class sjekk extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet kjekk_loginn</title>");            
+            out.println("<title>Servlet logg_ut</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet kjekk_loginn at " + request.getContextPath() + "</h1>");
-           
-          passordHasher = new PassordHasher();
-            
-          String epost=request.getParameter("epost");
-          String passord = passordHasher.krypterPassord(request.getParameter("passord"));
-          
-            loginDAO dao = new  loginDAO();
-           Bruker bruker = dao.check(epost, passord);
-            
-            String destPage = "login.jsp";
-        
-            if( dao.check(epost,passord)!= null ){
-                 HttpSession session = request.getSession();
-                session.setAttribute("fornavn", bruker.getFornavn());
-                session.setAttribute("Etternavn", bruker.getEtternavn());
-              
-               
-              
-                
-              
-                response.sendRedirect("welcom.jsp");
+            out.println("<h1>Servlet logg_ut at " + request.getContextPath() + "</h1>");
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+            session.removeAttribute("user");
+             
+            RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+            dispatcher.forward(request, response);
         }
-            else{
-                String message = "Invalid email/password";
-                request.setAttribute("message", message);
-                
-                /*response.sendRedirect("login.html");*/
-                RequestDispatcher dispatcher = request.getRequestDispatcher(destPage);
-                dispatcher.forward(request, response);
-                
-                
-            }
-             out.println("</body>");
+            out.println("</body>");
             out.println("</html>");
         }
     }
@@ -104,7 +67,7 @@ public class sjekk extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        checking(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -118,7 +81,7 @@ public class sjekk extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-          checking(request, response);
+        processRequest(request, response);
     }
 
     /**
