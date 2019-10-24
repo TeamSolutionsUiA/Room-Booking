@@ -179,7 +179,7 @@ public class KategoriDAO {
         }
         return iBruk;
     }
-     private void update (Connection conn, Kategori kategoriN, Kategori kategoriG, BoenhetsType boenhetsType) {
+     public void update (Connection conn, Kategori kategoriN, Kategori kategoriG, BoenhetsType boenhetsType) {
          
          
          if(kategoriN != kategoriG) {

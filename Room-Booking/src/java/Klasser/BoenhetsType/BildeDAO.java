@@ -211,4 +211,19 @@ public void delete(Connection conn, int id) {
         }
         return iBruk;
     }
+     public void update (Connection conn, List<Bilde> bildeN, List<Bilde> bildeG, BoenhetsType boenhetsType) {
+         
+    for (Bilde skjekkBildeG: bildeG) {
+        for (Bilde skjekkBildeN: bildeN) { 
+        if(skjekkBildeN != skjekkBildeG) {
+             deleteLink(conn, skjekkBildeG, boenhetsType.getID());
+             insertLink(conn, skjekkBildeN.getHash(), boenhetsType.getID());
+         
+            if(!iBruk(conn, skjekkBildeG)) {
+            deletebilde(conn, skjekkBildeG);
+            }
+         }
+       }
+    }
+}
 }

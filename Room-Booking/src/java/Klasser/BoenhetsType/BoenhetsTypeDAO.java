@@ -138,7 +138,7 @@ public class BoenhetsTypeDAO {
 
         List<Egenskap> skjekkegenskapG = egenskapDAO.readAll(conn, boenhetsType.getID());
         List<Bilde> skjekkBildeG = bildeDAO.readAll(conn, boenhetsType.getID());
-                
+        Kategori kategorig = kategoriDAO.read(conn, boenhetsType.getID());        
         try {
             String sql = "UPDATE boenhetstype SET Navn=?, Enkeltsenger=?, Dobeltsenger=?, Beskrivelse=?, Pris=? WHERE ID=?";
 
@@ -152,41 +152,14 @@ public class BoenhetsTypeDAO {
             
             int rowsInserted = statement.executeUpdate();
             ResultSet rs = statement.getGeneratedKeys();
-
+        Kategori kategorin = kategoriDAO.read(conn, boenhetsType.getID()); 
         List<Egenskap> skjekkegenskapN = egenskapDAO.readAll(conn, boenhetsType.getID());
         List<Bilde> skjekkBildeN = bildeDAO.readAll(conn, boenhetsType.getID());    
+        
+        kategoriDAO.update(conn, kategorig, kategorin, boenhetsType);
+        egenskapDAO.update(conn, skjekkegenskapN, skjekkegenskapG, boenhetsType);
+        bildeDAO.update(conn, skjekkBildeN, skjekkBildeG, boenhetsType);
             
-            for (Bilde bildeG: skjekkBildeG) {
-            boolean skjekk = false;    
-                for (Bilde bildeN : skjekkBildeN) {
-                    if(bildeG.getHash()==bildeN.getHash()) {
-                        skjekk =true;
-                    }
-                    
-                }
-                if(skjekk==false) {
-                    bildeDAO.deleteLink(conn, bildeG, boenhetsType.getID()); 
-                    if(!bildeDAO.iBruk(conn, bildeG)) {
-                     bildeDAO.deletebilde(conn, bildeG);
-                    }
-                }
-            }
-            
-            for (Egenskap egenskapG: skjekkegenskapG) {
-            boolean skjekk = false;    
-                for (Egenskap egenskapN: skjekkegenskapN) {
-                    if(egenskapG.getEgenskap()==egenskapN.getEgenskap()) {
-                        skjekk =true;
-                    }
-                    
-                }
-                if(skjekk==false) {
-                  egenskapDAO.deleteLink(conn, egenskapG, boenhetsType.getID());
-                    if(!egenskapDAO.iBruk(conn, egenskapG)) {
-                     egenskapDAO.deleteegenskap(conn, egenskapG);
-                    }
-                }
-            }
             /*  med egenskaper og bilder må vi nok finne en måte å fjerne de som 
                 ikke lenger er med og å legge til de som er nye, funker kanskje 
                 å lage en liste med det som er i databasen og sammenligne den

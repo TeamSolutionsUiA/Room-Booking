@@ -159,4 +159,18 @@ public class EgenskapDAO {
         }
         return iBruk;
     }
-}
+    public void update (Connection conn, List<Egenskap> egenskapN, List<Egenskap> egenskapG, BoenhetsType boenhetsType) {
+         
+    for (Egenskap skjekkegenskapG: egenskapG) {
+        for (Egenskap skjekkegenskapN: egenskapN) { 
+        if(skjekkegenskapN != skjekkegenskapG) {
+             deleteLink(conn, skjekkegenskapG, boenhetsType.getID());
+             insertLink(conn, skjekkegenskapN, boenhetsType.getID());
+         
+            if(!iBruk(conn, skjekkegenskapG)) {
+            deleteegenskap(conn, skjekkegenskapG);
+            }
+         }
+       }
+    }
+} }
