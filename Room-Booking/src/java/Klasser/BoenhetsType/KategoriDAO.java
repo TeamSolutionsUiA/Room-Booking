@@ -133,11 +133,11 @@ public class KategoriDAO {
 
     private void deleteLink(Connection conn, Kategori kategori, int id) {
         try {
-            String query = "DELETE FROM Kategorilink WHERE boenhetstype_ID = ? AND kategori = ?";
+            String query = "DELETE FROM Kategorilink WHERE boenhetstype_ID = ? AND Kategori = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, id);
             stm.setString(2, kategori.getKategori());
-            stm.executeQuery(query);
+            stm.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -147,10 +147,10 @@ public class KategoriDAO {
 
     private void deleteKategori(Connection conn, Kategori kategori) {
         try {
-            String sql = "DELETE FROM KATEGORI WHERE kategori = ?";
+            String sql = "DELETE FROM KATEGORI WHERE Kategori = ?";
             PreparedStatement stm = conn.prepareStatement(sql);
             stm.setString(1, kategori.getKategori());
-            stm.executeQuery(sql);
+            stm.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -163,7 +163,7 @@ public class KategoriDAO {
         boolean iBruk = false;
 
         try {
-            String query = "SELECT FROM Kategorilink WHERE kategori = ?";
+            String query = "SELECT Kategori FROM Kategorilink WHERE Kategori = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setString(1, kategori.getKategori());
             ResultSet rs = stm.executeQuery();

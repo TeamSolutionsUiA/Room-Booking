@@ -151,7 +151,8 @@ public class BildeDAO {
         }
         return null;
     }
-public void delete(Connection conn, int id) {
+
+    public void delete(Connection conn, int id) {
         List<Bilde> liste = readAll(conn, id);
 
         for (Bilde bilde : liste) {
@@ -169,7 +170,7 @@ public void delete(Connection conn, int id) {
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, id);
             stm.setString(2, (bilde.getHash()));
-            stm.executeQuery(query);
+            stm.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -182,7 +183,7 @@ public void delete(Connection conn, int id) {
             String sql = "DELETE FROM bilde WHERE Bilde_hash = ?";
             PreparedStatement stm = conn.prepareStatement(sql);
             stm.setString(1, bilde.getHash());
-            stm.executeQuery(sql);
+            stm.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -195,7 +196,7 @@ public void delete(Connection conn, int id) {
         boolean iBruk = false;
 
         try {
-            String query = "SELECT FROM bildelink WHERE Bilde_hash = ?";
+            String query = "SELECT Bilde_hash FROM bildelink WHERE Bilde_hash = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setString(1, bilde.getHash());
             ResultSet rs = stm.executeQuery();
@@ -211,19 +212,20 @@ public void delete(Connection conn, int id) {
         }
         return iBruk;
     }
-     public void update (Connection conn, List<Bilde> bildeN, List<Bilde> bildeG, BoenhetsType boenhetsType) {
-         
-    for (Bilde skjekkBildeG: bildeG) {
-        for (Bilde skjekkBildeN: bildeN) { 
-        if(skjekkBildeN != skjekkBildeG) {
-             deleteLink(conn, skjekkBildeG, boenhetsType.getID());
-             insertLink(conn, skjekkBildeN.getHash(), boenhetsType.getID());
-         
-            if(!iBruk(conn, skjekkBildeG)) {
-            deletebilde(conn, skjekkBildeG);
+
+    public void update(Connection conn, List<Bilde> bildeN, List<Bilde> bildeG, BoenhetsType boenhetsType) {
+
+        for (Bilde skjekkBildeG : bildeG) {
+            for (Bilde skjekkBildeN : bildeN) {
+                if (skjekkBildeN != skjekkBildeG) {
+                    deleteLink(conn, skjekkBildeG, boenhetsType.getID());
+                    insertLink(conn, skjekkBildeN.getHash(), boenhetsType.getID());
+
+                    if (!iBruk(conn, skjekkBildeG)) {
+                        deletebilde(conn, skjekkBildeG);
+                    }
+                }
             }
-         }
-       }
+        }
     }
-}
 }

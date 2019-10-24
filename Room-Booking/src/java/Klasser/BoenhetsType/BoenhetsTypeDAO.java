@@ -113,9 +113,9 @@ public class BoenhetsTypeDAO {
             egenskapDAO = new EgenskapDAO();
             bildeDAO = new BildeDAO();
             kategoriDAO = new KategoriDAO();
-            
+
             rs.next();
-            
+
             boenhetsType = new BoenhetsType(id, rs.getString("Navn"), kategoriDAO.read(conn, id),
                     rs.getInt("Enkeltsenger"), rs.getInt("Dobeltsenger"),
                     rs.getString("Beskrivelse"), rs.getInt("Pris"),
@@ -136,9 +136,13 @@ public class BoenhetsTypeDAO {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
 
+        egenskapDAO = new EgenskapDAO();
+        bildeDAO = new BildeDAO();
+        kategoriDAO = new KategoriDAO();
+
         List<Egenskap> skjekkegenskapG = egenskapDAO.readAll(conn, boenhetsType.getID());
         List<Bilde> skjekkBildeG = bildeDAO.readAll(conn, boenhetsType.getID());
-        Kategori kategorig = kategoriDAO.read(conn, boenhetsType.getID());        
+        Kategori kategorig = kategoriDAO.read(conn, boenhetsType.getID());
         try {
             String sql = "UPDATE boenhetstype SET Navn=?, Enkeltsenger=?, Dobeltsenger=?, Beskrivelse=?, Pris=? WHERE ID=?";
 
@@ -149,17 +153,17 @@ public class BoenhetsTypeDAO {
             statement.setString(4, boenhetsType.getBeskrivelse());
             statement.setInt(5, boenhetsType.getPris());
             statement.setInt(6, boenhetsType.getID());
+
+            statement.executeUpdate();
             
-            int rowsInserted = statement.executeUpdate();
-            ResultSet rs = statement.getGeneratedKeys();
-        Kategori kategorin = kategoriDAO.read(conn, boenhetsType.getID()); 
-        List<Egenskap> skjekkegenskapN = egenskapDAO.readAll(conn, boenhetsType.getID());
-        List<Bilde> skjekkBildeN = bildeDAO.readAll(conn, boenhetsType.getID());    
-        
-        kategoriDAO.update(conn, kategorig, kategorin, boenhetsType);
-        egenskapDAO.update(conn, skjekkegenskapN, skjekkegenskapG, boenhetsType);
-        bildeDAO.update(conn, skjekkBildeN, skjekkBildeG, boenhetsType);
-            
+            Kategori kategorin = kategoriDAO.read(conn, boenhetsType.getID());
+            List<Egenskap> skjekkegenskapN = egenskapDAO.readAll(conn, boenhetsType.getID());
+            List<Bilde> skjekkBildeN = bildeDAO.readAll(conn, boenhetsType.getID());
+
+            kategoriDAO.update(conn, kategorig, kategorin, boenhetsType);
+            egenskapDAO.update(conn, skjekkegenskapN, skjekkegenskapG, boenhetsType);
+            bildeDAO.update(conn, skjekkBildeN, skjekkBildeG, boenhetsType);
+
             /*  med egenskaper og bilder må vi nok finne en måte å fjerne de som 
                 ikke lenger er med og å legge til de som er nye, funker kanskje 
                 å lage en liste med det som er i databasen og sammenligne den

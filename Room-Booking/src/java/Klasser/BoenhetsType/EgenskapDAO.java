@@ -86,7 +86,7 @@ public class EgenskapDAO {
             stm.setInt(1, boenhetsTypeID);
 
             ResultSet rs = stm.executeQuery();
-            
+
             while (rs.next()) {
                 egenskaper.add(new Egenskap(rs.getString("Egenskap")));
             }
@@ -117,7 +117,7 @@ public class EgenskapDAO {
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, id);
             stm.setString(2, egenskap.getEgenskap());
-            stm.executeQuery(query);
+            stm.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -130,7 +130,7 @@ public class EgenskapDAO {
             String sql = "DELETE FROM Egenskap WHERE Egenskap = ?";
             PreparedStatement stm = conn.prepareStatement(sql);
             stm.setString(1, egenskap.getEgenskap());
-            stm.executeQuery(sql);
+            stm.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -143,7 +143,7 @@ public class EgenskapDAO {
         boolean iBruk = false;
 
         try {
-            String query = "SELECT FROM Egenskaplink WHERE Egenskap = ?";
+            String query = "SELECT Egenskap FROM Egenskaplink WHERE Egenskap = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setString(1, Egenskap.getEgenskap());
             ResultSet rs = stm.executeQuery();
@@ -159,18 +159,35 @@ public class EgenskapDAO {
         }
         return iBruk;
     }
-    public void update (Connection conn, List<Egenskap> egenskapN, List<Egenskap> egenskapG, BoenhetsType boenhetsType) {
-         
-    for (Egenskap skjekkegenskapG: egenskapG) {
-        for (Egenskap skjekkegenskapN: egenskapN) { 
-        if(skjekkegenskapN != skjekkegenskapG) {
-             deleteLink(conn, skjekkegenskapG, boenhetsType.getID());
-             insertLink(conn, skjekkegenskapN, boenhetsType.getID());
-         
-            if(!iBruk(conn, skjekkegenskapG)) {
-            deleteegenskap(conn, skjekkegenskapG);
+
+    public void update(Connection conn, List<Egenskap> egenskapN, List<Egenskap> egenskapG, BoenhetsType boenhetsType) {
+
+        boolean fjernet = true;
+        for (Egenskap skjekkegenskapG : egenskapG) {
+            for (Egenskap skjekkegenskapN : egenskapN) {
+                if (skjekkegenskapN == skjekkegenskapG) {
+                    fjernet = false;
+                }
             }
-         }
-       }
+            if (fjernet) {
+                deleteLink(conn, skjekkegenskapG, boenhetsType.getID());
+
+                if (!iBruk(conn, skjekkegenskapG)) {
+                    deleteegenskap(conn, skjekkegenskapG);
+                }
+            }
+        }
+
+        boolean lagtTil = true;
+        for (Egenskap skjekkegenskapN : egenskapN) {
+            for (Egenskap skjekkegenskapG : egenskapG) {
+                if (skjekkegenskapN == skjekkegenskapG) {
+                    lagtTil = false;
+                }
+            }
+            if (lagtTil) {
+                insertLink(conn, skjekkegenskapN, boenhetsType.getID());
+            }
+        }
     }
-} }
+}
