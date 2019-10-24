@@ -166,11 +166,13 @@ public class BoenhetsTypeDAO {
                     
                 }
                 if(skjekk==false) {
+                    bildeDAO.deleteLink(conn, bildeG, boenhetsType.getID()); 
                     if(!bildeDAO.iBruk(conn, bildeG)) {
                      bildeDAO.deletebilde(conn, bildeG);
                     }
                 }
             }
+            
             for (Egenskap egenskapG: skjekkegenskapG) {
             boolean skjekk = false;    
                 for (Egenskap egenskapN: skjekkegenskapN) {
@@ -180,6 +182,7 @@ public class BoenhetsTypeDAO {
                     
                 }
                 if(skjekk==false) {
+                  egenskapDAO.deleteLink(conn, egenskapG, boenhetsType.getID());
                     if(!egenskapDAO.iBruk(conn, egenskapG)) {
                      egenskapDAO.deleteegenskap(conn, egenskapG);
                     }

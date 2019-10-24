@@ -111,7 +111,7 @@ public class EgenskapDAO {
 
     }
 
-    private void deleteLink(Connection conn, Egenskap egenskap, int id) {
+    public void deleteLink(Connection conn, Egenskap egenskap, int id) {
         try {
             String query = "DELETE FROM Egenskaplink WHERE boenhetstype_ID = ? AND Egenskap = ?";
             PreparedStatement stm = conn.prepareStatement(query);

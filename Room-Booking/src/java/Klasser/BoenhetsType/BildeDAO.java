@@ -163,7 +163,7 @@ public void delete(Connection conn, int id) {
 
     }
 
-    private void deleteLink(Connection conn, Bilde bilde, int id) {
+    public void deleteLink(Connection conn, Bilde bilde, int id) {
         try {
             String query = "DELETE FROM bilde WHERE boenhetstype_ID = ? AND Bilde_hash = ?";
             PreparedStatement stm = conn.prepareStatement(query);
