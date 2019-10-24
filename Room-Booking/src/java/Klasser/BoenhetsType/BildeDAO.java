@@ -215,17 +215,33 @@ public class BildeDAO {
 
     public void update(Connection conn, List<Bilde> bildeN, List<Bilde> bildeG, BoenhetsType boenhetsType) {
 
+         boolean fjernet = true;
         for (Bilde skjekkBildeG : bildeG) {
             for (Bilde skjekkBildeN : bildeN) {
-                if (skjekkBildeN != skjekkBildeG) {
-                    deleteLink(conn, skjekkBildeG, boenhetsType.getID());
-                    insertLink(conn, skjekkBildeN.getHash(), boenhetsType.getID());
+                if (skjekkBildeN == skjekkBildeG) {
+                    fjernet = false;
+                }
+            }
+            if (fjernet) {
+                deleteLink(conn, skjekkBildeG, boenhetsType.getID());
 
-                    if (!iBruk(conn, skjekkBildeG)) {
-                        deletebilde(conn, skjekkBildeG);
-                    }
+                if (!iBruk(conn, skjekkBildeG)) {
+                    deletebilde(conn, skjekkBildeG);
                 }
             }
         }
+
+        boolean lagtTil = true;
+        for (Bilde skjekkBildeN : bildeN) {
+            for (Bilde skjekkeBildeG : bildeG) {
+                if (skjekkBildeN == skjekkeBildeG) {
+                    lagtTil = false;
+                }
+            }
+            if (lagtTil) {
+                insertLink(conn, skjekkBildeN.getHash(), boenhetsType.getID());
+            }
+        }
     }
-}
+    }
+
