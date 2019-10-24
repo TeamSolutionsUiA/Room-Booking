@@ -133,7 +133,7 @@ public class KategoriDAO {
 
     private void deleteLink(Connection conn, Kategori kategori, int id) {
         try {
-            String query = "DELETE FROM Kategorilink WHERE boenhetstype_ID = ? AND Katagori = ?";
+            String query = "DELETE FROM Kategorilink WHERE boenhetstype_ID = ? AND kategori = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, id);
             stm.setString(2, kategori.getKategori());
@@ -147,7 +147,7 @@ public class KategoriDAO {
 
     private void deleteKategori(Connection conn, Kategori kategori) {
         try {
-            String sql = "DELETE FROM KATEGORI WHERE Katagori = ?";
+            String sql = "DELETE FROM KATEGORI WHERE kategori = ?";
             PreparedStatement stm = conn.prepareStatement(sql);
             stm.setString(1, kategori.getKategori());
             stm.executeQuery(sql);
@@ -163,7 +163,7 @@ public class KategoriDAO {
         boolean iBruk = false;
 
         try {
-            String query = "SELECT FROM Kategorilink WHERE Katagori = ?";
+            String query = "SELECT FROM Kategorilink WHERE kategori = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setString(1, kategori.getKategori());
             ResultSet rs = stm.executeQuery();
@@ -178,5 +178,17 @@ public class KategoriDAO {
             e.printStackTrace();
         }
         return iBruk;
+    }
+     private void update (Connection conn, Kategori kategoriN, Kategori kategoriG, BoenhetsType boenhetsType) {
+         
+         
+         if(kategoriN != kategoriG) {
+             deleteLink(conn, kategoriG, boenhetsType.getID());
+             insertLink(conn, kategoriN, boenhetsType.getID());
+         
+            if(!iBruk(conn, kategoriG)) {
+            deleteKategori(conn, kategoriG);
+            }
+        }
     }
 }

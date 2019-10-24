@@ -140,17 +140,16 @@ public class BoenhetsTypeDAO {
         List<Bilde> skjekkBildeG = bildeDAO.readAll(conn, boenhetsType.getID());
                 
         try {
-            String sql = "UPDATE boenhetstype SET Navn=?, Kategori=?, Enkeltsenger=?, Dobeltsenger=?, Beskrivelse=?, Pris=? WHERE ID=?";
+            String sql = "UPDATE boenhetstype SET Navn=?, Enkeltsenger=?, Dobeltsenger=?, Beskrivelse=?, Pris=? WHERE ID=?";
 
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, boenhetsType.getNavn());
-            statement.setString(2, boenhetsType.getKategori().getKategori());
-            statement.setInt(3, boenhetsType.getEnkeltsenger());
-            statement.setInt(4, boenhetsType.getDobeltsenger());
-            statement.setString(5, boenhetsType.getBeskrivelse());
-            statement.setInt(6, boenhetsType.getPris());
-            statement.setInt(7, boenhetsType.getID());
-
+            statement.setInt(2, boenhetsType.getEnkeltsenger());
+            statement.setInt(3, boenhetsType.getDobeltsenger());
+            statement.setString(4, boenhetsType.getBeskrivelse());
+            statement.setInt(5, boenhetsType.getPris());
+            statement.setInt(6, boenhetsType.getID());
+            
             int rowsInserted = statement.executeUpdate();
             ResultSet rs = statement.getGeneratedKeys();
 
