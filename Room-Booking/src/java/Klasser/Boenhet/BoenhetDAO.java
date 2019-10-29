@@ -40,13 +40,15 @@ public class BoenhetDAO {
             e.printStackTrace();
         }
     }
-    public List<Boenhet> readAll() {
+    public List<Boenhet> readAll(int boenhetsTypeid) {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
 
         try {
-            Statement stm = conn.createStatement();
-            String query = "SELECT * From Boenhet";
+            
+            String query = "SELECT * From Boenhet where BoenhetsType_ID = ?";
+            PreparedStatement stm = conn.prepareStatement(query);
+            stm.setInt(1, boenhetsTypeid);
             ResultSet rs = stm.executeQuery(query);
             List<Boenhet> boenheter = new ArrayList<Boenhet>();
             
