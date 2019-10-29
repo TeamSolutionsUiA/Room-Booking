@@ -19,43 +19,42 @@ import java.util.List;
  * @author lasse
  */
 public class BoenhetDAO {
+
     private Connection conn;
-    private BoenhetDAO boenhetDAO;
     private Boenhet boenhet;
-    
-    public void insert (Boenhet boenhet) {
-       DbTool dbTool = new DbTool();
-       conn = dbTool.loggInn(); 
-       try {
-           String sql = "Insert into Boenhet (boenhetsnummer, BoenhetsType_ID)" + "VALUES (?,?)";
-           PreparedStatement statement = conn.prepareStatement(sql);
-           statement.setString(1, boenhet.getBoenhetsnummer());
-           statement.setInt(2, boenhet.getBoenhetstypeID());
-           statement.executeUpdate();
-           
-       }
-       catch (SQLException e) {
+
+    public void insert(Boenhet boenhet) {
+        DbTool dbTool = new DbTool();
+        conn = dbTool.loggInn();
+        try {
+            String sql = "Insert into Boenhet (boenhetsnummer, BoenhetsType_ID)" + "VALUES (?,?)";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, boenhet.getBoenhetsnummer());
+            statement.setInt(2, boenhet.getBoenhetstypeID());
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public List<Boenhet> readAll(int boenhetsTypeid) {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
 
         try {
-            
+
             String query = "SELECT * From Boenhet where BoenhetsType_ID = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, boenhetsTypeid);
             ResultSet rs = stm.executeQuery(query);
             List<Boenhet> boenheter = new ArrayList<Boenhet>();
-            
-            
+
             while (rs.next()) {
                 boenhet = new Boenhet(rs.getString("Boenhetsnummer"), rs.getInt("BoenhetsTypeID"));
-                        
+
                 boenheter.add(boenhet);
             }
             return boenheter;
@@ -66,24 +65,24 @@ public class BoenhetDAO {
         }
         return null;
     }
+
     public void delete(Connection conn, int Boenhetsnummer) {
-       
+
         try {
             String query = "DELETE FROM Boenhet WHERE Boenhetsnummer = ? ";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, Boenhetsnummer);
-           
+
             stm.executeQuery(query);
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-     public void update(Connection conn, Boenhet boenhet) {
-        
-        
+
+    public void update(Connection conn, Boenhet boenhet) {
 
         try {
             String sql = "UPDATE boenhetstype SET Boenhetsnummer=?, Boenhetstype_ID=?,";
@@ -91,11 +90,10 @@ public class BoenhetDAO {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, boenhet.getBoenhetsnummer());
             statement.setInt(2, boenhet.getBoenhetstypeID());
-            
+
             int rowsInserted = statement.executeUpdate();
             ResultSet rs = statement.getGeneratedKeys();
 
-           
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
