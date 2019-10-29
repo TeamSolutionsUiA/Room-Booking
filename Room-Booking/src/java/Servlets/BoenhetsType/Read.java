@@ -5,6 +5,8 @@
  */
 package Servlets.BoenhetsType;
 
+import Klasser.Boenhet.Boenhet;
+import Klasser.Boenhet.BoenhetDAO;
 import Klasser.BoenhetsType.Bilde;
 import Klasser.BoenhetsType.BoenhetsType;
 import java.io.IOException;
@@ -33,6 +35,7 @@ public class Read extends HttpServlet {
 
     private BoenhetsTypeDAO boenhetsTypeDAO;
     private KategoriDAO kategoriDAO;
+    private BoenhetDAO boenhetDAO;
 
     /**
      * Beskrivelse
@@ -57,7 +60,7 @@ public class Read extends HttpServlet {
             kategoriDAO = new KategoriDAO();
             List<String> kategorier = kategoriDAO.readAll();
             List<BoenhetsType> boenhetsTyper = boenhetsTypeDAO.readAll();
-            
+
             for (String kategori : kategorier) {
                 out.println("<div>");
                 out.println("<h2>");
@@ -171,10 +174,34 @@ public class Read extends HttpServlet {
                 }
                 out.println("</p>");
             }
-            
+
             out.println("<form action=\"boenhetstype/delete\" method=\"post\">");
             out.println("<p><input type=\"hidden\" name=\"id\" placeholder=\"ID\" value=\"" + boenhetsType.getID() + "\" readonly></p>");
             out.println("<p><input type=\"submit\" value=\"Slett\"></p>");
+            out.println("</form>");
+
+            out.println("<h2>Boenheter</h2>");
+            out.println("<form action=\"boenhet/ny\" method=\"get\">");
+            out.println("<p><input type=\"hidden\" name=\"id\" placeholder=\"ID\" value=\"" + boenhetsType.getID() + "\" readonly></p>");
+            out.println("<p><input type=\"submit\" value=\"Legg til enhet\"></p>");
+            out.println("</form>");
+
+            boenhetDAO = new BoenhetDAO();
+            List<Boenhet> boenheter = boenhetDAO.readAll(boenhetsType.getID());
+            for (Boenhet boenhet : boenheter) {
+                out.println("<h3>" + boenhet.getBoenhetsnummer() + "</h3>");
+                out.println("<form action=\"boenhet/oppdater\" method=\"get\">");
+                out.println("<p><input type=\"hidden\" name=\"boenhet\" value=\"" + boenhet.getBoenhetsnummer() + "\" readonly></p>");
+                out.println("<p><input type=\"submit\" value=\"Endre\"></p>");
+                out.println("</form>");
+
+                out.println("<form action=\"boenhet/delete\" method=\"post\">");
+                out.println("<p><input type=\"hidden\" name=\"boenhet\" value=\"" + boenhet.getBoenhetsnummer() + "\" readonly></p>");
+                out.println("<p><input type=\"submit\" value=\"Slett\"></p>");
+                out.println("</form>");
+
+            }
+
             out.println("</div>");
 
             out.println("</body>");
@@ -197,7 +224,7 @@ public class Read extends HttpServlet {
         if (request.getParameter("id") == null || request.getParameter("id").equals("null")) {
             readAll(request, response);
         } else {
-            
+
             read(request, response);
         }
     }
