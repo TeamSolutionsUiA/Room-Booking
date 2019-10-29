@@ -202,9 +202,11 @@ public class BoenhetsTypeDAO {
         try {
             egenskapDAO = new EgenskapDAO();
             bildeDAO = new BildeDAO();
-
+            kategoriDAO = new KategoriDAO();
+            
             egenskapDAO.delete(conn, id);
             bildeDAO.delete(conn, id);
+            kategoriDAO.delete(conn, id);
 
             String query = "DELETE FROM boenhetstype WHERE ID = ?";
             PreparedStatement stm = conn.prepareStatement(query);

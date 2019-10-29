@@ -34,7 +34,7 @@ public class Delete extends HttpServlet {
      */
     protected void delete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
         String idStr = request.getParameter("id");
         int id = Integer.parseInt(idStr);
 
