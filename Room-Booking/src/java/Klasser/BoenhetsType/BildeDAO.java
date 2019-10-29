@@ -166,7 +166,7 @@ public class BildeDAO {
 
     public void deleteLink(Connection conn, Bilde bilde, int id) {
         try {
-            String query = "DELETE FROM bilde WHERE boenhetstype_ID = ? AND Bilde_hash = ?";
+            String query = "DELETE FROM bildelink WHERE BoenhetsType_ID = ? AND Bilde_hash = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, id);
             stm.setString(2, (bilde.getHash()));
@@ -215,10 +215,11 @@ public class BildeDAO {
 
     public void update(Connection conn, List<Bilde> bildeN, List<Bilde> bildeG, BoenhetsType boenhetsType) {
 
-         boolean fjernet = true;
+        boolean fjernet = true;
         for (Bilde skjekkBildeG : bildeG) {
+            fjernet = true;
             for (Bilde skjekkBildeN : bildeN) {
-                if (skjekkBildeN == skjekkBildeG) {
+                if (skjekkBildeN.getHash() == skjekkBildeG.getHash()) {
                     fjernet = false;
                 }
             }
@@ -233,15 +234,15 @@ public class BildeDAO {
 
         boolean lagtTil = true;
         for (Bilde skjekkBildeN : bildeN) {
+            lagtTil = true;
             for (Bilde skjekkeBildeG : bildeG) {
-                if (skjekkBildeN == skjekkeBildeG) {
+                if (skjekkBildeN.getHash() == skjekkeBildeG.getHash()) {
                     lagtTil = false;
                 }
             }
             if (lagtTil) {
-                insertLink(conn, skjekkBildeN.getHash(), boenhetsType.getID());
+                insert(conn, skjekkBildeN, boenhetsType.getID());
             }
         }
     }
-    }
-
+}

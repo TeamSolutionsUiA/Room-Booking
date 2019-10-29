@@ -144,7 +144,7 @@ public class Read extends HttpServlet {
                 out.println("</div>");
             }
 
-            out.println("<h2>" + boenhetsType.getKategori() + "</h2>");
+            out.println("<h2>" + boenhetsType.getKategori().getKategori() + "</h2>");
 
             out.println("<p>" + boenhetsType.getBeskrivelse() + "</p>");
 

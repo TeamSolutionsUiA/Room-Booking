@@ -63,7 +63,7 @@ public class Create extends HttpServlet {
             int pris = Integer.parseInt(prisStr);
 
             Kategori kategori = new Kategori(request.getParameter("Kategori"));
-            
+
             String egenskaper = request.getParameter("Egenskaper");
             List<Egenskap> egenskaperList = new ArrayList();
             for (String egenskap : egenskaper.split(",")) {
@@ -83,7 +83,7 @@ public class Create extends HttpServlet {
             boenhetsType = new BoenhetsType(navn, kategori, enkeltsenger, dobeltsenger, beskrivelse, pris, bilder, egenskaperList);
             boenhetsTypeDAO = new BoenhetsTypeDAO();
             int id = boenhetsTypeDAO.insert(boenhetsType);
-
+            
             if (id != 0) {
                 String reDir = "../boenhetstype?id=" + id;
                 response.sendRedirect(reDir);
@@ -104,7 +104,7 @@ public class Create extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         RequestDispatcher dispacher = request.getRequestDispatcher("ny.html");
-                dispacher.forward(request, response);
+        dispacher.forward(request, response);
     }
 
     /**

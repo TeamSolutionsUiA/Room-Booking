@@ -132,7 +132,7 @@ public class BoenhetsTypeDAO {
 
     }
 
-    public void update(BoenhetsType boenhetsType) {
+    public void update(BoenhetsType boenhetsType, PrintWriter out) {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
 
@@ -140,9 +140,10 @@ public class BoenhetsTypeDAO {
         bildeDAO = new BildeDAO();
         kategoriDAO = new KategoriDAO();
 
-        List<Egenskap> skjekkegenskapG = egenskapDAO.readAll(conn, boenhetsType.getID());
-        List<Bilde> skjekkBildeG = bildeDAO.readAll(conn, boenhetsType.getID());
-        Kategori kategorig = kategoriDAO.read(conn, boenhetsType.getID());
+        List<Egenskap> skjekkegenskapN = boenhetsType.getEgenskaper();
+        out.println(skjekkegenskapN.get(0).getEgenskap() + skjekkegenskapN.get(1).getEgenskap());
+        List<Bilde> skjekkBildeN = boenhetsType.getBilder();
+        Kategori kategoriN = boenhetsType.getKategori();
         try {
             String sql = "UPDATE boenhetstype SET Navn=?, Enkeltsenger=?, Dobeltsenger=?, Beskrivelse=?, Pris=? WHERE ID=?";
 
@@ -156,12 +157,13 @@ public class BoenhetsTypeDAO {
 
             statement.executeUpdate();
             
-            Kategori kategorin = kategoriDAO.read(conn, boenhetsType.getID());
-            List<Egenskap> skjekkegenskapN = egenskapDAO.readAll(conn, boenhetsType.getID());
-            List<Bilde> skjekkBildeN = bildeDAO.readAll(conn, boenhetsType.getID());
-
-            kategoriDAO.update(conn, kategorig, kategorin, boenhetsType);
-            egenskapDAO.update(conn, skjekkegenskapN, skjekkegenskapG, boenhetsType);
+            Kategori kategoriG = kategoriDAO.read(conn, boenhetsType.getID());
+            List<Egenskap> skjekkegenskapG = egenskapDAO.readAll(conn, boenhetsType.getID());
+            List<Bilde> skjekkBildeG = bildeDAO.readAll(conn, boenhetsType.getID());
+            
+            out.println(skjekkegenskapG.get(0).getEgenskap() + skjekkegenskapG.get(1).getEgenskap());
+            kategoriDAO.update(conn, kategoriN, kategoriG, boenhetsType);
+            egenskapDAO.update(conn, skjekkegenskapN, skjekkegenskapG, boenhetsType.getID());
             bildeDAO.update(conn, skjekkBildeN, skjekkBildeG, boenhetsType);
 
             /*  med egenskaper og bilder må vi nok finne en måte å fjerne de som 

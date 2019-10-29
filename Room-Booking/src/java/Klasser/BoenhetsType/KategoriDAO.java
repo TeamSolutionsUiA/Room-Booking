@@ -183,12 +183,8 @@ public class KategoriDAO {
          
          
          if(kategoriN != kategoriG) {
-             deleteLink(conn, kategoriG, boenhetsType.getID());
-             insertLink(conn, kategoriN, boenhetsType.getID());
-         
-            if(!iBruk(conn, kategoriG)) {
-            deleteKategori(conn, kategoriG);
-            }
+             delete(conn, boenhetsType.getID());
+             insert(conn, kategoriN, boenhetsType.getID());
         }
     }
 }

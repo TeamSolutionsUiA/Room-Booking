@@ -160,17 +160,18 @@ public class EgenskapDAO {
         return iBruk;
     }
 
-    public void update(Connection conn, List<Egenskap> egenskapN, List<Egenskap> egenskapG, BoenhetsType boenhetsType) {
+    public void update(Connection conn, List<Egenskap> egenskapN, List<Egenskap> egenskapG, int ID) {
 
         boolean fjernet = true;
         for (Egenskap skjekkegenskapG : egenskapG) {
+            fjernet = true;
             for (Egenskap skjekkegenskapN : egenskapN) {
-                if (skjekkegenskapN == skjekkegenskapG) {
+                if (skjekkegenskapN.getEgenskap().equals(skjekkegenskapG.getEgenskap())) {
                     fjernet = false;
                 }
             }
             if (fjernet) {
-                deleteLink(conn, skjekkegenskapG, boenhetsType.getID());
+                deleteLink(conn, skjekkegenskapG, ID);
 
                 if (!iBruk(conn, skjekkegenskapG)) {
                     deleteegenskap(conn, skjekkegenskapG);
@@ -180,13 +181,14 @@ public class EgenskapDAO {
 
         boolean lagtTil = true;
         for (Egenskap skjekkegenskapN : egenskapN) {
+            lagtTil = true;
             for (Egenskap skjekkegenskapG : egenskapG) {
-                if (skjekkegenskapN == skjekkegenskapG) {
+                if (skjekkegenskapN.getEgenskap().equals(skjekkegenskapG.getEgenskap())) {
                     lagtTil = false;
                 }
             }
             if (lagtTil) {
-                insertLink(conn, skjekkegenskapN, boenhetsType.getID());
+                insert(conn, skjekkegenskapN, ID);
             }
         }
     }

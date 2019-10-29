@@ -71,7 +71,7 @@ public class Update extends HttpServlet {
 
             out.println("<p><input type=\"text\" name=\"Navn\" placeholder=\"Navn\" value=\"" + boenhetsType.getNavn() + "\" required></p>");
             out.println("<p><input type=\"text\" name=\"id\" placeholder=\"ID\" value=\"" + boenhetsType.getID() + "\" readonly></p>");
-            out.println("<p><input type=\"text\" name=\"Kategori\" placeholder=\"Kategori\" value=\"" + boenhetsType.getKategori() + "\" required></p>");
+            out.println("<p><input type=\"text\" name=\"Kategori\" placeholder=\"Kategori\" value=\"" + boenhetsType.getKategori().getKategori() + "\" required></p>");
             out.println("<p><input type=\"number\" name=\"Enkeltsenger\" placeholder=\"Antall enkeltsenger\" min=\"0\" max=\"100\" value=\"" + boenhetsType.getEnkeltsenger() + "\"></p>");
             out.println("<p><input type=\"number\" name=\"Dobeltsenger\" placeholder=\"Antall dobeltsenger\" min=\"0\" max=\"100\" value=\"" + boenhetsType.getDobeltsenger() + "\"></p>");
             out.println("<p><input type=\"text\" name=\"Beskrivelse\" placeholder=\"Beskrivelse\" value=\"" + boenhetsType.getBeskrivelse() + "\"></p>");
@@ -131,7 +131,7 @@ public class Update extends HttpServlet {
             BoenhetsType boenhetsType;
             boenhetsType = new BoenhetsType(id, navn, kategori, enkeltsenger, dobeltsenger, beskrivelse, pris, bilder, egenskaperList);
             boenhetsTypeDAO = new BoenhetsTypeDAO();
-            boenhetsTypeDAO.update(boenhetsType);
+            boenhetsTypeDAO.update(boenhetsType, out);
 
             String reDir = "../boenhetstype?id=" + boenhetsType.getID();
             response.sendRedirect(reDir);

@@ -36,7 +36,7 @@ public class BildeServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+            
         String bildeID = request.getParameter("id");
 
         bildeDAO = new BildeDAO();
