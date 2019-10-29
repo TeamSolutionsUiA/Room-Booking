@@ -68,6 +68,7 @@ public class Create extends HttpServlet {
 
         Boenhet boenhet;
         boenhet = new Boenhet(boenhetsNummer, id);
+        boenhetDAO = new BoenhetDAO();
         boenhetDAO.insert(boenhet);
 
         String reDir = "../boenhetstype?id=" + id;
