@@ -46,14 +46,14 @@ public class BoenhetDAO {
 
         try {
 
-            String query = "SELECT * From Boenhet where BoenhetsType_ID = ?";
+            String query = "SELECT * FROM Boenhet WHERE BoenhetsType_ID = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, boenhetsTypeid);
-            ResultSet rs = stm.executeQuery(query);
+            ResultSet rs = stm.executeQuery();
             List<Boenhet> boenheter = new ArrayList<Boenhet>();
 
             while (rs.next()) {
-                boenhet = new Boenhet(rs.getString("Boenhetsnummer"), rs.getInt("BoenhetsTypeID"));
+                boenhet = new Boenhet(rs.getString("BoenhetsNummer"), rs.getInt("BoenhetsType_ID"));
 
                 boenheter.add(boenhet);
             }
@@ -73,7 +73,7 @@ public class BoenhetDAO {
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, Boenhetsnummer);
 
-            stm.executeQuery(query);
+            stm.executeQuery();
 
         } catch (SQLException e) {
             e.printStackTrace();
