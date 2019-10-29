@@ -47,10 +47,10 @@ public class Create extends HttpServlet {
             boenhetsTypeDAO = new BoenhetsTypeDAO();
             BoenhetsType boenhetsType = boenhetsTypeDAO.read(ID);
             out.println("<h1>Opprett ny Boenhet i " + boenhetsType.getNavn() + "</h1>");
-            out.println("<form action=\"ny\" method=\"post\" enctype=\"multipart/form-data\">");
+            out.println("<form action=\"ny\" method=\"post\">");
 
             out.println("<p><input type=\"text\" name=\"boenhetsNummer\" placeholder=\"boenhetsNummer\"></p>");
-            out.println("<p><input type=\"text\" name=\"id\" hidden></p>");
+            out.println("<p><input type=\"text\" name=\"id\" value=\"" + boenhetsType.getID() + "\" hidden></p>");
             out.println("<p><input type=\"submit\" value=\"opprett boenhet\"></p>");
             out.println("</form>");
             out.println("</div>");
@@ -61,25 +61,21 @@ public class Create extends HttpServlet {
 
     protected void create(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            String boenhetsNummer = request.getParameter("boenhetsNummer");
-            String BoenhetsTypeIDString = request.getParameter("id");
-            int BoenhetsTypeID = Integer.parseInt(BoenhetsTypeIDString);
 
-            Boenhet boenhet;
-            boenhet = new Boenhet(boenhetsNummer, BoenhetsTypeID);
-            boenhetDAO.insert(boenhet);
+        String boenhetsNummer = request.getParameter("boenhetsNummer");
+        String idStr = request.getParameter("id");
+        int id = Integer.parseInt(idStr);
 
-            if (BoenhetsTypeID != 0) {
-                String reDir = "../boenhetstype?id=" + BoenhetsTypeID;
-                response.sendRedirect(reDir);
-            }
+        Boenhet boenhet;
+        boenhet = new Boenhet(boenhetsNummer, id);
+        boenhetDAO.insert(boenhet);
 
-        }
+        String reDir = "../boenhetstype?id=" + id;
+        response.sendRedirect(reDir);
+
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
