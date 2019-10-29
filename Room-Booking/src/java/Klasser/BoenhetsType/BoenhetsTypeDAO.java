@@ -79,7 +79,7 @@ public class BoenhetsTypeDAO {
             Statement stm = conn.createStatement();
             String query = "SELECT * From boenhetstype";
             ResultSet rs = stm.executeQuery(query);
-            List<BoenhetsType> boenhetsTyper = new ArrayList<BoenhetsType>();
+            List<BoenhetsType> boenhetsTyper = new ArrayList<>();
             kategoriDAO = new KategoriDAO();
             egenskapDAO = new EgenskapDAO();
             bildeDAO = new BildeDAO();

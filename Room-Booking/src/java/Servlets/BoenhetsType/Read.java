@@ -57,7 +57,7 @@ public class Read extends HttpServlet {
             kategoriDAO = new KategoriDAO();
             List<String> kategorier = kategoriDAO.readAll();
             List<BoenhetsType> boenhetsTyper = boenhetsTypeDAO.readAll();
-
+            
             for (String kategori : kategorier) {
                 out.println("<div>");
                 out.println("<h2>");
@@ -65,7 +65,7 @@ public class Read extends HttpServlet {
                 out.println("</h2>");
 
                 for (BoenhetsType boenhetsType : boenhetsTyper) {
-                    if (kategori.equals(boenhetsType.getKategori())) {
+                    if (kategori.equals(boenhetsType.getKategori().getKategori())) {
                         out.println("<div>");
                         out.println("<a href=\"?id=" + boenhetsType.getID() + "\">");
                         out.println("<h3>");
