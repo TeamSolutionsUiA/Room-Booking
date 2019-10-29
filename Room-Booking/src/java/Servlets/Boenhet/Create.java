@@ -7,8 +7,13 @@ package Servlets.Boenhet;
 
 import Klasser.Boenhet.Boenhet;
 import Klasser.Boenhet.BoenhetDAO;
+import Klasser.BoenhetsType.BoenhetsType;
+import Klasser.BoenhetsType.BoenhetsTypeDAO;
+import Klasser.BoenhetsType.Egenskap;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,33 +24,58 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author lasse
  */
-@WebServlet(name = "NewServlet", urlPatterns = {"/NewServlet"})
+@WebServlet(name = "Boenhet_Create", urlPatterns = {"/boenhet/ny"})
 public class Create extends HttpServlet {
 
- private BoenhetDAO boenhetDAO;
- 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+    private BoenhetDAO boenhetDAO;
+    private BoenhetsTypeDAO boenhetsTypeDAO;
+
+    protected void createForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String boenhetsNummer = request.getParameter("boenhetsNummer");
-            String BoenhetsTypeIDString = request.getParameter("ID");
-            int BoenhetsTypeID = Integer.parseInt(BoenhetsTypeIDString);
-            
-            
-            Boenhet boenhet;
-            boenhet = new Boenhet(boenhetsNummer,BoenhetsTypeID);
-            boenhetDAO.insert(boenhet);
-            
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet NewServlet</title>");            
+            out.println("<title>Ny Boenhet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet NewServlet at " + request.getContextPath() + "</h1>");
+            out.println("<div class=\"Update\">");
+            String IDStr = request.getParameter("id");
+            int ID = Integer.parseInt(IDStr);
+
+            boenhetsTypeDAO = new BoenhetsTypeDAO();
+            BoenhetsType boenhetsType = boenhetsTypeDAO.read(ID);
+            out.println("<h1>Opprett ny Boenhet i " + boenhetsType.getNavn() + "</h1>");
+            out.println("<form action=\"ny\" method=\"post\" enctype=\"multipart/form-data\">");
+
+            out.println("<p><input type=\"text\" name=\"boenhetsNummer\" placeholder=\"boenhetsNummer\"></p>");
+            out.println("<p><input type=\"text\" name=\"id\" hidden></p>");
+            out.println("<p><input type=\"submit\" value=\"opprett boenhet\"></p>");
+            out.println("</form>");
+            out.println("</div>");
             out.println("</body>");
             out.println("</html>");
+        }
+    }
+
+    protected void create(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            String boenhetsNummer = request.getParameter("boenhetsNummer");
+            String BoenhetsTypeIDString = request.getParameter("id");
+            int BoenhetsTypeID = Integer.parseInt(BoenhetsTypeIDString);
+
+            Boenhet boenhet;
+            boenhet = new Boenhet(boenhetsNummer, BoenhetsTypeID);
+            boenhetDAO.insert(boenhet);
+
+            if (BoenhetsTypeID != 0) {
+                String reDir = "../boenhetstype?id=" + BoenhetsTypeID;
+                response.sendRedirect(reDir);
+            }
+
         }
     }
 
@@ -61,7 +91,7 @@ public class Create extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        createForm(request, response);
     }
 
     /**
@@ -75,7 +105,7 @@ public class Create extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        create(request, response);
     }
 
     /**
