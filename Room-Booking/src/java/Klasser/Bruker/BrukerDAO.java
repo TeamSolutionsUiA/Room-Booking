@@ -1,3 +1,5 @@
+
+  
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -186,21 +188,7 @@ public class BrukerDAO {
         }
         return false;
     }
-     public void delete( int id) {
-       
-        try {
-            String query = "DELETE FROM Bruker WHERE id= ? ";
-            PreparedStatement stm = conn.prepareStatement(query);
-            stm.setInt(1, id);
-           
-            stm.executeQuery(query);
-            
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-   
+    
 }
        
+
