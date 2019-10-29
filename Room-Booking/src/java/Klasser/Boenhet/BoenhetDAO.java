@@ -23,7 +23,7 @@ public class BoenhetDAO {
     private BoenhetDAO boenhetDAO;
     private Boenhet boenhet;
     
-    private void insert (Boenhet boenhet) {
+    public void insert (Boenhet boenhet) {
        DbTool dbTool = new DbTool();
        conn = dbTool.loggInn(); 
        try {

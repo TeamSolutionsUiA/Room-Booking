@@ -164,7 +164,7 @@ public class BildeDAO {
 
     }
 
-    public void deleteLink(Connection conn, Bilde bilde, int id) {
+    private void deleteLink(Connection conn, Bilde bilde, int id) {
         try {
             String query = "DELETE FROM bildelink WHERE BoenhetsType_ID = ? AND Bilde_hash = ?";
             PreparedStatement stm = conn.prepareStatement(query);
@@ -178,7 +178,7 @@ public class BildeDAO {
         }
     }
 
-    public void deletebilde(Connection conn, Bilde bilde) {
+    private void deletebilde(Connection conn, Bilde bilde) {
         try {
             String sql = "DELETE FROM bilde WHERE Bilde_hash = ?";
             PreparedStatement stm = conn.prepareStatement(sql);
@@ -192,7 +192,7 @@ public class BildeDAO {
         }
     }
 
-    public boolean iBruk(Connection conn, Bilde bilde) {
+    private boolean iBruk(Connection conn, Bilde bilde) {
         boolean iBruk = false;
 
         try {

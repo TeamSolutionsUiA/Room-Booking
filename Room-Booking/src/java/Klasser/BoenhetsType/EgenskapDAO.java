@@ -111,7 +111,7 @@ public class EgenskapDAO {
 
     }
 
-    public void deleteLink(Connection conn, Egenskap egenskap, int id) {
+    private void deleteLink(Connection conn, Egenskap egenskap, int id) {
         try {
             String query = "DELETE FROM Egenskaplink WHERE boenhetstype_ID = ? AND Egenskap = ?";
             PreparedStatement stm = conn.prepareStatement(query);
@@ -125,7 +125,7 @@ public class EgenskapDAO {
         }
     }
 
-    public void deleteegenskap(Connection conn, Egenskap egenskap) {
+    private void deleteegenskap(Connection conn, Egenskap egenskap) {
         try {
             String sql = "DELETE FROM Egenskap WHERE Egenskap = ?";
             PreparedStatement stm = conn.prepareStatement(sql);
@@ -139,7 +139,7 @@ public class EgenskapDAO {
         }
     }
 
-    public boolean iBruk(Connection conn, Egenskap Egenskap) {
+    private boolean iBruk(Connection conn, Egenskap Egenskap) {
         boolean iBruk = false;
 
         try {
