@@ -66,15 +66,15 @@ public class BoenhetDAO {
         return null;
     }
 
-    public void delete(int Boenhetsnummer) {
+    public void delete(String Boenhetsnummer) {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
         try {
             String query = "DELETE FROM Boenhet WHERE Boenhetsnummer = ? ";
             PreparedStatement stm = conn.prepareStatement(query);
-            stm.setInt(1, Boenhetsnummer);
+            stm.setString(1, Boenhetsnummer);
 
-            stm.executeQuery();
+            stm.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();

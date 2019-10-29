@@ -35,13 +35,13 @@ public class Delete extends HttpServlet {
     protected void delete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String boenhetStr = request.getParameter("boenhet");
-        int boenhet = Integer.parseInt(boenhetStr);
+        String boenhet = request.getParameter("boenhet");
+        String id = request.getParameter("id");
 
         boenhetDAO = new BoenhetDAO();
         boenhetDAO.delete(boenhet);
 
-        String reDir = "../boenhetstype";
+        String reDir = "../boenhetstype?id=" + id;
         response.sendRedirect(reDir);
 
     }
@@ -58,7 +58,7 @@ public class Delete extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        delete(request, response);
     }
 
     /**
@@ -72,7 +72,7 @@ public class Delete extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        delete(request, response);
     }
 
     /**
