@@ -27,7 +27,7 @@ public class BoenhetDAO {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
         try {
-            String sql = "Insert into Boenhet (boenhetsnummer, BoenhetsType_ID)" + "VALUES (?,?)";
+            String sql = "Insert into Boenhet (BoenhetsNummer, BoenhetsType_ID)" + "VALUES (?,?)";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, boenhet.getBoenhetsnummer());
             statement.setInt(2, boenhet.getBoenhetstypeID());
