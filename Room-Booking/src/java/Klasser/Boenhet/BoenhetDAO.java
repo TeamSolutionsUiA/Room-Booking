@@ -83,17 +83,18 @@ public class BoenhetDAO {
         }
     }
 
-    public void update(Connection conn, Boenhet boenhet) {
-
+    public void update(Boenhet boenhet) {
+        DbTool dbTool = new DbTool();
+        conn = dbTool.loggInn();
         try {
-            String sql = "UPDATE boenhetstype SET Boenhetsnummer=?, Boenhetstype_ID=?,";
+            String sql = "UPDATE boenhet SET Boenhetsnummer=?, Boenhetstype_ID=?,";
 
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, boenhet.getBoenhetsnummer());
             statement.setInt(2, boenhet.getBoenhetstypeID());
 
-            int rowsInserted = statement.executeUpdate();
-            ResultSet rs = statement.getGeneratedKeys();
+            statement.executeUpdate();
+            
 
         } catch (SQLException e) {
             e.printStackTrace();
