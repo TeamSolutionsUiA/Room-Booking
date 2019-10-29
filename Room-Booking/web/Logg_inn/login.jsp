@@ -85,7 +85,7 @@
                 <div class="form-group">
                 <label class="control-label" for="input-password" id="passord">Passord</label>
                 <input type="passord" name="passord" value="" placeholder="Passord" id="input-password" class="form-control" />
-                <br>${message}
+                <span name="error">${message}</span>
                 <br><br>  
                 <div><a  target="_top" href="glemt_passord.html">Glemt Passord</a>
                      

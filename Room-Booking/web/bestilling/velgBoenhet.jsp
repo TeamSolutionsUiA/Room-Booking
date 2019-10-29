@@ -9,7 +9,7 @@
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
         <script type="text/javascript" src="regFunk.js"></script>
         <script type="text/javascript" src="regStyle.js"></script>
-        <script src="js/intlTelInput.js"></script>
+
 
     </head>
     <body>
@@ -71,15 +71,15 @@
             
             <div class="info">
                 
-                <p><div class="inn">Registrer Konto</div><br>
+                <p><div class="inn">Booking overnatting</div><br>
                     
-                   Hvis du allerede har en konto hos oss, kan du logge inn på innloggingssiden </p>
+                   Velkommen til booking for overnatting! </p>
             </div>
      
             
             
             
-        <form action="register" method="post" enctype="multipart/form-data">
+        <form action="velgBoenhet" method="post" enctype="multipart/form-data">
               <div class="col-login"> 
                 <div class="form-group">
                 <label class="control-label" for="input-Navn" id="fornavn">Fornavn*</label>
@@ -139,13 +139,5 @@
                 </div>
               </div>
              </div>
-                <!--
-                <script>
-                var input = document.querySelector("#input-Mobilnummer");
-                window.intlTelInput(input, {
-                utilsScript: "js/utils.js"
-            });
-        </script> 
-        -->
      </body>
 </html>
