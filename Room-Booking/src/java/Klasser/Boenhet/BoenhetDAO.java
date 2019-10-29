@@ -40,6 +40,31 @@ public class BoenhetDAO {
         }
     }
 
+    public Boenhet read(String boenhetsNr) {
+        DbTool dbTool = new DbTool();
+        conn = dbTool.loggInn();
+
+        try {
+
+            String query = "SELECT * FROM Boenhet WHERE BoenhetsType_ID = ?";
+            PreparedStatement stm = conn.prepareStatement(query);
+            stm.setString(1, boenhetsNr);
+
+            ResultSet rs = stm.executeQuery();
+
+            if (rs.next()) {
+                boenhet = new Boenhet(rs.getString("BoenhetsNummer"), rs.getInt("BoenhetsType_ID"));
+            }
+
+            return boenhet;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public List<Boenhet> readAll(int boenhetsTypeid) {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
@@ -94,7 +119,6 @@ public class BoenhetDAO {
             statement.setInt(2, boenhet.getBoenhetstypeID());
 
             statement.executeUpdate();
-            
 
         } catch (SQLException e) {
             e.printStackTrace();
