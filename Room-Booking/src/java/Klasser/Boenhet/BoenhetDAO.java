@@ -46,7 +46,7 @@ public class BoenhetDAO {
 
         try {
 
-            String query = "SELECT * FROM Boenhet WHERE BoenhetsType_ID = ?";
+            String query = "SELECT * FROM Boenhet WHERE BoenhetsNummer = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setString(1, boenhetsNr);
 
@@ -95,7 +95,7 @@ public class BoenhetDAO {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
         try {
-            String query = "DELETE FROM Boenhet WHERE Boenhetsnummer = ? ";
+            String query = "DELETE FROM Boenhet WHERE BoenhetsNummer = ? ";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setString(1, Boenhetsnummer);
 
@@ -108,15 +108,16 @@ public class BoenhetDAO {
         }
     }
 
-    public void update(Boenhet boenhet) {
+    public void update(Boenhet boenhet, String gammelBoenhetNr) {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
         try {
-            String sql = "UPDATE boenhet SET Boenhetsnummer=?, Boenhetstype_ID=?,";
+            String sql = "UPDATE boenhet SET BoenhetsNummer = ?, BoenhetsType_ID = ? WHERE BoenhetsNummer = ?";
 
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, boenhet.getBoenhetsnummer());
             statement.setInt(2, boenhet.getBoenhetstypeID());
+            statement.setString(3, gammelBoenhetNr);
 
             statement.executeUpdate();
 
