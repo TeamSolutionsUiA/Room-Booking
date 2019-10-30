@@ -41,11 +41,10 @@ public class BildeServlet extends HttpServlet {
 
         bildeDAO = new BildeDAO();
         Bilde bilde = bildeDAO.read(bildeID);
-        byte[] bildeByte = IOUtils.readFully(bilde.getBilde(), -1, false);
 
         response.setContentType("image/*");
         try (OutputStream os = response.getOutputStream()) {
-            os.write(bildeByte);
+            os.write(bilde.getBilde());
             os.flush();
         }
     }

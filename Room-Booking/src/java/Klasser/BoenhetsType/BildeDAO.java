@@ -28,22 +28,21 @@ public class BildeDAO {
     private Connection conn;
 
     public void insert(Connection conn, Bilde bilde, int id) {
-        InputStream nyttBilde = bilde.getBilde();
-        String hash = MD5Hash(nyttBilde);
+        String hash = MD5Hash(bilde.getBilde());
 
         if (!exists(conn, hash)) {
-            insertNy(conn, hash, nyttBilde);
+            insertNy(conn, hash, bilde.getBilde());
         }
         insertLink(conn, hash, id);
     }
 
-    private void insertNy(Connection conn, String hash, InputStream bilde) {
+    private void insertNy(Connection conn, String hash, byte[] bildeByte) {
         try {
             String sql = "INSERT INTO bilde (Bilde_hash, Bilde)" + "VALUES(?, ?)";
             PreparedStatement statement;
             statement = conn.prepareStatement(sql);
             statement.setString(1, hash);
-            statement.setBlob(2, bilde);
+            statement.setBytes(2, bildeByte);
             statement.executeUpdate();
 
         } catch (SQLException e) {
@@ -87,9 +86,9 @@ public class BildeDAO {
         return exsists;
     }
 
-    private String MD5Hash(InputStream bilde) {
+    private String MD5Hash(byte[] bildeByte) {
         try {
-            byte[] bildeByte = IOUtils.readFully(bilde, -1, false);
+
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte[] digestArr = md.digest(bildeByte);
             StringBuffer buffer = new StringBuffer();
@@ -100,8 +99,6 @@ public class BildeDAO {
             return buffer.toString();
 
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
@@ -121,7 +118,7 @@ public class BildeDAO {
             ResultSet rs = stm.executeQuery();
 
             while (rs.next()) {
-                liste.add(new Bilde(rs.getBinaryStream("Bilde"), rs.getString("Bilde_hash")));
+                liste.add(new Bilde(rs.getBytes("Bilde"), rs.getString("Bilde_hash")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -219,7 +216,7 @@ public class BildeDAO {
         for (Bilde skjekkBildeG : bildeG) {
             fjernet = true;
             for (Bilde skjekkBildeN : bildeN) {
-                if (skjekkBildeN.getHash() == skjekkBildeG.getHash()) {
+                if (skjekkBildeN.getHash().equals(skjekkBildeG.getHash())) {
                     fjernet = false;
                 }
             }
@@ -236,7 +233,7 @@ public class BildeDAO {
         for (Bilde skjekkBildeN : bildeN) {
             lagtTil = true;
             for (Bilde skjekkeBildeG : bildeG) {
-                if (skjekkBildeN.getHash() == skjekkeBildeG.getHash()) {
+                if (skjekkBildeN.getHash().equals(skjekkeBildeG.getHash())) {
                     lagtTil = false;
                 }
             }

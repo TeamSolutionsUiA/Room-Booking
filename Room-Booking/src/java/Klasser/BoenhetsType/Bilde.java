@@ -5,7 +5,9 @@
  */
 package Klasser.BoenhetsType;
 
+import java.io.IOException;
 import java.io.InputStream;
+import sun.misc.IOUtils;
 
 /**
  *
@@ -13,23 +15,34 @@ import java.io.InputStream;
  */
 public class Bilde {
 
-    private InputStream bilde;
+    private byte[] bilde;
     private String hash;
 
-    public Bilde(InputStream bilde) {
+    public Bilde(InputStream bildeStream) {
+        try {
+            byte[] bilde = IOUtils.readFully(bildeStream, -1, false);
+            this.bilde = bilde;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Bilde(byte[] bilde) {
         this.bilde = bilde;
     }
 
-    public Bilde(InputStream bilde, String hash) {
+    public Bilde(byte[] bilde, String hash) {
         this.bilde = bilde;
         this.hash = hash;
     }
 
-    public InputStream getBilde() {
+    public byte[] getBilde() {
         return bilde;
     }
 
-    public void setBilde(InputStream bilde) {
+    public void setBilde(byte[] bilde) {
         this.bilde = bilde;
     }
 
