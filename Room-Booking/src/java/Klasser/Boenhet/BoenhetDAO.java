@@ -40,20 +40,45 @@ public class BoenhetDAO {
         }
     }
 
+    public Boenhet read(String boenhetsNr) {
+        DbTool dbTool = new DbTool();
+        conn = dbTool.loggInn();
+
+        try {
+
+            String query = "SELECT * FROM Boenhet WHERE BoenhetsNummer = ?";
+            PreparedStatement stm = conn.prepareStatement(query);
+            stm.setString(1, boenhetsNr);
+
+            ResultSet rs = stm.executeQuery();
+
+            if (rs.next()) {
+                boenhet = new Boenhet(rs.getString("BoenhetsNummer"), rs.getInt("BoenhetsType_ID"));
+            }
+
+            return boenhet;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public List<Boenhet> readAll(int boenhetsTypeid) {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
 
         try {
 
-            String query = "SELECT * From Boenhet where BoenhetsType_ID = ?";
+            String query = "SELECT * FROM Boenhet WHERE BoenhetsType_ID = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, boenhetsTypeid);
-            ResultSet rs = stm.executeQuery(query);
+            ResultSet rs = stm.executeQuery();
             List<Boenhet> boenheter = new ArrayList<Boenhet>();
 
             while (rs.next()) {
-                boenhet = new Boenhet(rs.getString("Boenhetsnummer"), rs.getInt("BoenhetsTypeID"));
+                boenhet = new Boenhet(rs.getString("BoenhetsNummer"), rs.getInt("BoenhetsType_ID"));
 
                 boenheter.add(boenhet);
             }
@@ -66,14 +91,15 @@ public class BoenhetDAO {
         return null;
     }
 
-    public void delete(Connection conn, int Boenhetsnummer) {
-
+    public void delete(String Boenhetsnummer) {
+        DbTool dbTool = new DbTool();
+        conn = dbTool.loggInn();
         try {
-            String query = "DELETE FROM Boenhet WHERE Boenhetsnummer = ? ";
+            String query = "DELETE FROM Boenhet WHERE BoenhetsNummer = ? ";
             PreparedStatement stm = conn.prepareStatement(query);
-            stm.setInt(1, Boenhetsnummer);
+            stm.setString(1, Boenhetsnummer);
 
-            stm.executeQuery(query);
+            stm.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -82,17 +108,18 @@ public class BoenhetDAO {
         }
     }
 
-    public void update(Connection conn, Boenhet boenhet) {
-
+    public void update(Boenhet boenhet, String gammelBoenhetNr) {
+        DbTool dbTool = new DbTool();
+        conn = dbTool.loggInn();
         try {
-            String sql = "UPDATE boenhetstype SET Boenhetsnummer=?, Boenhetstype_ID=?,";
+            String sql = "UPDATE boenhet SET BoenhetsNummer = ?, BoenhetsType_ID = ? WHERE BoenhetsNummer = ?";
 
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, boenhet.getBoenhetsnummer());
             statement.setInt(2, boenhet.getBoenhetstypeID());
+            statement.setString(3, gammelBoenhetNr);
 
-            int rowsInserted = statement.executeUpdate();
-            ResultSet rs = statement.getGeneratedKeys();
+            statement.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();

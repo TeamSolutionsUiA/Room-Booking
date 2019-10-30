@@ -72,6 +72,10 @@
         <servlet-name>UpdateForm</servlet-name>
         <servlet-class>Servlets.Bruker.UpdateForm</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>VisBoenhetsTyper</servlet-name>
+        <servlet-class>Servlets.Bestilling.VisBoenhetsTyper</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Create</servlet-name>
         <url-pattern>/Create</url-pattern>
@@ -83,6 +87,10 @@
     <servlet-mapping>
         <servlet-name>UpdateForm</servlet-name>
         <url-pattern>/UpdateForm</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VisBoenhetsTyper</servlet-name>
+        <url-pattern>/VisBoenhetsTyper</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -99,6 +99,35 @@ public class BoenhetsTypeDAO {
         }
         return null;
     }
+    
+    public List<BoenhetsType> readAll(String sql ) {
+        DbTool dbTool = new DbTool();
+        conn = dbTool.loggInn();
+        String query = sql;
+
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+            List<BoenhetsType> boenhetsTyper = new ArrayList<>();
+            kategoriDAO = new KategoriDAO();
+            egenskapDAO = new EgenskapDAO();
+            bildeDAO = new BildeDAO();
+            while (rs.next()) {
+                boenhetsType = new BoenhetsType(rs.getInt("ID"), rs.getString("Navn"), kategoriDAO.read(conn, rs.getInt("ID")),
+                        rs.getInt("EnkeltSenger"), rs.getInt("DobeltSenger"),
+                        rs.getString("Beskrivelse"), rs.getInt("Pris"),
+                        bildeDAO.readAll(conn, rs.getInt("ID")),
+                        egenskapDAO.readAll(conn, rs.getInt("ID")));
+                boenhetsTyper.add(boenhetsType);
+            }
+            return boenhetsTyper;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public BoenhetsType read(int id) {
         DbTool dbTool = new DbTool();
