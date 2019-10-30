@@ -5,6 +5,9 @@
  */
 package Klasser.Bestilling;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -16,8 +19,25 @@ public class BestillingDAO {
     
     
     
-    public void insert ( ){
+    public void insertNy ( Connection conn , Bestilling bestilling ) throws SQLException{
+         try {
+        String sql = "INSERT INTO bestilling (Bestilling)" + "VALUES(?)";
+          
+        PreparedStatement statement; 
+            statement = conn.prepareStatement(sql);
+            statement.setString(1, bestilling.getStartDato());
+            statement.setString(2, bestilling.getSluttDato());
+            statement.setInt (3, bestilling.getAntallPerson());
+            
+            statement.executeUpdate();
+            } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        }
     }
     
     
-}
+    
+
