@@ -21,7 +21,12 @@ public class Bestilling {
         this.sluttDato = sluttDato;
         this.antallPerson = antallPerson;
     }
-
+  public Bestilling( String startDato, String sluttDato, int antallPerson) {
+        
+        this.startDato = startDato;
+        this.sluttDato = sluttDato;
+        this.antallPerson = antallPerson;
+    }
     public int getId() {
         return id;
     }
