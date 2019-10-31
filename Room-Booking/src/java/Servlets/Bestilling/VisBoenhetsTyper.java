@@ -5,8 +5,6 @@
  */
 package Servlets.Bestilling;
 
-import Klasser.Boenhet.Boenhet;
-import Klasser.Boenhet.BoenhetDAO;
 import Klasser.BoenhetsType.*;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Jonathans
  */
 
-@WebServlet(name = "Bestilling_VisBoenhetsTyper", urlPatterns = {"/bestilling/BestillingNy.jsp"})
+@WebServlet(name = "Bestilling_VisBoenhetsTyper", urlPatterns = {"/bestilling/visBoenheter"})
 @MultipartConfig(fileSizeThreshold = 6291456, // 6 MB
         maxFileSize = 10485760L, // 10 MB
         maxRequestSize = 20971520L // 20 MB
@@ -49,31 +47,34 @@ public class VisBoenhetsTyper extends HttpServlet {
         
         
         try (PrintWriter out = response.getWriter()) {
+            // Innhenting av søkeord fra bruker.
+            String reqKategori = request.getParameter("Bestilling-kategori");
+            String reqStartDato = request.getParameter("Bestilling-start");
+            String reqSluttDato = request.getParameter("Bestilling-slutt");
+            
             // Innhenting av alle tilgjengelige boenhetsTyper 
             // Må finnes i boenhettabell
-            String boenhetsTypeSQL = "";
-            
-            String startDato = request.getParameter("Bestilling-start");
-            String sluttDato = request.getParameter("Bestilling-slutt");
-            String kategori = request.getParameter("Bestilling-kategori");
-            
+            String boenhetsTypeSQL = "SELECT * From boenhetstype";
+
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
             out.println("<title>BoenhetsTyper</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>BoenhetsTyper</h1>");
+            out.println("<h1>Tilgjengelige overnattingstilbud</h1>");
             
             boenhetsTypeDAO = new BoenhetsTypeDAO();
             kategoriDAO = new KategoriDAO();
             List<BoenhetsType> boenhetsTyper = boenhetsTypeDAO.readAll(boenhetsTypeSQL);
 
+            //Printe ut alle     
                 for (BoenhetsType boenhetsType : boenhetsTyper) {
-                    if (kategori.equals(boenhetsType.getKategori().getKategori())) {
+                    if (reqKategori.equals(boenhetsType.getKategori().getKategori())) {
                         out.println("<div>");
+                        out.println("<fieldset>");
                         out.println("<h2>");
-                        out.println(kategori);
+                        out.println(reqKategori);
                         out.println("</h2>");
                         out.println("<a href=\"?id=" + boenhetsType.getID() + "\">");
                         out.println("<h3>");
@@ -113,10 +114,10 @@ public class VisBoenhetsTyper extends HttpServlet {
                             out.println("</div>");
                         }
                         out.println("</a>");
+                        out.println("</fieldset>");
                         out.println("</div>");
                     }
-
-            }
+                }
             out.println("</body>");
             out.println("</html>");
         }
