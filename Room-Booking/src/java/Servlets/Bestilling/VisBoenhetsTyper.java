@@ -5,6 +5,8 @@
  */
 package Servlets.Bestilling;
 
+import Klasser.Boenhet.Boenhet;
+import Klasser.Boenhet.BoenhetDAO;
 import Klasser.BoenhetsType.*;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Jonathans
  */
 
-@WebServlet(name = "Bestilling_VisBoenhetsTyper", urlPatterns = {"/bestilling/velgBoenhetsType.jsp"})
+@WebServlet(name = "Bestilling_VisBoenhetsTyper", urlPatterns = {"/bestilling/BestillingNy.jsp"})
 @MultipartConfig(fileSizeThreshold = 6291456, // 6 MB
         maxFileSize = 10485760L, // 10 MB
         maxRequestSize = 20971520L // 20 MB
@@ -30,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 public class VisBoenhetsTyper extends HttpServlet {
     
     private BoenhetsTypeDAO boenhetsTypeDAO;
+    private KategoriDAO kategoriDAO;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -48,10 +51,77 @@ public class VisBoenhetsTyper extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             // Innhenting av alle tilgjengelige boenhetsTyper 
             // Må finnes i boenhettabell
+            String boenhetsTypeSQL = "";
+            
+            String startDato = request.getParameter("Bestilling-start");
+            String sluttDato = request.getParameter("Bestilling-slutt");
+            String kategori = request.getParameter("Bestilling-kategori");
+            
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>BoenhetsTyper</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>BoenhetsTyper</h1>");
+            
             boenhetsTypeDAO = new BoenhetsTypeDAO();
-            List<BoenhetsType> boenhetsTyper = boenhetsTypeDAO.readAll();
+            kategoriDAO = new KategoriDAO();
+            List<BoenhetsType> boenhetsTyper = boenhetsTypeDAO.readAll(boenhetsTypeSQL);
+
+                for (BoenhetsType boenhetsType : boenhetsTyper) {
+                    if (kategori.equals(boenhetsType.getKategori().getKategori())) {
+                        out.println("<div>");
+                        out.println("<h2>");
+                        out.println(kategori);
+                        out.println("</h2>");
+                        out.println("<a href=\"?id=" + boenhetsType.getID() + "\">");
+                        out.println("<h3>");
+                        out.println(boenhetsType.getNavn());
+                        out.println("</h3>");
+                        out.println("<p>");
+                        out.println(boenhetsType.getBeskrivelse());
+                        out.println("</p>");
+
+                        int eSeng = boenhetsType.getEnkeltsenger();
+                        int dSeng = boenhetsType.getDobeltsenger();
+                        int sengTotal = eSeng + dSeng * 2;
+                        if (sengTotal > 0) {
+                            out.println("<p>");
+                            out.println("Antall enkeltsenger" + eSeng);
+                            out.println("Antall dobbelsenger" + dSeng);
+                            out.println("Antall sengeplasser " + sengTotal);
+                            out.println("</p>");
+                        }
+                        out.println("<p>");
+                        out.println("Pris" + boenhetsType.getPris() + "Nok");
+                        out.println("</p>");
+                        List<Egenskap> egenskaper = boenhetsType.getEgenskaper();
+                        out.println("<p>");
+                        out.println("<h4>Egenskaper:</h4>");
+                        for (Egenskap egenskap : egenskaper) {
+                            out.println(egenskap.getEgenskap());
+                        }
+                        out.println("</p>");
+                        List<Bilde> bilder = boenhetsType.getBilder();
+                        if (bilder != null) {
+                            out.println("<div>");
+                            out.println("<h4>Bilder:</h4>");
+                            for (Bilde bilde : bilder) {
+                                out.println("<img src=\"" + request.getContextPath() + "/bilde?id=" + bilde.getHash() + "\" width=\"400px\" />");
+                            }
+                            out.println("</div>");
+                        }
+                        out.println("</a>");
+                        out.println("</div>");
+                    }
+
+            }
+            out.println("</body>");
+            out.println("</html>");
         }
     }
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
