@@ -20,10 +20,11 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author altee
+ * @author mohamJ
  */
-@WebServlet(name = "Bestilling.Create", urlPatterns = {"/bestilling/BestillingNy"})
+@WebServlet(name = "Bestilling.Create", urlPatterns = {"/bestilling/bestillingCreate"})
 public class Create extends HttpServlet {
+    private BestillingDAO bestillingDAO;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,6 +34,7 @@ public class Create extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * @throws java.sql.SQLException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
@@ -52,16 +54,16 @@ public class Create extends HttpServlet {
              String slutt=request.getParameter("Bestilling-slutt");
              String antall = request.getParameter("Bestilling-antall");
               int antall2 = Integer.parseInt(antall);
-             
-              BestillingDAO dao = new  BestillingDAO();
+              
               Bestilling bestilling  ;
-              bestilling = new  Bestilling(start , slutt , antall2);
-              
-                      
-              
-              dao.insert(bestilling);
+              bestilling = new Bestilling(start, slutt ,100000, antall2);
+              bestillingDAO = new BestillingDAO();
+              bestillingDAO.insert(bestilling);
+             
+    
            
 
+             
              
             out.println("</body>");
             out.println("</html>");
