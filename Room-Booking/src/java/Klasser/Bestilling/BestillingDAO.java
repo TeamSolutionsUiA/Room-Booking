@@ -12,38 +12,40 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
-
+import java.sql.*;
 /**
  *
  * @author altee
  */
 public class BestillingDAO {
-    private List<Bestilling> bestillinger ;
     private Connection conn ;
-    
     private Bestilling bestilling;
     public int insert(Bestilling bestilling) {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
     
          try {
-         String sql = "INSERT INTO Bestilling (startDato, sluttDato, antallPers)"
-                    + "VALUES (?, ?, ?)";
+         String sql = "INSERT INTO Bestilling (StartDato, SluttDato,Bruker_ID, AntallPers)"
+                    + "VALUES (?, ?, ?, ?)";
 
-                PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            statement = conn.prepareStatement(sql);
+           PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, bestilling.getStartDato());
             statement.setString(2, bestilling.getSluttDato());
-            statement.setInt (3, bestilling.getAntallPerson());
+            statement.setInt (3, bestilling.getBrukerID());
+            statement.setInt (4, bestilling.getAntallPerson());
+            statement.executeUpdate();
             
-            
-               int rowsInserted = statement.executeUpdate();
+            int rowsInserted = statement.executeUpdate();
                 ResultSet idRs = statement.getGeneratedKeys();
                 if (idRs.next()) {
                 int id = idRs.getInt(1);
             
                 return id;
-            }
+                }
+         
+    
+    
+
             
         } catch (SQLException e) {
             e.printStackTrace();
@@ -51,7 +53,26 @@ public class BestillingDAO {
             e.printStackTrace();
         }
         return 0;
+        
     }
+    
+    public int readID() {
+        DbTool dbTool = new DbTool();
+        conn = dbTool.loggInn();
+
+        try {
+            Statement stm = conn.createStatement();
+            String query = "SELECT ID From Bruker";
+            ResultSet rs = stm.executeQuery(query);
+           
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+        
+}
 }
     
 

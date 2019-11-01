@@ -5,30 +5,35 @@
  */
 package Klasser.Bestilling;
 
+import Klasser.Bruker.Bruker;
+
 /**
  *
- * @author altee
+ * @author mohamJ
  */
 public class Bestilling {
-    private int id; 
+    private int bestillingsNummer; 
     private String startDato ;
     private String sluttDato;
+    private int brukerID;
     private int antallPerson;
 
-    public Bestilling(int id, String startDato, String sluttDato, int antallPerson) {
-        this.id = id;
+    public Bestilling(int bestillingsNummer, String startDato, String sluttDato, int brukerId, int antallPerson) {
+        this.bestillingsNummer = bestillingsNummer;
         this.startDato = startDato;
         this.sluttDato = sluttDato;
+        this.brukerID = brukerId;
         this.antallPerson = antallPerson;
     }
-  public Bestilling( String startDato, String sluttDato, int antallPerson) {
+  public Bestilling( String startDato, String sluttDato,int brukerId, int antallPerson) {
         
         this.startDato = startDato;
         this.sluttDato = sluttDato;
+        this.brukerID = brukerId;
         this.antallPerson = antallPerson;
     }
-    public int getId() {
-        return id;
+    public int getbestillingsNummer() {
+        return bestillingsNummer;
     }
 
     public String getStartDato() {
@@ -43,8 +48,8 @@ public class Bestilling {
         return antallPerson;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setBestillingsNummer(int bestillingsNummer) {
+        this.bestillingsNummer = bestillingsNummer;
     }
 
     public void setStartDato(String startDato) {
@@ -58,6 +63,14 @@ public class Bestilling {
     public void setAntallPerson(int antallPerson) {
         this.antallPerson = antallPerson;
     }
+
+    public int getBrukerID() {
+        return brukerID;
+    }
+
+    public void setBrukerID(int brukerID) {
+        this.brukerID = brukerID;
+    }
     
-    
+   
 }
