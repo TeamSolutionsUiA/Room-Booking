@@ -61,6 +61,11 @@ public class Read extends HttpServlet {
             List<String> kategorier = kategoriDAO.readAll();
             List<BoenhetsType> boenhetsTyper = boenhetsTypeDAO.readAll();
 
+            out.println("<h2>Boenheter</h2>");
+            out.println("<form action=\"boenhetstype/ny\" method=\"get\">");
+            out.println("<p><input type=\"submit\" value=\"Legg til boenhetstype\"></p>");
+            out.println("</form>");
+
             for (String kategori : kategorier) {
                 out.println("<div>");
                 out.println("<h2>");
@@ -84,7 +89,11 @@ public class Read extends HttpServlet {
                         if (sengTotal > 0) {
                             out.println("<p>");
                             out.println("Antall enkeltsenger" + eSeng);
+                            out.println("</p>");
+                            out.println("<p>");
                             out.println("Antall dobbelsenger" + dSeng);
+                            out.println("</p>");
+                            out.println("<p>");
                             out.println("Antall sengeplasser " + sengTotal);
                             out.println("</p>");
                         }
