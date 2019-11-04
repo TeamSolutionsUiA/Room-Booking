@@ -16,7 +16,8 @@
     </head>
     <body>
      <% 
-        if (session.getAttribute("fornavn")== null && session.getAttribute("Etternavn")== null 
+        if (session.getAttribute("fornavn1")== null && session.getAttribute("Etternavn")== null && 
+                session.getAttribute("brukerId")== null
                
               )
         {
@@ -30,7 +31,7 @@
             <div class="log">
                 
                 <div class="loggin">
-                    <a class='nav-link1' href='' data-toggle="tooltip" title="logg inn her"> ${fornavn} ${Etternavn}</a>
+                    <a class='nav-link1' href='' data-toggle="tooltip" title="logg inn her"> ${fornavn1} ${Etternavn}</a>
                     <a class='nav-link1' href="../HomePage/index.html" data-toggle="tooltip" title="register nytt konto"> logg ut</a>
                 </div>
             </div>
@@ -56,6 +57,7 @@
                       
 
                 </div>
+               
                 <div class="nav-bar">
                     <ul class="">
                         <li class="nav-item"><a href="about.html" class="nav-link" data-toggle="tooltip" title="bli kjent med oss">Hva er Brokke</a></li>
@@ -69,7 +71,7 @@
                 </div>
 
                 <div class="bestilling">
-                   
+                    <a class="" data-toggle="tooltip" title="Bestill Nå" href="/Room-Booking/bestilling/bestillingCreate.jsp"> Bestill Nå</a>
                     <i class="fas fa-search , icons"   onclick="myFunction()" data-toggle="tooltip" title="search" ></i>
                     <i class="fas fa-phone , icons" data-toggle="tooltip" title="00043434"></i>
 
@@ -81,7 +83,7 @@
                 </p>
 
             </div>
-             
+              
        
         
              

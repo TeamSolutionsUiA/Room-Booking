@@ -32,6 +32,13 @@ public class Bestilling {
         this.brukerID = brukerId;
         this.antallPerson = antallPerson;
     }
+   public Bestilling( String startDato, String sluttDato, int antallPerson) {
+        
+        this.startDato = startDato;
+        this.sluttDato = sluttDato;
+       
+        this.antallPerson = antallPerson;
+    }
     public int getbestillingsNummer() {
         return bestillingsNummer;
     }

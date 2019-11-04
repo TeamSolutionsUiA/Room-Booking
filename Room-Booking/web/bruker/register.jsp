@@ -17,7 +17,7 @@
         <nav>
             <div class="log">
                 <div class="loggin">
-                    <a class='nav-link1' href="/Room-Booking/Logg_inn/login.html" data-toggle="tooltip" title="logg inn her"> logg inn</a>
+                    <a class='nav-link1' href="/Room-Booking/Logg_inn/login.jsp" data-toggle="tooltip" title="logg inn her"> logg inn</a>
                     <a class='nav-link1' href="/Room-Booking/bruker/register.jsp" data-toggle="tooltip" title="register nytt konto"> registrer</a>
                 </div>
             </div>

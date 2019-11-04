@@ -67,9 +67,12 @@ public class sjekk extends HttpServlet {
             String destPage = "login.jsp";
         
             if( dao.check(epost,passord)!= null ){
+                
                  HttpSession session = request.getSession();
-                session.setAttribute("fornavn", bruker.getFornavn());
+                 session.setAttribute("brukerId", bruker.getId());
+                session.setAttribute("fornavn1", bruker.getFornavn());
                 session.setAttribute("Etternavn", bruker.getEtternavn());
+                
               
                
               

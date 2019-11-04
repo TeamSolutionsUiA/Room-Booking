@@ -55,10 +55,15 @@ public class Create extends HttpServlet {
              String antall = request.getParameter("Bestilling-antall");
               int antall2 = Integer.parseInt(antall);
               
+              String id = request.getParameter("Bestilling-kategori");
+              int ID = Integer.parseInt(id);
+              
               Bestilling bestilling  ;
-              bestilling = new Bestilling(start, slutt ,100000, antall2);
-              bestillingDAO = new BestillingDAO();
-              bestillingDAO.insert(bestilling);
+              bestilling = new Bestilling( start, slutt, ID , antall2);
+              
+              BestillingDAO ab = new BestillingDAO();
+            
+              ab.insert(bestilling);
              
     
            
