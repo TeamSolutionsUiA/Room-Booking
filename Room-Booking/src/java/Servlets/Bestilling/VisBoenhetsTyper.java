@@ -54,13 +54,16 @@ public class VisBoenhetsTyper extends HttpServlet {
             
             // Innhenting av alle tilgjengelige boenhetsTyper 
             // Må finnes i boenhettabell
-            String boenhetsTypeSQL = "SELECT BoenhetsType.* FROM ((Boenhet LEFT JOIN BoenhetsType" +
+            String boenhetsTypeSQL = "SELECT BoenhetsType.* FROM ((((Boenhet LEFT JOIN BoenhetsType" +
                " ON Boenhet.BoenhetsType_ID = BoenhetsType.ID)" +
+               " LEFT JOIN KategoriLink ON BoenhetsType.ID = KategoriLink.BoenhetsType_ID)" +
+               " LEFT JOIN Kategori ON KategoriLink.Kategori = Kategori.Kategori)" +
                " LEFT JOIN BestillingsLinje" +
                " ON Boenhet.BoenhetsNummer = BestillingsLinje.BoenhetsNummer)" +
                " LEFT JOIN Bestilling ON Bestilling.Bestillingsnummer" +
                " = BestillingsLinje.BestillingsNummer" +
                " WHERE (BoenhetsType.PublisertStatus = 'true')" +
+               " AND (Kategori.Kategori = '"+reqKategori+"')" +
                " AND Boenhet.BoenhetsNummer NOT IN (SELECT Boenhet.BoenhetsNummer FROM (Boenhet" +
                " RIGHT JOIN BestillingsLinje" +
                " ON BestillingsLinje.BoenhetsNummer = Boenhet.BoenhetsNummer)" +
@@ -70,20 +73,22 @@ public class VisBoenhetsTyper extends HttpServlet {
                " AND (Bestilling.SluttDato > '"+reqStartDato+"')" +
                " AND (Bestilling.StartDato < '"+reqSluttDato+"'));";
 
-            
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>BoenhetsTyper</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Tilgjengelige overnattingstilbud</h1>");
-            
             boenhetsTypeDAO = new BoenhetsTypeDAO();
             kategoriDAO = new KategoriDAO();
             List<BoenhetsType> boenhetsTyper = boenhetsTypeDAO.readAll(boenhetsTypeSQL);
-
-            //Printe ut alle     
+                      
+            //Printe ut resultat dersom det ikke er "null".
+            
+            if(boenhetsTyper != null) {
+            
+                out.println("<!DOCTYPE html>");
+                out.println("<html>");
+                out.println("<head>");
+                out.println("<title>BoenhetsTyper</title>");
+                out.println("</head>");
+                out.println("<body>");
+                out.println("<h1>Tilgjengelige overnattingstilbud</h1>");
+                
                 for (BoenhetsType boenhetsType : boenhetsTyper) {
                     if (reqKategori.equals(boenhetsType.getKategori().getKategori())) {
                         out.println("<div>");
@@ -133,8 +138,15 @@ public class VisBoenhetsTyper extends HttpServlet {
                         out.println("</div>");
                     }
                 }
-            out.println("</body>");
-            out.println("</html>");
+                        out.println("</body>");
+                        out.println("</html>");
+
+            } else {
+                request.setAttribute("error", "Beklager, søket ditt gav ingen treff."+
+                        " Vennligst prøv igjen!");
+                request.getRequestDispatcher("BestillingNy.jsp").forward(request, response);
+            }
+                
         }
     }
 

@@ -104,14 +104,15 @@ public class BoenhetsTypeDAO {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
         String query = sql;
-
+        List<BoenhetsType> boenhetsTyper = new ArrayList<>();
+        
         try {
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(query);
-            List<BoenhetsType> boenhetsTyper = new ArrayList<>();
             kategoriDAO = new KategoriDAO();
             egenskapDAO = new EgenskapDAO();
             bildeDAO = new BildeDAO();
+            
             while (rs.next()) {
                 boenhetsType = new BoenhetsType(rs.getInt("ID"), rs.getString("Navn"), kategoriDAO.read(conn, rs.getInt("ID")),
                         rs.getInt("EnkeltSenger"), rs.getInt("DobeltSenger"),
@@ -120,7 +121,11 @@ public class BoenhetsTypeDAO {
                         egenskapDAO.readAll(conn, rs.getInt("ID")));
                 boenhetsTyper.add(boenhetsType);
             }
-            return boenhetsTyper;
+            if(!boenhetsTyper.isEmpty()){
+                    return boenhetsTyper;
+            } else {
+                return null;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
