@@ -54,8 +54,23 @@ public class VisBoenhetsTyper extends HttpServlet {
             
             // Innhenting av alle tilgjengelige boenhetsTyper 
             // Må finnes i boenhettabell
-            String boenhetsTypeSQL = "SELECT * From boenhetstype";
+            String boenhetsTypeSQL = "SELECT BoenhetsType.* FROM ((Boenhet LEFT JOIN BoenhetsType" +
+               " ON Boenhet.BoenhetsType_ID = BoenhetsType.ID)" +
+               " LEFT JOIN BestillingsLinje" +
+               " ON Boenhet.BoenhetsNummer = BestillingsLinje.BoenhetsNummer)" +
+               " LEFT JOIN Bestilling ON Bestilling.Bestillingsnummer" +
+               " = BestillingsLinje.BestillingsNummer" +
+               " WHERE (BoenhetsType.PublisertStatus = 'true')" +
+               " AND Boenhet.BoenhetsNummer NOT IN (SELECT Boenhet.BoenhetsNummer FROM (Boenhet" +
+               " RIGHT JOIN BestillingsLinje" +
+               " ON BestillingsLinje.BoenhetsNummer = Boenhet.BoenhetsNummer)" +
+               " RIGHT JOIN Bestilling" +
+               " ON Bestilling.Bestillingsnummer = BestillingsLinje.BestillingsNummer" +
+               " WHERE (BoenhetsType.PublisertStatus = 'true')" +
+               " AND (Bestilling.SluttDato > '"+reqStartDato+"')" +
+               " AND (Bestilling.StartDato < '"+reqSluttDato+"'));";
 
+            
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
