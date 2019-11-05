@@ -6,7 +6,6 @@
 package Klasser.BoenhetsType;
 
 import Klasser.DbTool;
-import java.io.PrintWriter;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -166,7 +165,7 @@ public class BoenhetsTypeDAO {
 
     }
 
-    public void update(BoenhetsType boenhetsType, PrintWriter out) {
+    public void update(BoenhetsType boenhetsType) {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
 
@@ -174,9 +173,7 @@ public class BoenhetsTypeDAO {
         bildeDAO = new BildeDAO();
         kategoriDAO = new KategoriDAO();
 
-        List<Egenskap> skjekkegenskapN = boenhetsType.getEgenskaper();
-        out.println(skjekkegenskapN.get(0).getEgenskap() + skjekkegenskapN.get(1).getEgenskap());
-        List<Bilde> skjekkBildeN = boenhetsType.getBilder();
+        List<Egenskap> egenskaperN = boenhetsType.getEgenskaper();
         Kategori kategoriN = boenhetsType.getKategori();
         try {
             String sql = "UPDATE boenhetstype SET Navn=?, Enkeltsenger=?, Dobeltsenger=?, Beskrivelse=?, Pris=? WHERE ID=?";
@@ -192,36 +189,10 @@ public class BoenhetsTypeDAO {
             statement.executeUpdate();
             
             Kategori kategoriG = kategoriDAO.read(conn, boenhetsType.getID());
-            List<Egenskap> skjekkegenskapG = egenskapDAO.readAll(conn, boenhetsType.getID());
-            List<Bilde> skjekkBildeG = bildeDAO.readAll(conn, boenhetsType.getID());
+            List<Egenskap> egenskaperG = egenskapDAO.readAll(conn, boenhetsType.getID());
             
-            out.println(skjekkegenskapG.get(0).getEgenskap() + skjekkegenskapG.get(1).getEgenskap());
             kategoriDAO.update(conn, kategoriN, kategoriG, boenhetsType);
-            egenskapDAO.update(conn, skjekkegenskapN, skjekkegenskapG, boenhetsType.getID());
-            bildeDAO.update(conn, skjekkBildeN, skjekkBildeG, boenhetsType);
-
-            /*  med egenskaper og bilder må vi nok finne en måte å fjerne de som 
-                ikke lenger er med og å legge til de som er nye, funker kanskje 
-                å lage en liste med det som er i databasen og sammenligne den
-                med den som er sendt med. Må kanskje overwrite equals og hashcode
-                på bilde og egenskap klassen.
-                - Are
-            
-            
-                if (!boenhetsType.getBilder().isEmpty()) {
-                    bildeDAO = new BildeDAO();
-                    for (Bilde bilde : boenhetsType.getBilder()) {
-                        bildeDAO.insert(conn, bilde, boenhetsType.getID());
-                    }
-                }
-
-                if (!boenhetsType.getEgenskaper().isEmpty()) {
-                    egenskapDAO = new EgenskapDAO();
-                    for (Egenskap egenskap : boenhetsType.getEgenskaper()) {
-                        egenskapDAO.insert(conn, egenskap, boenhetsType.getID());
-                    }
-                }
-             */
+            egenskapDAO.update(conn, egenskaperN, egenskaperG, boenhetsType.getID());
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {

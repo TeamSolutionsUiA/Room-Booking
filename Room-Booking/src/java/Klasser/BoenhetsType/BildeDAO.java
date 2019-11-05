@@ -207,18 +207,22 @@ public class BildeDAO {
         return iBruk;
     }
 
-    public void update(Connection conn, List<Bilde> bildeN, List<Bilde> bildeG, BoenhetsType boenhetsType) {
-
-        boolean fjernet = true;
+    public void update(List<Bilde> bildeN, int id) {
+        DbTool dbTool = new DbTool();
+        conn = dbTool.loggInn();
+        
+        List<Bilde> bildeG = readAll(conn, id);
+        
+        boolean fjernet;
         for (Bilde skjekkBildeG : bildeG) {
             fjernet = true;
             for (Bilde skjekkBildeN : bildeN) {
-                if (skjekkBildeN.getHash().equals(skjekkBildeG.getHash())) {
+                if (MD5Hash(skjekkBildeN.getBilde()).equals(skjekkBildeG.getHash())) {
                     fjernet = false;
                 }
             }
             if (fjernet) {
-                deleteLink(conn, skjekkBildeG, boenhetsType.getID());
+                deleteLink(conn, skjekkBildeG, id);
 
                 if (!iBruk(conn, skjekkBildeG)) {
                     deletebilde(conn, skjekkBildeG);
@@ -226,16 +230,16 @@ public class BildeDAO {
             }
         }
 
-        boolean lagtTil = true;
+        boolean lagtTil;
         for (Bilde skjekkBildeN : bildeN) {
             lagtTil = true;
             for (Bilde skjekkeBildeG : bildeG) {
-                if (skjekkBildeN.getHash().equals(skjekkeBildeG.getHash())) {
+                if (MD5Hash(skjekkBildeN.getBilde()).equals(skjekkeBildeG.getHash())) {
                     lagtTil = false;
                 }
             }
             if (lagtTil) {
-                insert(conn, skjekkBildeN, boenhetsType.getID());
+                insert(conn, skjekkBildeN, id);
             }
         }
     }

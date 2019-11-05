@@ -188,6 +188,17 @@ public class Read extends HttpServlet {
             out.println("<p><input type=\"hidden\" name=\"id\" value=\"" + boenhetsType.getID() + "\" readonly></p>");
             out.println("<p><input type=\"submit\" value=\"Slett\"></p>");
             out.println("</form>");
+            
+            out.println("<form action=\"boenhetstype/oppdater\" method=\"get\">");
+            out.println("<p><input type=\"hidden\" name=\"id\" value=\"" + boenhetsType.getID() + "\" readonly></p>");
+            out.println("<p><input type=\"submit\" value=\"Endre\"></p>");
+            out.println("</form>");
+            
+            out.println("<form action=\"boenhetstype/oppdater\" method=\"get\">");
+            out.println("<p><input type=\"hidden\" name=\"id\" value=\"" + boenhetsType.getID() + "\" readonly></p>");
+            out.println("<p><input type=\"hidden\" name=\"bilde\" value=\"true\" readonly></p>");
+            out.println("<p><input type=\"submit\" value=\"Endre bilder\"></p>");
+            out.println("</form>");
 
             out.println("<h2>Boenheter</h2>");
             out.println("<form action=\"boenhet/ny\" method=\"get\">");
