@@ -183,7 +183,15 @@ public class Read extends HttpServlet {
                 }
                 out.println("</p>");
             }
-
+            out.println("<form action=\"../bestilling/Bruker2.jsp\" method=\"get\">");
+            out.println("<p><input type=\"hidden\" name=\"id\" value=\"" + boenhetsType.getID() + "\" readonly></p>");
+            out.println("<p><input type=\"hidden\" name=\"fradato\" value=\"" + request.getParameter("fradato") + "\" readonly></p>");
+            out.println("<p><input type=\"hidden\" name=\"tildato\" value=\"" + request.getParameter("tildato") + "\" readonly></p>");
+            out.println("<p><input type=\"submit\" value=\"Book\"></p>");
+            out.println("</form>");
+            
+            //Sett inn if-setning som sjekker om bruker er logget inn
+            // Og at rolle er "Admin".
             out.println("<form action=\"boenhetstype/delete\" method=\"post\">");
             out.println("<p><input type=\"hidden\" name=\"id\" value=\"" + boenhetsType.getID() + "\" readonly></p>");
             out.println("<p><input type=\"submit\" value=\"Slett\"></p>");

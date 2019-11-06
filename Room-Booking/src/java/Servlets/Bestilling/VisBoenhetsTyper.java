@@ -96,7 +96,8 @@ public class VisBoenhetsTyper extends HttpServlet {
                         out.println("<h2>");
                         out.println(reqKategori);
                         out.println("</h2>");
-                        out.println("<a href=\"?id=" + boenhetsType.getID() + "\">");
+                        out.println("<a href=../boenhetstype?id=" + boenhetsType.getID() + "&fradato=" + reqStartDato
+                                + "&tildato=" + reqSluttDato + ">");
                         out.println("<h3>");
                         out.println(boenhetsType.getNavn());
                         out.println("</h3>");
@@ -144,7 +145,7 @@ public class VisBoenhetsTyper extends HttpServlet {
             } else {
                 request.setAttribute("error", "Beklager, søket ditt gav ingen treff."+
                         " Vennligst prøv igjen!");
-                request.getRequestDispatcher("BestillingNy.jsp").forward(request, response);
+                request.getRequestDispatcher("BoenhetSok1.jsp").forward(request, response);
             }
                 
         }
