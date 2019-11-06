@@ -68,6 +68,7 @@ public class sjekk extends HttpServlet {
         
             if( dao.check(epost,passord)!= null ){
                 
+                
                  HttpSession session = request.getSession();
                  
                  session.setAttribute("brukerId", bruker.getId());

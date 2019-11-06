@@ -17,6 +17,8 @@ public class loginDAO {
  private Connection conn;
  
  
+ 
+ 
  public Bruker check(String Epost, String passord) {
       try {
         DbTool dbTool = new DbTool();
