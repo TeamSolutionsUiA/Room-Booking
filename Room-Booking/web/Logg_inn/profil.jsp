@@ -1,6 +1,6 @@
 <%-- 
-    Document   : welcom
-    Created on : 08.okt.2019, 20:59:34
+    Document   : profil
+    Created on : 04.nov.2019, 17:39:39
     Author     : altee
 --%>
 
@@ -10,29 +10,15 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="style.css">
-         <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
-          <script src="https://kit.fontawesome.com/a076d05399.js"></script>
         <title>JSP Page</title>
     </head>
     <body>
-     <% 
-        if (session.getAttribute("fornavn1")== null && session.getAttribute("Etternavn")== null && 
-                session.getAttribute("brukerId")== null
-               
-              )
-        {
-           response.sendRedirect("login.jsp");
-        }
-        
-        
-     %>
-    
-     <nav>
+         <nav>
           
             <div class="log">
                 
                 <div class="loggin">
-                    <a class='nav-link1' href='' data-toggle="tooltip" title="logg inn her"> ${fornavn1} ${Etternavn}</a>
+                    <a class='nav-link1' href='/Room-Booking/Logg_inn//welcom.jsp' data-toggle="tooltip" title="logg inn her"> ${fornavn1} ${Etternavn}</a>
                     <a class='nav-link1' href="../HomePage/index.html" data-toggle="tooltip" title="loo ut konto"> logg ut</a>
                    <a class='nav-link1' href='profil.jsp' data-toggle="tooltip" title=""> Profil</a>
 
@@ -86,76 +72,37 @@
                 </p>
 
             </div>
-                    
-                     
-             
-       
-        
-             
-             
-      <script>
-                 window.onscroll = function() { scrollFunction();   };
-                  function scrollFunction() {
-            var soso = document.getElementById("navbar");
-            var sara = document.getElementsByClassName("nav-bar");
-            if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
-                soso.style.top = "0";
-                soso.style.display = "inline";
-                sara.style.display = "none";
-
-            } else {
-
-                soso.style.display = "none";
-                sara.style.display = "inline-block";
-            }
-
-              }
-         
-        var i = 0;
-                var col = new Array("rgba(241, 89, 34, 1)", "#9e009e");
-
-        function changebar() {
+      
+         <form action="" method="post" enctype="multipart/form-data">
+              <div class="col-login"> 
+                <div class="form-group">
+                <label class="control-label" for="input-Navn" id="fornavn">Fornavn*</label>
+                <input type="text" name="Navn" value="  ${fornavn1}" placeholder="Fornavn" id="input-fornavn" class="form-control" />
                 
-         document.getElementById("124").style.backgroundColor= col[i];
-         document.getElementById("navbar").style.backgroundColor= col[i];
-         document.getElementById("email").style.color= col[i];
-         document.getElementById("passord").style.color= col[i];
-         document.getElementById("button").style.backgroundColor= col[i];
-         document.getElementById("button1").style.backgroundColor= col[i];
-             i++;
-            if (i > col.length) {
-                i = 0;
-            }
-            window.setTimeout("changebar()", 3000);
-
-           }
-
-              window.onload = changebar();
+                </div>
+                <div class="form-group">
+                <label class="control-label" for="input-Etternavn" id="etternavn">Etternavn*</label>
+                <input type="text" name="Etternavn" value="${Etternavn}" placeholder="Etternavn" id="input-etternavn" class="form-control" />
               
-              
-                $(document).ready(function() {
-                   $("#loginForm").validate({
-                      rules: {
-                            email: {
-                           required: true,
-                            email: true
-                            },
+                </div>
+                   <div class="form-group">
+                <label class="control-label" for="input-Fodselsdato" id="fodsldato">Fødselsdato*</label>
+                <input type="text" name="Fodselsdato" value="${DOB}" id="input-foselsdato" class="form-control" placeholder="ÅÅÅÅ-MM-DD" required 
+                    pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" 
+                    title="Enter a date in this format YYYY-MM-DD"/>
+            
+                
+                </div>
+                  <div class="form-group">
+                <label class="control-label" for="input-Mobilnummer" id="mobil">Mobilnummer*</label>
+                <input type="number" name="Mobilnummer" value="${tele}" placeholder="Mobilnummer" id="input-Mobilnummer" class="form-control" />
+               
+                </div>
+                   <div class="form-group">
+                <label class="control-label" for="input-Epost" id="email">E-postadresse*</label>
+                <input type="email" value="${epost}" name="Epost" placeholder="Epost-adresse" id="input-email" class="form-control"/>
+                
+                </div>
          
-                            password: "required",
-                   },
-             
-                    messages: {
-                       email: {
-                    required: "Please enter email",
-                    email: "Please enter a valid email address"
-                      },
-                 
-                      password: "Please enter password"
-                   }
-             });
-  
-              });
-        </script>
-       
     </body>
 </html>

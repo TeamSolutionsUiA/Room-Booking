@@ -59,6 +59,15 @@ public class Bruker {
     this.epost = epost;
     this.telefon = telefon;
 }
+     public Bruker(String fornavn, String etternavn, String fodselsDato, String epost, String telefon){
+    
+   
+    this.fornavn = fornavn;
+    this.etternavn = etternavn;
+    this.fodselsDato = fodselsDato;
+    this.epost = epost;
+    this.telefon = telefon;
+}
 
     public int getId() {
         return id;

@@ -3,37 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package log_inn.Servlet;
+package Servlets.Bestilling;
 
+import Klasser.Bestilling.BestillingDAO;
 import Klasser.Bruker.Bruker;
-import Klasser.loginDAO;
-import Klasser.Bruker.PassordHasher;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author altee
  */
-@WebServlet(name = "sjekk", urlPatterns = {"/Logg_inn/login"})
- @MultipartConfig(fileSizeThreshold = 6291456, // 6 MB
-        maxFileSize = 10485760L, // 10 MB
-        maxRequestSize = 20971520L // 20 MB
-        )
-public class sjekk extends HttpServlet {
-   
-    private PassordHasher passordHasher;
-   
-  
-       /**
+@WebServlet(name = "CreateUtenId", urlPatterns = {"/bestilling/bestillUtenId"})
+public class CreateUtenId extends HttpServlet {
+
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
@@ -42,8 +31,7 @@ public class sjekk extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
-    protected void checking(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -51,52 +39,28 @@ public class sjekk extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet kjekk_loginn</title>");            
+            out.println("<title>Servlet CreateUtenId</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet kjekk_loginn at " + request.getContextPath() + "</h1>");
-           
-          passordHasher = new PassordHasher();
+            out.println("<h1>Servlet CreateUtenId at " + request.getContextPath() + "</h1>");
             
-          String epost=request.getParameter("epost");
-          String passord = passordHasher.krypterPassord(request.getParameter("passord"));
-          
-            loginDAO dao = new  loginDAO();
-           Bruker bruker = dao.check(epost, passord);
+             String start=request.getParameter("Bestilling-start");
+             String slutt=request.getParameter("Bestilling-slutt");
+              String fodselsdato =request.getParameter("Fodselsdato");
+               String telefon=request.getParameter("Mobilnummer");
+                String Epost=request.getParameter("Epost");
+                  String fornavn=request.getParameter("Navn");
+                    String etternavn=request.getParameter("Etternavn");
+                
+            Bruker bruker ;
+            bruker= new Bruker (fornavn , etternavn ,fodselsdato , Epost , telefon);
             
-            String destPage = "login.jsp";
-        
-            if( dao.check(epost,passord)!= null ){
-                
-                 HttpSession session = request.getSession();
-                 
-                 session.setAttribute("brukerId", bruker.getId());
-                 session.setAttribute("fornavn1", bruker.getFornavn());
-                 session.setAttribute("Etternavn", bruker.getEtternavn());
-                
-                 session.setAttribute("DOB", bruker.getFodselsDato());
-                 session.setAttribute("epost", bruker.getEpost());
-                 session.setAttribute("tele", bruker.getTelefon());
-                
-                
-              
-               
-              
-                
-              
-                response.sendRedirect("welcom.jsp");
-        }
-            else{
-                String message = "Invalid email/password";
-                request.setAttribute("message", message);
-                
-                /*response.sendRedirect("login.html");*/
-                RequestDispatcher dispatcher = request.getRequestDispatcher(destPage);
-                dispatcher.forward(request, response);
-                
-                
-            }
-             out.println("</body>");
+            BestillingDAO ab = new BestillingDAO();
+            
+              ab.insertBruker(bruker);
+            
+            
+            out.println("</body>");
             out.println("</html>");
         }
     }
@@ -113,7 +77,7 @@ public class sjekk extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        checking(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -127,7 +91,7 @@ public class sjekk extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-          checking(request, response);
+        processRequest(request, response);
     }
 
     /**

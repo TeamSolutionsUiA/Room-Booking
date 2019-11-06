@@ -67,7 +67,8 @@ public class BrukerDAO {
             List<Bruker> brukere = new ArrayList<Bruker>();
             
             while (rs.next()) {
-                bruker = new Bruker(rs.getInt("ID"), rs.getString("Fornavn"), rs.getString("Etternavn"), rs.getString("DOB"),
+                bruker = new Bruker(rs.getInt("ID"), 
+                        rs.getString("Fornavn"), rs.getString("Etternavn"), rs.getString("DOB"),
                         rs.getString("Epost"),rs.getString("Telefon"));
                         
                 brukere.add(bruker);
