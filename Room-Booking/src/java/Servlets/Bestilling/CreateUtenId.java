@@ -39,27 +39,26 @@ public class CreateUtenId extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CreateUtenId</title>");            
+            out.println("<title>Servlet CreateUtenId</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet CreateUtenId at " + request.getContextPath() + "</h1>");
-            
-             String start=request.getParameter("Bestilling-start");
-             String slutt=request.getParameter("Bestilling-slutt");
-              String fodselsdato =request.getParameter("Fodselsdato");
-               String telefon=request.getParameter("Mobilnummer");
-                String Epost=request.getParameter("Epost");
-                  String fornavn=request.getParameter("Navn");
-                    String etternavn=request.getParameter("Etternavn");
-                
-            Bruker bruker ;
-            bruker= new Bruker (fornavn , etternavn ,fodselsdato , Epost , telefon);
-            
+
+            String start = request.getParameter("Bestilling-start");
+            String slutt = request.getParameter("Bestilling-slutt");
+            String fodselsdato = request.getParameter("Fodselsdato");
+            String telefon = request.getParameter("Mobilnummer");
+            String Epost = request.getParameter("Epost");
+            String fornavn = request.getParameter("Navn");
+            String etternavn = request.getParameter("Etternavn");
+
+            Bruker bruker;
+            bruker = new Bruker(fornavn, etternavn, fodselsdato, Epost, telefon);
+
             BestillingDAO ab = new BestillingDAO();
-            
-              ab.insertBruker(bruker);
-            
-            
+
+            ab.insertBruker(bruker);
+
             out.println("</body>");
             out.println("</html>");
         }

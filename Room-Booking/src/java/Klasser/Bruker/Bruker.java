@@ -10,64 +10,60 @@ package Klasser.Bruker;
  * @author Jonathans
  */
 public class Bruker {
-    
+
     private int id;
     private String rolle;
     private String fornavn;
     private String etternavn;
-    private String fodselsDato; 
+    private String fodselsDato;
     private String epost;
     private String passord;
     private String telefon;
-    
-    
-    
-    public Bruker( ){
-    
-     
-     
-    
+
+    public Bruker() {
+
     }
-    
-    public Bruker(String rolle,String fornavn, String etternavn, String fodselsDato, String epost,String passord,String telefon){
-    
-    this.rolle = rolle;
-    this.fornavn = fornavn;
-    this.etternavn = etternavn;
-    this.fodselsDato = fodselsDato;
-    this.epost = epost;
-    this.passord = passord;
-    this.telefon = telefon;
-}
-    
-    public Bruker(int id,String fornavn, String etternavn, String fodselsDato, String epost, String passord, String telefon){
-    
-    this.id = id;
-    this.fornavn = fornavn;
-    this.etternavn = etternavn;
-    this.fodselsDato = fodselsDato;
-    this.epost = epost;
-    this.passord = passord;
-    this.telefon = telefon;
-}
-    public Bruker(int id,String fornavn, String etternavn, String fodselsDato, String epost, String telefon){
-    
-    this.id = id;
-    this.fornavn = fornavn;
-    this.etternavn = etternavn;
-    this.fodselsDato = fodselsDato;
-    this.epost = epost;
-    this.telefon = telefon;
-}
-     public Bruker(String fornavn, String etternavn, String fodselsDato, String epost, String telefon){
-    
-   
-    this.fornavn = fornavn;
-    this.etternavn = etternavn;
-    this.fodselsDato = fodselsDato;
-    this.epost = epost;
-    this.telefon = telefon;
-}
+
+    public Bruker(String rolle, String fornavn, String etternavn, String fodselsDato, String epost, String passord, String telefon) {
+
+        this.rolle = rolle;
+        this.fornavn = fornavn;
+        this.etternavn = etternavn;
+        this.fodselsDato = fodselsDato;
+        this.epost = epost;
+        this.passord = passord;
+        this.telefon = telefon;
+    }
+
+    public Bruker(int id, String fornavn, String etternavn, String fodselsDato, String epost, String passord, String telefon) {
+
+        this.id = id;
+        this.fornavn = fornavn;
+        this.etternavn = etternavn;
+        this.fodselsDato = fodselsDato;
+        this.epost = epost;
+        this.passord = passord;
+        this.telefon = telefon;
+    }
+
+    public Bruker(int id, String fornavn, String etternavn, String fodselsDato, String epost, String telefon) {
+
+        this.id = id;
+        this.fornavn = fornavn;
+        this.etternavn = etternavn;
+        this.fodselsDato = fodselsDato;
+        this.epost = epost;
+        this.telefon = telefon;
+    }
+
+    public Bruker(String fornavn, String etternavn, String fodselsDato, String epost, String telefon) {
+
+        this.fornavn = fornavn;
+        this.etternavn = etternavn;
+        this.fodselsDato = fodselsDato;
+        this.epost = epost;
+        this.telefon = telefon;
+    }
 
     public int getId() {
         return id;
@@ -132,5 +128,5 @@ public class Bruker {
     public void setTelefon(String telefon) {
         this.telefon = telefon;
     }
-    
+
 }

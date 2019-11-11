@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "Bestilling.Create", urlPatterns = {"/bestilling/bestillingCreate"})
 public class Create extends HttpServlet {
+
     private BestillingDAO bestillingDAO;
 
     /**
@@ -44,32 +45,26 @@ public class Create extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Create</title>");            
+            out.println("<title>Servlet Create</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet Create at " + request.getContextPath() + "</h1>");
-            
-            
-             String start=request.getParameter("Bestilling-start");
-             String slutt=request.getParameter("Bestilling-slutt");
-             String antall = request.getParameter("Bestilling-antall");
-              int antall2 = Integer.parseInt(antall);
-              
-              String id = request.getParameter("Bestilling-kategori");
-              int ID = Integer.parseInt(id);
-              
-              Bestilling bestilling  ;
-              bestilling = new Bestilling( start, slutt, ID , antall2);
-              
-              BestillingDAO ab = new BestillingDAO();
-            
-              ab.insert(bestilling);
-             
-    
-           
 
-             
-             
+            String start = request.getParameter("Bestilling-start");
+            String slutt = request.getParameter("Bestilling-slutt");
+            String antall = request.getParameter("Bestilling-antall");
+            int antall2 = Integer.parseInt(antall);
+
+            String id = request.getParameter("Bestilling-kategori");
+            int ID = Integer.parseInt(id);
+
+            Bestilling bestilling;
+            bestilling = new Bestilling(start, slutt, ID, antall2);
+
+            BestillingDAO ab = new BestillingDAO();
+
+            ab.insert(bestilling);
+
             out.println("</body>");
             out.println("</html>");
         }

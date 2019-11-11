@@ -12,8 +12,9 @@ import Klasser.Bruker.Bruker;
  * @author mohamJ
  */
 public class Bestilling {
-    private int bestillingsNummer; 
-    private String startDato ;
+
+    private int bestillingsNummer;
+    private String startDato;
     private String sluttDato;
     private int brukerID;
     private int antallPerson;
@@ -25,20 +26,23 @@ public class Bestilling {
         this.brukerID = brukerId;
         this.antallPerson = antallPerson;
     }
-  public Bestilling( String startDato, String sluttDato,int brukerId, int antallPerson) {
-        
+
+    public Bestilling(String startDato, String sluttDato, int brukerId, int antallPerson) {
+
         this.startDato = startDato;
         this.sluttDato = sluttDato;
         this.brukerID = brukerId;
         this.antallPerson = antallPerson;
     }
-   public Bestilling( String startDato, String sluttDato, int antallPerson) {
-        
+
+    public Bestilling(String startDato, String sluttDato, int antallPerson) {
+
         this.startDato = startDato;
         this.sluttDato = sluttDato;
-       
+
         this.antallPerson = antallPerson;
     }
+
     public int getbestillingsNummer() {
         return bestillingsNummer;
     }
@@ -78,6 +82,5 @@ public class Bestilling {
     public void setBrukerID(int brukerID) {
         this.brukerID = brukerID;
     }
-    
-   
+
 }

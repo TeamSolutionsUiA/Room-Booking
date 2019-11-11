@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Jonathans
  */
-
 @WebServlet(name = "Bestilling_VisBoenhetsTyper", urlPatterns = {"/bestilling/visBoenheter"})
 @MultipartConfig(fileSizeThreshold = 6291456, // 6 MB
         maxFileSize = 10485760L, // 10 MB
@@ -28,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 )
 
 public class VisBoenhetsTyper extends HttpServlet {
-    
+
     private BoenhetsTypeDAO boenhetsTypeDAO;
     private KategoriDAO kategoriDAO;
 
@@ -44,43 +43,41 @@ public class VisBoenhetsTyper extends HttpServlet {
     protected void visBoenhetsTyper(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        
+
         try (PrintWriter out = response.getWriter()) {
             // Innhenting av søkeord fra bruker.
             String reqKategori = request.getParameter("Bestilling-kategori");
             String reqStartDato = request.getParameter("Bestilling-start");
             String reqSluttDato = request.getParameter("Bestilling-slutt");
-            
+
             // Innhenting av alle tilgjengelige boenhetsTyper 
             // Må finnes i boenhettabell
-            String boenhetsTypeSQL = "SELECT BoenhetsType.* FROM ((((Boenhet LEFT JOIN BoenhetsType" +
-               " ON Boenhet.BoenhetsType_ID = BoenhetsType.ID)" +
-               " LEFT JOIN KategoriLink ON BoenhetsType.ID = KategoriLink.BoenhetsType_ID)" +
-               " LEFT JOIN Kategori ON KategoriLink.Kategori = Kategori.Kategori)" +
-               " LEFT JOIN BestillingsLinje" +
-               " ON Boenhet.BoenhetsNummer = BestillingsLinje.BoenhetsNummer)" +
-               " LEFT JOIN Bestilling ON Bestilling.Bestillingsnummer" +
-               " = BestillingsLinje.BestillingsNummer" +
-               " WHERE (BoenhetsType.PublisertStatus = 'true')" +
-               " AND (Kategori.Kategori = '"+reqKategori+"')" +
-               " AND Boenhet.BoenhetsNummer NOT IN (SELECT Boenhet.BoenhetsNummer FROM (Boenhet" +
-               " RIGHT JOIN BestillingsLinje" +
-               " ON BestillingsLinje.BoenhetsNummer = Boenhet.BoenhetsNummer)" +
-               " RIGHT JOIN Bestilling" +
-               " ON Bestilling.Bestillingsnummer = BestillingsLinje.BestillingsNummer" +
-               " WHERE (BoenhetsType.PublisertStatus = 'true')" +
-               " AND (Bestilling.SluttDato > '"+reqStartDato+"')" +
-               " AND (Bestilling.StartDato < '"+reqSluttDato+"'));";
+            String boenhetsTypeSQL = "SELECT BoenhetsType.* FROM ((((Boenhet LEFT JOIN BoenhetsType"
+                    + " ON Boenhet.BoenhetsType_ID = BoenhetsType.ID)"
+                    + " LEFT JOIN KategoriLink ON BoenhetsType.ID = KategoriLink.BoenhetsType_ID)"
+                    + " LEFT JOIN Kategori ON KategoriLink.Kategori = Kategori.Kategori)"
+                    + " LEFT JOIN BestillingsLinje"
+                    + " ON Boenhet.BoenhetsNummer = BestillingsLinje.BoenhetsNummer)"
+                    + " LEFT JOIN Bestilling ON Bestilling.Bestillingsnummer"
+                    + " = BestillingsLinje.BestillingsNummer"
+                    + " WHERE (BoenhetsType.PublisertStatus = 'true')"
+                    + " AND (Kategori.Kategori = '" + reqKategori + "')"
+                    + " AND Boenhet.BoenhetsNummer NOT IN (SELECT Boenhet.BoenhetsNummer FROM (Boenhet"
+                    + " RIGHT JOIN BestillingsLinje"
+                    + " ON BestillingsLinje.BoenhetsNummer = Boenhet.BoenhetsNummer)"
+                    + " RIGHT JOIN Bestilling"
+                    + " ON Bestilling.Bestillingsnummer = BestillingsLinje.BestillingsNummer"
+                    + " WHERE (BoenhetsType.PublisertStatus = 'true')"
+                    + " AND (Bestilling.SluttDato > '" + reqStartDato + "')"
+                    + " AND (Bestilling.StartDato < '" + reqSluttDato + "'));";
 
             boenhetsTypeDAO = new BoenhetsTypeDAO();
             kategoriDAO = new KategoriDAO();
             List<BoenhetsType> boenhetsTyper = boenhetsTypeDAO.readAll(boenhetsTypeSQL);
-                      
+
             //Printe ut resultat dersom det ikke er "null".
-            
-            if(boenhetsTyper != null) {
-            
+            if (boenhetsTyper != null) {
+
                 out.println("<!DOCTYPE html>");
                 out.println("<html>");
                 out.println("<head>");
@@ -88,7 +85,7 @@ public class VisBoenhetsTyper extends HttpServlet {
                 out.println("</head>");
                 out.println("<body>");
                 out.println("<h1>Tilgjengelige overnattingstilbud</h1>");
-                
+
                 for (BoenhetsType boenhetsType : boenhetsTyper) {
                     if (reqKategori.equals(boenhetsType.getKategori().getKategori())) {
                         out.println("<div>");
@@ -139,18 +136,17 @@ public class VisBoenhetsTyper extends HttpServlet {
                         out.println("</div>");
                     }
                 }
-                        out.println("</body>");
-                        out.println("</html>");
+                out.println("</body>");
+                out.println("</html>");
 
             } else {
-                request.setAttribute("error", "Beklager, søket ditt gav ingen treff."+
-                        " Vennligst prøv igjen!");
+                request.setAttribute("error", "Beklager, søket ditt gav ingen treff."
+                        + " Vennligst prøv igjen!");
                 request.getRequestDispatcher("BoenhetSok1.jsp").forward(request, response);
             }
-                
+
         }
     }
-
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
