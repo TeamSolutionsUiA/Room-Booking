@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Klasser;
+package Klasser.BoenhetsType;
 
-import java.io.PrintWriter;
+import Klasser.DbTool;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +19,7 @@ public class BoenhetsTypeDAO {
     private Connection conn;
     private BildeDAO bildeDAO;
     private EgenskapDAO egenskapDAO;
+    private KategoriDAO kategoriDAO;
     private BoenhetsType boenhetsType;
 
     public int insert(BoenhetsType boenhetsType) {
@@ -26,21 +27,23 @@ public class BoenhetsTypeDAO {
         conn = dbTool.loggInn();
 
         try {
-            String sql = "INSERT INTO LeilighetsType (Navn, Kategori, Enkeltsenger, Dobeltsenger, Beskrivelse, Pris) "
-                    + "VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO boenhetstype (Navn, Enkeltsenger, Dobeltsenger, Beskrivelse, Pris) "
+                    + "VALUES (?, ?, ?, ?, ?)";
 
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, boenhetsType.getNavn());
-            statement.setString(2, boenhetsType.getKategori());
-            statement.setInt(3, boenhetsType.getEnkeltsenger());
-            statement.setInt(4, boenhetsType.getDobeltsenger());
-            statement.setString(5, boenhetsType.getBeskrivelse());
-            statement.setInt(6, boenhetsType.getPris());
+            statement.setInt(2, boenhetsType.getEnkeltsenger());
+            statement.setInt(3, boenhetsType.getDobeltsenger());
+            statement.setString(4, boenhetsType.getBeskrivelse());
+            statement.setInt(5, boenhetsType.getPris());
 
-            int rowsInserted = statement.executeUpdate();
+            statement.executeUpdate();
             ResultSet idRs = statement.getGeneratedKeys();
             if (idRs.next()) {
                 int id = idRs.getInt(1);
+
+                kategoriDAO = new KategoriDAO();
+                kategoriDAO.insert(conn, boenhetsType.getKategori(), id);
 
                 if (!boenhetsType.getBilder().isEmpty()) {
                     bildeDAO = new BildeDAO();
@@ -73,13 +76,14 @@ public class BoenhetsTypeDAO {
 
         try {
             Statement stm = conn.createStatement();
-            String query = "SELECT * From LeilighetsType";
+            String query = "SELECT * From boenhetstype";
             ResultSet rs = stm.executeQuery(query);
-            List<BoenhetsType> boenhetsTyper = new ArrayList<BoenhetsType>();
+            List<BoenhetsType> boenhetsTyper = new ArrayList<>();
+            kategoriDAO = new KategoriDAO();
             egenskapDAO = new EgenskapDAO();
             bildeDAO = new BildeDAO();
             while (rs.next()) {
-                boenhetsType = new BoenhetsType(rs.getInt("ID"), rs.getString("Navn"), rs.getString("Kategori"),
+                boenhetsType = new BoenhetsType(rs.getInt("ID"), rs.getString("Navn"), kategoriDAO.read(conn, rs.getInt("ID")),
                         rs.getInt("EnkeltSenger"), rs.getInt("DobeltSenger"),
                         rs.getString("Beskrivelse"), rs.getInt("Pris"),
                         bildeDAO.readAll(conn, rs.getInt("ID")),
@@ -94,21 +98,33 @@ public class BoenhetsTypeDAO {
         }
         return null;
     }
-
-    public List<String> readAllKategorier() {
+    
+    public List<BoenhetsType> readAll(String sql ) {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
-
+        String query = sql;
+        List<BoenhetsType> boenhetsTyper = new ArrayList<>();
+        
         try {
             Statement stm = conn.createStatement();
-            String query = "SELECT DISTINCT Kategori FROM LeilighetsType";
             ResultSet rs = stm.executeQuery(query);
-            List<String> kategori = new ArrayList<String>();
-
+            kategoriDAO = new KategoriDAO();
+            egenskapDAO = new EgenskapDAO();
+            bildeDAO = new BildeDAO();
+            
             while (rs.next()) {
-                kategori.add(rs.getString("Kategori"));
+                boenhetsType = new BoenhetsType(rs.getInt("ID"), rs.getString("Navn"), kategoriDAO.read(conn, rs.getInt("ID")),
+                        rs.getInt("EnkeltSenger"), rs.getInt("DobeltSenger"),
+                        rs.getString("Beskrivelse"), rs.getInt("Pris"),
+                        bildeDAO.readAll(conn, rs.getInt("ID")),
+                        egenskapDAO.readAll(conn, rs.getInt("ID")));
+                boenhetsTyper.add(boenhetsType);
             }
-            return kategori;
+            if(!boenhetsTyper.isEmpty()){
+                    return boenhetsTyper;
+            } else {
+                return null;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -122,19 +138,22 @@ public class BoenhetsTypeDAO {
         conn = dbTool.loggInn();
 
         try {
-            String query = "SELECT * FROM LeilighetsType WHERE ID = ?";
+            String query = "SELECT * FROM boenhetstype WHERE ID = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, id);
             ResultSet rs = stm.executeQuery();
 
             egenskapDAO = new EgenskapDAO();
             bildeDAO = new BildeDAO();
+            kategoriDAO = new KategoriDAO();
+
             rs.next();
-            boenhetsType = new BoenhetsType(rs.getInt("ID"), rs.getString("Navn"), rs.getString("Kategori"),
-                    rs.getInt("EnkeltSenger"), rs.getInt("DobeltSenger"),
+
+            boenhetsType = new BoenhetsType(id, rs.getString("Navn"), kategoriDAO.read(conn, id),
+                    rs.getInt("Enkeltsenger"), rs.getInt("Dobeltsenger"),
                     rs.getString("Beskrivelse"), rs.getInt("Pris"),
-                    bildeDAO.readAll(conn, rs.getInt("ID")),
-                    egenskapDAO.readAll(conn, rs.getInt("ID")));
+                    bildeDAO.readAll(conn, id),
+                    egenskapDAO.readAll(conn, id));
 
             return boenhetsType;
         } catch (SQLException e) {
@@ -150,43 +169,30 @@ public class BoenhetsTypeDAO {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
 
+        egenskapDAO = new EgenskapDAO();
+        bildeDAO = new BildeDAO();
+        kategoriDAO = new KategoriDAO();
+
+        List<Egenskap> egenskaperN = boenhetsType.getEgenskaper();
+        Kategori kategoriN = boenhetsType.getKategori();
         try {
-            String sql = "UPDATE LeilighetsType SET Navn=?, Kategori=?, Enkeltsenger=?, Dobeltsenger=?, Beskrivelse=?, Pris=? WHERE ID=?";
+            String sql = "UPDATE boenhetstype SET Navn=?, Enkeltsenger=?, Dobeltsenger=?, Beskrivelse=?, Pris=? WHERE ID=?";
 
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, boenhetsType.getNavn());
-            statement.setString(2, boenhetsType.getKategori());
-            statement.setInt(3, boenhetsType.getEnkeltsenger());
-            statement.setInt(4, boenhetsType.getDobeltsenger());
-            statement.setString(5, boenhetsType.getBeskrivelse());
-            statement.setInt(6, boenhetsType.getPris());
-            statement.setInt(7, boenhetsType.getID());
+            statement.setInt(2, boenhetsType.getEnkeltsenger());
+            statement.setInt(3, boenhetsType.getDobeltsenger());
+            statement.setString(4, boenhetsType.getBeskrivelse());
+            statement.setInt(5, boenhetsType.getPris());
+            statement.setInt(6, boenhetsType.getID());
 
-            int rowsInserted = statement.executeUpdate();
-            ResultSet rs = statement.getGeneratedKeys();
-
-            /*  med egenskaper og bilder må vi nok finne en måte å fjerne de som 
-                ikke lenger er med og å legge til de som er nye, funker kanskje 
-                å lage en liste med det som er i databasen og sammenligne den
-                med den som er sendt med. Må kanskje overwrite equals og hashcode
-                på bilde og egenskap klassen.
-                - Are
+            statement.executeUpdate();
             
+            Kategori kategoriG = kategoriDAO.read(conn, boenhetsType.getID());
+            List<Egenskap> egenskaperG = egenskapDAO.readAll(conn, boenhetsType.getID());
             
-                if (!boenhetsType.getBilder().isEmpty()) {
-                    bildeDAO = new BildeDAO();
-                    for (Bilde bilde : boenhetsType.getBilder()) {
-                        bildeDAO.insert(conn, bilde, boenhetsType.getID());
-                    }
-                }
-
-                if (!boenhetsType.getEgenskaper().isEmpty()) {
-                    egenskapDAO = new EgenskapDAO();
-                    for (Egenskap egenskap : boenhetsType.getEgenskaper()) {
-                        egenskapDAO.insert(conn, egenskap, boenhetsType.getID());
-                    }
-                }
-             */
+            kategoriDAO.update(conn, kategoriN, kategoriG, boenhetsType);
+            egenskapDAO.update(conn, egenskaperN, egenskaperG, boenhetsType.getID());
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -201,11 +207,13 @@ public class BoenhetsTypeDAO {
         try {
             egenskapDAO = new EgenskapDAO();
             bildeDAO = new BildeDAO();
+            kategoriDAO = new KategoriDAO();
             
             egenskapDAO.delete(conn, id);
             bildeDAO.delete(conn, id);
-            
-            String query = "DELETE FROM LeilighetsType WHERE ID = ?";
+            kategoriDAO.delete(conn, id);
+
+            String query = "DELETE FROM boenhetstype WHERE ID = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, id);
             stm.executeUpdate();

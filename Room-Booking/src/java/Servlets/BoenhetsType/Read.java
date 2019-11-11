@@ -5,8 +5,10 @@
  */
 package Servlets.BoenhetsType;
 
-import Klasser.Bilde;
-import Klasser.BoenhetsType;
+import Klasser.Boenhet.Boenhet;
+import Klasser.Boenhet.BoenhetDAO;
+import Klasser.BoenhetsType.Bilde;
+import Klasser.BoenhetsType.BoenhetsType;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -15,8 +17,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import Klasser.BoenhetsTypeDAO;
-import Klasser.Egenskap;
+import Klasser.BoenhetsType.BoenhetsTypeDAO;
+import Klasser.BoenhetsType.Egenskap;
+import Klasser.BoenhetsType.KategoriDAO;
 import javax.servlet.annotation.MultipartConfig;
 
 /**
@@ -31,6 +34,8 @@ import javax.servlet.annotation.MultipartConfig;
 public class Read extends HttpServlet {
 
     private BoenhetsTypeDAO boenhetsTypeDAO;
+    private KategoriDAO kategoriDAO;
+    private BoenhetDAO boenhetDAO;
 
     /**
      * Beskrivelse
@@ -52,8 +57,14 @@ public class Read extends HttpServlet {
             out.println("<body>");
             out.println("<h1>BoenhetsTyper</h1>");
             boenhetsTypeDAO = new BoenhetsTypeDAO();
-            List<String> kategorier = boenhetsTypeDAO.readAllKategorier();
+            kategoriDAO = new KategoriDAO();
+            List<String> kategorier = kategoriDAO.readAll();
             List<BoenhetsType> boenhetsTyper = boenhetsTypeDAO.readAll();
+
+            out.println("<h2>Boenheter</h2>");
+            out.println("<form action=\"boenhetstype/ny\" method=\"get\">");
+            out.println("<p><input type=\"submit\" value=\"Legg til boenhetstype\"></p>");
+            out.println("</form>");
 
             for (String kategori : kategorier) {
                 out.println("<div>");
@@ -62,7 +73,7 @@ public class Read extends HttpServlet {
                 out.println("</h2>");
 
                 for (BoenhetsType boenhetsType : boenhetsTyper) {
-                    if (kategori.equals(boenhetsType.getKategori())) {
+                    if (kategori.equals(boenhetsType.getKategori().getKategori())) {
                         out.println("<div>");
                         out.println("<a href=\"?id=" + boenhetsType.getID() + "\">");
                         out.println("<h3>");
@@ -78,7 +89,11 @@ public class Read extends HttpServlet {
                         if (sengTotal > 0) {
                             out.println("<p>");
                             out.println("Antall enkeltsenger" + eSeng);
+                            out.println("</p>");
+                            out.println("<p>");
                             out.println("Antall dobbelsenger" + dSeng);
+                            out.println("</p>");
+                            out.println("<p>");
                             out.println("Antall sengeplasser " + sengTotal);
                             out.println("</p>");
                         }
@@ -97,7 +112,7 @@ public class Read extends HttpServlet {
                             out.println("<div>");
                             out.println("<h4>Bilder:</h4>");
                             for (Bilde bilde : bilder) {
-                                out.println("<img src=\"" + request.getContextPath() + "/bilde?id=" + bilde.getID() + "\" width=\"400px\" />");
+                                out.println("<img src=\"" + request.getContextPath() + "/bilde?id=" + bilde.getHash() + "\" width=\"400px\" />");
                             }
                             out.println("</div>");
                         }
@@ -136,12 +151,12 @@ public class Read extends HttpServlet {
                 out.println("<div>");
                 out.println("<h4>Bilder:</h4>");
                 for (Bilde bilde : bilder) {
-                    out.println("<img src=\"" + request.getContextPath() + "/bilde?id=" + bilde.getID() + "\" width=\"400px\" />");
+                    out.println("<img src=\"" + request.getContextPath() + "/bilde?id=" + bilde.getHash() + "\" width=\"400px\" />");
                 }
                 out.println("</div>");
             }
 
-            out.println("<h2>" + boenhetsType.getKategori() + "</h2>");
+            out.println("<h2>" + boenhetsType.getKategori().getKategori() + "</h2>");
 
             out.println("<p>" + boenhetsType.getBeskrivelse() + "</p>");
 
@@ -168,10 +183,54 @@ public class Read extends HttpServlet {
                 }
                 out.println("</p>");
             }
-            
+            out.println("<form action=\"bestilling/Bruker2.jsp\" method=\"get\">");
+            out.println("<p><input type=\"hidden\" name=\"id\" value=\"" + boenhetsType.getID() + "\" readonly></p>");
+            out.println("<p><input type=\"hidden\" name=\"fradato\" value=\"" + request.getParameter("fradato") + "\" readonly></p>");
+            out.println("<p><input type=\"hidden\" name=\"tildato\" value=\"" + request.getParameter("tildato") + "\" readonly></p>");
+            out.println("<p><input type=\"submit\" value=\"Book\"></p>");
+            out.println("</form>");
+
+            //Sett inn if-setning som sjekker om bruker er logget inn
+            // Og at rolle er "Admin".
             out.println("<form action=\"boenhetstype/delete\" method=\"post\">");
-            out.println("<p><input type=\"hidden\" name=\"id\" placeholder=\"ID\" value=\"" + boenhetsType.getID() + "\" readonly></p>");
+            out.println("<p><input type=\"hidden\" name=\"id\" value=\"" + boenhetsType.getID() + "\" readonly></p>");
             out.println("<p><input type=\"submit\" value=\"Slett\"></p>");
+            out.println("</form>");
+
+            out.println("<form action=\"boenhetstype/oppdater\" method=\"get\">");
+            out.println("<p><input type=\"hidden\" name=\"id\" value=\"" + boenhetsType.getID() + "\" readonly></p>");
+            out.println("<p><input type=\"submit\" value=\"Endre\"></p>");
+            out.println("</form>");
+
+            out.println("<form action=\"boenhetstype/oppdater\" method=\"get\">");
+            out.println("<p><input type=\"hidden\" name=\"id\" value=\"" + boenhetsType.getID() + "\" readonly></p>");
+            out.println("<p><input type=\"hidden\" name=\"bilde\" value=\"true\" readonly></p>");
+            out.println("<p><input type=\"submit\" value=\"Endre bilder\"></p>");
+            out.println("</form>");
+
+            out.println("<h2>Boenheter</h2>");
+            out.println("<form action=\"boenhet/ny\" method=\"get\">");
+            out.println("<p><input type=\"hidden\" name=\"id\" value=\"" + boenhetsType.getID() + "\" readonly></p>");
+            out.println("<p><input type=\"submit\" value=\"Legg til enhet\"></p>");
+            out.println("</form>");
+
+            boenhetDAO = new BoenhetDAO();
+            List<Boenhet> boenheter = boenhetDAO.readAll(boenhetsType.getID());
+            for (Boenhet boenhet : boenheter) {
+                out.println("<h3>" + boenhet.getBoenhetsnummer() + "</h3>");
+                out.println("<form action=\"boenhet/oppdater\" method=\"get\">");
+                out.println("<p><input type=\"hidden\" name=\"boenhet\" value=\"" + boenhet.getBoenhetsnummer() + "\" readonly></p>");
+                out.println("<p><input type=\"submit\" value=\"Endre\"></p>");
+                out.println("</form>");
+
+                out.println("<form action=\"boenhet/delete\" method=\"post\">");
+                out.println("<p><input type=\"hidden\" name=\"boenhet\" value=\"" + boenhet.getBoenhetsnummer() + "\" readonly></p>");
+                out.println("<p><input type=\"hidden\" name=\"id\" value=\"" + boenhetsType.getID() + "\" readonly></p>");
+                out.println("<p><input type=\"submit\" value=\"Slett\"></p>");
+                out.println("</form>");
+
+            }
+
             out.println("</div>");
 
             out.println("</body>");
@@ -194,7 +253,7 @@ public class Read extends HttpServlet {
         if (request.getParameter("id") == null || request.getParameter("id").equals("null")) {
             readAll(request, response);
         } else {
-            
+
             read(request, response);
         }
     }

@@ -3,12 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Servlets;
+package Servlets.Bestilling;
 
-import Klasser.BoenhetsType.Bilde;
-import Klasser.BoenhetsType.BildeDAO;
+import Klasser.Bestilling.Bestilling;
+import Klasser.Bestilling.BestillingDAO;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,12 +20,12 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author arefj
+ * @author mohamJ
  */
-@WebServlet(name = "BildeServlet", urlPatterns = {"/bilde"})
-public class BildeServlet extends HttpServlet {
+@WebServlet(name = "Bestilling.Create", urlPatterns = {"/bestilling/bestillingCreate"})
+public class Create extends HttpServlet {
 
-    BildeDAO bildeDAO;
+    private BestillingDAO bestillingDAO;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,19 +35,38 @@ public class BildeServlet extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * @throws java.sql.SQLException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-            
-        String bildeID = request.getParameter("id");
+            throws ServletException, IOException, SQLException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet Create</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet Create at " + request.getContextPath() + "</h1>");
 
-        bildeDAO = new BildeDAO();
-        Bilde bilde = bildeDAO.read(bildeID);
+            String start = request.getParameter("Bestilling-start");
+            String slutt = request.getParameter("Bestilling-slutt");
+            String antall = request.getParameter("Bestilling-antall");
+            int antall2 = Integer.parseInt(antall);
 
-        response.setContentType("image/*");
-        try (OutputStream os = response.getOutputStream()) {
-            os.write(bilde.getBilde());
-            os.flush();
+            String id = request.getParameter("Bestilling-kategori");
+            int ID = Integer.parseInt(id);
+
+            Bestilling bestilling;
+            bestilling = new Bestilling(start, slutt, ID, antall2);
+
+            BestillingDAO ab = new BestillingDAO();
+
+            ab.insert(bestilling);
+
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 
@@ -60,7 +82,11 @@ public class BildeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(Create.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -74,7 +100,11 @@ public class BildeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(Create.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

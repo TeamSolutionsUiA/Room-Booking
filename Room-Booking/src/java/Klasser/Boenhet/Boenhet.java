@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Klasser;
+package Klasser.Boenhet;
 
 /**
  *
@@ -14,21 +14,21 @@ package Klasser;
 
 
 public class Boenhet {
-private int boenhetsnummer;    
-
-   
+private String boenhetsnummer;       
 private int boenhetstypeID;
 
-public void Boenhet(int boenhetsnummer, int BoenhetstypeID) {
+public Boenhet(String boenhetsnummer, int BoenhetstypeID) {
     this.boenhetsnummer = boenhetsnummer;
     this.boenhetstypeID =BoenhetstypeID;
     
 }
- public int getBoenhetsnummer() {
+
+
+ public String getBoenhetsnummer() {
         return boenhetsnummer;
     }
 
-public void setBoenhetsnummer(int boenhetsnummer) {
+public void setBoenhetsnummer(String boenhetsnummer) {
         this.boenhetsnummer = boenhetsnummer;
     }
 

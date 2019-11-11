@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Klasser;
+package Klasser.BoenhetsType;
 
-import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -16,7 +15,7 @@ public class BoenhetsType {
 
     private int ID;
     private String navn;
-    private String kategori;
+    private Kategori kategori;
     private int enkeltsenger;
     private int dobeltsenger;
     private String beskrivelse;
@@ -24,7 +23,7 @@ public class BoenhetsType {
     private List<Bilde> bilder;
     private List<Egenskap> egenskaper;
 
-    public BoenhetsType(String navn, String kategori, int enkeltsenger, int dobeltsenger, String beskrivelse, int pris, List<Bilde> bilder, List<Egenskap> egenskaper) {
+    public BoenhetsType(String navn, Kategori kategori, int enkeltsenger, int dobeltsenger, String beskrivelse, int pris, List<Bilde> bilder, List<Egenskap> egenskaper) {
         this.navn = navn;
         this.kategori = kategori;
         this.enkeltsenger = enkeltsenger;
@@ -35,7 +34,7 @@ public class BoenhetsType {
         this.egenskaper = egenskaper;
     }
 
-    public BoenhetsType(int ID, String navn, String kategori, int enkeltsenger, int dobeltsenger, String beskrivelse, int pris, List<Bilde> bilder, List<Egenskap> egenskaper) {
+    public BoenhetsType(int ID, String navn, Kategori kategori, int enkeltsenger, int dobeltsenger, String beskrivelse, int pris, List<Bilde> bilder, List<Egenskap> egenskaper) {
         this.ID = ID;
         this.navn = navn;
         this.kategori = kategori;
@@ -63,11 +62,11 @@ public class BoenhetsType {
         this.navn = navn;
     }
 
-    public String getKategori() {
+    public Kategori getKategori() {
         return kategori;
     }
 
-    public void setKategori(String kategori) {
+    public void setKategori(Kategori kategori) {
         this.kategori = kategori;
     }
 

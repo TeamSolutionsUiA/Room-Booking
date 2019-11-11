@@ -1,3 +1,5 @@
+
+  
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -26,17 +28,18 @@ public class BrukerDAO {
 
            try {
            
-                String sql = "INSERT INTO Bruker (Rolle, Navn, Fodsels_Dato, Epost, Passord, Telefon)"
-                    + "VALUES (?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO Bruker (Rolle, Fornavn, Etternavn, DOB, Epost, Passord, Telefon)"
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
                 PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 
                 statement.setString(1, bruker.getRolle());
-                statement.setString(2, bruker.getNavn());
-                statement.setString(3, bruker.getFodselsDato());
-                statement.setString(4, bruker.getEpost());
-                statement.setString(5, bruker.getPassord());
-                statement.setInt(6, bruker.getTelefon());
+                statement.setString(2, bruker.getFornavn());
+                statement.setString(3, bruker.getEtternavn());
+                statement.setString(4, bruker.getFodselsDato());
+                statement.setString(5, bruker.getEpost());
+                statement.setString(6, bruker.getPassord());
+                statement.setString(7, bruker.getTelefon());
 
                 int rowsInserted = statement.executeUpdate();
                 ResultSet idRs = statement.getGeneratedKeys();
@@ -64,8 +67,9 @@ public class BrukerDAO {
             List<Bruker> brukere = new ArrayList<Bruker>();
             
             while (rs.next()) {
-                bruker = new Bruker(rs.getInt("ID"), rs.getString("Navn"), rs.getString("Fodsels_Dato"),
-                        rs.getString("Epost"),rs.getInt("Telefon"));
+                bruker = new Bruker(rs.getInt("ID"), 
+                        rs.getString("Fornavn"), rs.getString("Etternavn"), rs.getString("DOB"),
+                        rs.getString("Epost"),rs.getString("Telefon"));
                         
                 brukere.add(bruker);
             }
@@ -89,8 +93,8 @@ public class BrukerDAO {
             ResultSet rs = stm.executeQuery();
 
             rs.next();
-           bruker = new Bruker(rs.getInt("ID"), rs.getString("Navn"), rs.getString("Fodsels_Dato"),
-                    rs.getString("Epost"), rs.getInt("Telefon"));
+           bruker = new Bruker(rs.getInt("ID"),rs.getString("Fornavn"), rs.getString("Etternavn"), rs.getString("DOB"),
+                    rs.getString("Epost"), rs.getString("Telefon"));
                     
 
             return bruker;
@@ -124,26 +128,68 @@ public class BrukerDAO {
         return brukerEksist;
          }
     
-    public void update(Bruker bruker) {
+    public int update(Bruker bruker) {
         DbTool dbTool = new DbTool();
-        conn=dbTool.loggInn();
+        conn = dbTool.loggInn();
         try {
-            String sql = "update bruker set navn=? , fodselsDato=? , epost=? , telefon=?";
+            String sql = "UPDATE Bruker SET Fornavn=?, Etternavn=?, DOB=?, Epost=?, Passord=?, Telefon=? WHERE ID=?";
             PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, bruker.getNavn());
-            statement.setString(2, bruker.getFodselsDato());
-            statement.setString(3, bruker.getEpost());
-            statement.setInt(4, bruker.getTelefon());
             
-            int rowsInserted = statement.executeUpdate();
-            ResultSet rs = statement.getGeneratedKeys();
+            statement.setString(1, bruker.getFornavn());
+            statement.setString(2, bruker.getEtternavn());
+            statement.setString(3, bruker.getFodselsDato());
+            statement.setString(4, bruker.getEpost());
+            statement.setString(5, bruker.getPassord());
+            statement.setString(6, bruker.getTelefon());
+            statement.setInt(7, bruker.getId());
+            
+             int rowsInserted = statement.executeUpdate();
+            
+                if (rowsInserted != 0) {
+                    int id = bruker.getId();
+            
+                return id;
+            
+            } else {
+                throw new SQLException("Ingen ID returnert");
+            }
         }
-        catch (SQLException e) {
+          catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return 0;
+       
     }
+    public boolean delete(int brukerID) {
+       
+        DbTool dbTool = new DbTool();
+        conn = dbTool.loggInn();
 
+        
+        try {
+            String query = "DELETE FROM Bruker WHERE ID = ? ";
+            PreparedStatement statement = conn.prepareStatement(query);
+            statement.setInt(1, brukerID);
+           
+            statement.executeUpdate();
+            
+            Bruker brukerSjekk = read(brukerID);
+            if(brukerSjekk == null) {
+                return true;
+            } else {
+                
+                throw new SQLException("Brukeren ble ikke slettet fra databasen");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
 }
        
+

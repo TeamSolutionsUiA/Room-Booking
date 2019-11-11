@@ -5,10 +5,11 @@
  */
 package Servlets.BoenhetsType;
 
-import Klasser.Bilde;
-import Klasser.BoenhetsType;
-import Klasser.BoenhetsTypeDAO;
-import Klasser.Egenskap;
+import Klasser.BoenhetsType.Bilde;
+import Klasser.BoenhetsType.BoenhetsType;
+import Klasser.BoenhetsType.BoenhetsTypeDAO;
+import Klasser.BoenhetsType.Egenskap;
+import Klasser.BoenhetsType.Kategori;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -61,8 +62,8 @@ public class Create extends HttpServlet {
             String prisStr = request.getParameter("Pris");
             int pris = Integer.parseInt(prisStr);
 
-            String kategori = request.getParameter("Kategori");
-            
+            Kategori kategori = new Kategori(request.getParameter("Kategori"));
+
             String egenskaper = request.getParameter("Egenskaper");
             List<Egenskap> egenskaperList = new ArrayList();
             for (String egenskap : egenskaper.split(",")) {
@@ -82,7 +83,7 @@ public class Create extends HttpServlet {
             boenhetsType = new BoenhetsType(navn, kategori, enkeltsenger, dobeltsenger, beskrivelse, pris, bilder, egenskaperList);
             boenhetsTypeDAO = new BoenhetsTypeDAO();
             int id = boenhetsTypeDAO.insert(boenhetsType);
-
+            
             if (id != 0) {
                 String reDir = "../boenhetstype?id=" + id;
                 response.sendRedirect(reDir);
@@ -103,7 +104,7 @@ public class Create extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         RequestDispatcher dispacher = request.getRequestDispatcher("ny.html");
-                dispacher.forward(request, response);
+        dispacher.forward(request, response);
     }
 
     /**

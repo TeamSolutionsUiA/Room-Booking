@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Servlets.BoenhetsType;
+package Servlets.Boenhet;
 
-import Klasser.BoenhetsType.BoenhetsTypeDAO;
+import Klasser.Boenhet.BoenhetDAO;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,12 +15,12 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author arefj
+ * @author lasse
  */
-@WebServlet(name = "BoenhetsType_Delete", urlPatterns = {"/boenhetstype/delete"})
+@WebServlet(name = "Boenhet_Delete", urlPatterns = {"/boenhet/delete"})
 public class Delete extends HttpServlet {
 
-    private BoenhetsTypeDAO boenhetsTypeDAO;
+    private BoenhetDAO boenhetDAO;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,19 +33,19 @@ public class Delete extends HttpServlet {
      */
     protected void delete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String idStr = request.getParameter("id");
-        int id = Integer.parseInt(idStr);
 
-        boenhetsTypeDAO = new BoenhetsTypeDAO();
-        boenhetsTypeDAO.delete(id);
+        String boenhet = request.getParameter("boenhet");
+        String id = request.getParameter("id");
 
-        String reDir = "../boenhetstype";
+        boenhetDAO = new BoenhetDAO();
+        boenhetDAO.delete(boenhet);
+
+        String reDir = "../boenhetstype?id=" + id;
         response.sendRedirect(reDir);
 
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

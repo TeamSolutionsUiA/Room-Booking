@@ -36,27 +36,27 @@ import javax.servlet.RequestDispatcher;
        
        private BrukerDAO brukerDAO;
        private InputErrorBehandler inputBehandler;
+       private PassordHasher passordHasher;
        
        // Maps med alle errormeldinger og alle input-verdier som skal 
        //gjenbrukes hvis feil oppstår
         Map<String, String> errors; 
-        Map<String, String> afters; 
+        Map<String, String> after; 
        
        protected void insert(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
         
- 
         try (PrintWriter out = response.getWriter()) {
-out.println("getWriter = ok");
+out.println("getWriter = ok");      
             
-            //Innhenting av alle parametere
             String rolle = "Bruker";
             
             String forNavn = request.getParameter("Navn");
             String etterNavn = request.getParameter("Etternavn");
-            String navn = forNavn + " " + etterNavn;
-out.println(navn);
+        
+out.println(forNavn);
+out.println(etterNavn);
            
             String fodselsDato = request.getParameter("Fodselsdato");
             
@@ -67,27 +67,31 @@ out.println(fodselsDato);
             
 out.println(epost);
             
+            // Innhenting og kryptering av passord:
+            passordHasher = new PassordHasher();
+            
             String verifPassord = "";
-            String passord = request.getParameter("Passord");
-            String passordBekreft = request.getParameter("Re-passord");
+            String passord = passordHasher.krypterPassord(request.getParameter("Passord"));
+            String passordBekreft = passordHasher.krypterPassord(request.getParameter("Re-passord"));
             if(passordBekreft.equals(passord)){
                 verifPassord = passord;
+                
             }
 out.println(verifPassord);
             
-            String telefonStr = request.getParameter("Mobilnummer");
-            int telefon = Integer.parseInt(telefonStr);
+            String telefon = request.getParameter("Mobilnummer");
+
 out.println(telefon);          
             // Legger inn alle parametere i liste (after) for gjenbruk i tilfelle error.
-            afters = new HashMap();
+            after = new HashMap();
            
-            afters.put("Navn",forNavn);
-            afters.put("Etternavn",etterNavn);
-            afters.put("Fodselsdato", fodselsDato);
-            afters.put("Epost",epost);
-            afters.put("Mobilnummer",telefonStr);
+            after.put("Navn",forNavn);
+            after.put("Etternavn",etterNavn);
+            after.put("Fodselsdato", fodselsDato);
+            after.put("Epost",epost);
+            after.put("Mobilnummer",telefon);
             
-out.println(afters);
+out.println(after);
             // Verifisering av parametere og opprettelse av error.
             inputBehandler = new InputErrorBehandler();
             errors = new HashMap(); 
@@ -103,18 +107,23 @@ out.println(afters);
             
             if(!inputBehandler.validNavn(forNavn))
                 errors.put("Navn", "Vennligst legg til fornavn.");
-                        
+            
             if(!inputBehandler.validNavn(etterNavn))
                 errors.put("Etternavn", "Vennligst legg til etternavn.");
+            if(verifPassord.equals(""))
+                errors.put("Passord", "Passordene er ikke like!");
+                
 out.println(errors);
             //Opprettelse av ny bruker, dersom det ikke er errors.
             
             if(errors.isEmpty()){   
                 Bruker bruker;
-                bruker = new Bruker(rolle, navn, fodselsDato, epost, verifPassord, telefon);
+                bruker = new Bruker(rolle, forNavn, etterNavn, fodselsDato, epost, verifPassord, telefon);
 out.println(bruker); 
                 brukerDAO = new BrukerDAO();
+                
                 int id = brukerDAO.insert(bruker);
+  
 out.println("ID: " + id);
             
                 if (id != 0) {
@@ -127,7 +136,7 @@ out.println("ID: " + id);
                 
                         // Legger inn errors og after-verdier i felt  
                         // i opprinnelig jsp form og presenterer for bruker.
-                        request.setAttribute("after", afters); 
+                        request.setAttribute("after", after); 
                         request.setAttribute("errors", errors);
                         request.getRequestDispatcher("register.jsp").forward(request, response);
                        
@@ -150,8 +159,8 @@ out.println("ID: " + id);
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher dispacher = request.getRequestDispatcher("register.html");
-                dispacher.forward(request, response);
+        RequestDispatcher dispacher = request.getRequestDispatcher("register.jsp");
+            dispacher.forward(request, response);
     }
 
     /**

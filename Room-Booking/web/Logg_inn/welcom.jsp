@@ -1,28 +1,41 @@
+<%-- 
+    Document   : welcom
+    Created on : 08.okt.2019, 20:59:34
+    Author     : altee
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-         <link rel="stylesheet" type="text/css" href="style.css">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="style.css">
+         <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
           <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+        <title>JSP Page</title>
     </head>
     <body>
+     <% 
+        if (session.getAttribute("fornavn1")== null && session.getAttribute("Etternavn")== null && 
+                session.getAttribute("brukerId")== null
+               
+              )
+        {
+           response.sendRedirect("login.jsp");
+        }
         
-         
-         
         
-        
-         <nav>
+     %>
+    
+     <nav>
+          
             <div class="log">
+                
                 <div class="loggin">
-                    <a class='nav-link1' href='login.html' data-toggle="tooltip" title="logg inn her"> logg inn</a>
-                    <a class='nav-link1' href="/Room-Booking/bruker/register.html" data-toggle="tooltip" title="register nytt konto"> register</a>
+                    <a class='nav-link1' href='' data-toggle="tooltip" title="logg inn her"> ${fornavn1} ${Etternavn}</a>
+                    <a class='nav-link1' href="../HomePage/index.html" data-toggle="tooltip" title="loo ut konto"> logg ut</a>
+                   <a class='nav-link1' href='profil.jsp' data-toggle="tooltip" title=""> Profil</a>
+
                 </div>
             </div>
 
@@ -47,6 +60,7 @@ and open the template in the editor.
                       
 
                 </div>
+               
                 <div class="nav-bar">
                     <ul class="">
                         <li class="nav-item"><a href="about.html" class="nav-link" data-toggle="tooltip" title="bli kjent med oss">Hva er Brokke</a></li>
@@ -60,7 +74,7 @@ and open the template in the editor.
                 </div>
 
                 <div class="bestilling">
-                  
+                    <a class="" data-toggle="tooltip" title="Bestill Nå" href="/Room-Booking/bestilling/bestillingCreate.jsp"> Bestill Nå</a>
                     <i class="fas fa-search , icons"   onclick="myFunction()" data-toggle="tooltip" title="search" ></i>
                     <i class="fas fa-phone , icons" data-toggle="tooltip" title="00043434"></i>
 
@@ -72,40 +86,12 @@ and open the template in the editor.
                 </p>
 
             </div>
-             
-        <div class="loginn">
-            
-             <div class="info">
-                
-                <p> <div class="inn">Glemt passordet?</div><br>
+                     
                     
-                Skriv inn e-postadressen som er tilknyttet kontoen din. 
-                Klikk på Send for å få en tilbakestilling av passord via e-post til deg. </p>
-            </div>
-            
-            <form action="" method="post">
-              <div class="col-login"> 
-                <div class="form-group">
-                <label class="control-label" for="input-email" id="email">E-postadresse</label>
-                <input type="text" name="E-postE-post" value="" placeholder="E-postadresse" id="input-email" class="form-control" />
-                </div>
-              
-             </form>
-              <div class="buttons">
-                   <div class="pull-right">
-                  <button  id="button" type="submit" class="btn " data-loading-text="<span>Login</span>">
-                      <a style="color:white; text-decoration: none;">Nullstill passord</a></button>
-                </div>
-              </div>
-             </div>
-                
-           
-           <!-- <p>Har du ikke en bruker? <button type="button"><a href="register.html" style="text-decoration: none; color: black;">Opprett konto</a></button></p>
-            
-            <p>Request en sikker adminside <a href="/adminOmraade/adminSide.html">here!</a></p>
-            <p>Request en sikker ansattside <a href="/ansattOmraade/ansattSide.html" >here!</a></p>
-            <p>Request en sikker brukerside <a href="/brukerOmraade/brukerSide.html" >here!</a></p>**/-->
-            
+                    
+                     
+             
+       
         
              
              
@@ -126,17 +112,18 @@ and open the template in the editor.
             }
 
               }
-              var i = 0;
-          var col = new Array("rgba(241, 89, 34, 1)", "#9e009e");
-       
+         
+        var i = 0;
+                var col = new Array("rgba(241, 89, 34, 1)", "#9e009e");
 
         function changebar() {
-               document.getElementById("124").style.backgroundColor= col[i];
-             document.getElementById("navbar").style.backgroundColor= col[i];
-            document.getElementById("email").style.color= col[i];
-           
-            document.getElementById("button").style.backgroundColor= col[i];
-             
+                
+         document.getElementById("124").style.backgroundColor= col[i];
+         document.getElementById("navbar").style.backgroundColor= col[i];
+         document.getElementById("email").style.color= col[i];
+         document.getElementById("passord").style.color= col[i];
+         document.getElementById("button").style.backgroundColor= col[i];
+         document.getElementById("button1").style.backgroundColor= col[i];
              i++;
             if (i > col.length) {
                 i = 0;
@@ -146,19 +133,31 @@ and open the template in the editor.
            }
 
               window.onload = changebar();
+              
+              
+                $(document).ready(function() {
+                   $("#loginForm").validate({
+                      rules: {
+                            email: {
+                           required: true,
+                            email: true
+                            },
+         
+                            password: "required",
+                   },
+             
+                    messages: {
+                       email: {
+                    required: "Please enter email",
+                    email: "Please enter a valid email address"
+                      },
+                 
+                      password: "Please enter password"
+                   }
+             });
+  
+              });
         </script>
-        
-    
-       <!-- <div  class="">
-            <h1> Nullstilling av passord </h1>
-            <form>
-                <p>Legg inn e-postadresse og få tilsendt e-post for nullstilling av passord!</p>
-                <p> <input type="text" name="E-post" placeholder="E-postadresse"></p>
-             </form>
-            <p><button type="button">
-                <a href="" style="text-decoration: none; color: black; "> Nullstill passord</a> </button>
-            </p>
-           
-        </div>  -->
+       
     </body>
 </html>

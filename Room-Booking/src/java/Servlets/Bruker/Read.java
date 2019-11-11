@@ -11,7 +11,6 @@ import Klasser.Bruker.Bruker;
 import Klasser.Bruker.BrukerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -57,7 +56,7 @@ public class Read extends HttpServlet {
                 out.println("<div>");
                 out.println("<a href=\"?id=" + bruker.getId() + "\">");
                 out.println("<h3>");
-                out.println(bruker.getNavn());
+                out.println(bruker.getFornavn() + " " + bruker.getEtternavn());
                 out.println("</h3>");
                 out.println("<p>");
                 out.println("Fødselsdato: " + bruker.getFodselsDato());
@@ -86,7 +85,7 @@ public class Read extends HttpServlet {
             brukerDAO = new BrukerDAO();
             Bruker bruker = brukerDAO.read(id);
             out.println("<div>");
-            out.println("<h1>" + bruker.getNavn() + "</h1>");
+            out.println("<h1>" + bruker.getFornavn() + " " + bruker.getEtternavn() + "</h1>");
             out.println("</div>");
             out.println("<div>");
             out.println("Fødselsdato: "+ bruker.getFodselsDato());
@@ -97,9 +96,21 @@ public class Read extends HttpServlet {
             out.println("<div>");
             out.println("Telefon: " + bruker.getTelefon());
             out.println("</div>");
-
+            
+            out.println("<form action=\"bruker/oppdater\" method=\"post\">");
+            out.println("<p><input type=\"hidden\" name=\"id\" placeholder=\"ID\" value=\"" + bruker.getId() + "\"></p>");
+            out.println("<p><input type=\"submit\" name=\"oppdater\" value=\"Oppdater\"></p>");
+            out.println("</form>");
+            
+            out.println("<form action=\"bruker/slett\" method=\"post\">");
+            out.println("<p><input type=\"hidden\" name=\"id\" placeholder=\"ID\" value=\"" + bruker.getId() + "\"></p>");
+            out.println("<p><input type=\"submit\" name=\"slett\" value=\"Slett\"></p>");
+            out.println("</form>");
+            
+            out.println("</div>");
             out.println("</body>");
             out.println("</html>");
+
         }
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

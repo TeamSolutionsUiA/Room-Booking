@@ -5,10 +5,12 @@
  */
 package Servlets.BoenhetsType;
 
-import Klasser.Bilde;
-import Klasser.BoenhetsType;
-import Klasser.BoenhetsTypeDAO;
-import Klasser.Egenskap;
+import Klasser.BoenhetsType.Bilde;
+import Klasser.BoenhetsType.BildeDAO;
+import Klasser.BoenhetsType.BoenhetsType;
+import Klasser.BoenhetsType.BoenhetsTypeDAO;
+import Klasser.BoenhetsType.Egenskap;
+import Klasser.BoenhetsType.Kategori;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -34,6 +36,7 @@ import javax.servlet.http.Part;
 public class Update extends HttpServlet {
 
     private BoenhetsTypeDAO boenhetsTypeDAO;
+    private BildeDAO bildeDAO;
 
     /**
      * Beskrivelse
@@ -70,11 +73,10 @@ public class Update extends HttpServlet {
 
             out.println("<p><input type=\"text\" name=\"Navn\" placeholder=\"Navn\" value=\"" + boenhetsType.getNavn() + "\" required></p>");
             out.println("<p><input type=\"text\" name=\"id\" placeholder=\"ID\" value=\"" + boenhetsType.getID() + "\" readonly></p>");
-            out.println("<p><input type=\"text\" name=\"Kategori\" placeholder=\"Kategori\" value=\"" + boenhetsType.getKategori() + "\" required></p>");
+            out.println("<p><input type=\"text\" name=\"Kategori\" placeholder=\"Kategori\" value=\"" + boenhetsType.getKategori().getKategori() + "\" required></p>");
             out.println("<p><input type=\"number\" name=\"Enkeltsenger\" placeholder=\"Antall enkeltsenger\" min=\"0\" max=\"100\" value=\"" + boenhetsType.getEnkeltsenger() + "\"></p>");
             out.println("<p><input type=\"number\" name=\"Dobeltsenger\" placeholder=\"Antall dobeltsenger\" min=\"0\" max=\"100\" value=\"" + boenhetsType.getDobeltsenger() + "\"></p>");
             out.println("<p><input type=\"text\" name=\"Beskrivelse\" placeholder=\"Beskrivelse\" value=\"" + boenhetsType.getBeskrivelse() + "\"></p>");
-            //out.println("<p><input type=\"file\" name=\"Bilder\" multiple=\"multiple\" accept=\"image/*\"></p>");
             out.println("<p><input type=\"number\" name=\"Pris\" placeholder=\"Pris per døgn\" min=\"50\" max=\"100000\" value=\"" + boenhetsType.getPris() + "\" required></p>");
             out.println("<p><input type=\"text\" name=\"Egenskaper\" placeholder=\"Egenskaper separert med komma\" value=\"" + egenskaper + "\"></p>");
             out.println("<p><input type=\"submit\" value=\"Oppdater romtype\"></p>");
@@ -91,7 +93,7 @@ public class Update extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             String idStr = request.getParameter("id");
             int id = Integer.parseInt(idStr);
-            
+
             String navn = request.getParameter("Navn");
 
             String enkeltsengerStr = request.getParameter("Enkeltsenger");
@@ -99,28 +101,23 @@ public class Update extends HttpServlet {
 
             String dobeltsengerStr = request.getParameter("Dobeltsenger");
             int dobeltsenger = Integer.parseInt(dobeltsengerStr);
-            
+
             String beskrivelse = request.getParameter("Beskrivelse");
 
             String prisStr = request.getParameter("Pris");
             int pris = Integer.parseInt(prisStr);
 
-            String kategori = request.getParameter("Kategori");
             String egenskaper = request.getParameter("Egenskaper");
+
+            Kategori kategori = new Kategori(request.getParameter("Kategori"));
 
             List<Egenskap> egenskaperList = new ArrayList();
             for (String egenskap : egenskaper.split(",")) {
                 Egenskap nyEgenskap = new Egenskap(egenskap);
                 egenskaperList.add(nyEgenskap);
             }
-            
+
             List<Bilde> bilder = new ArrayList<>();
-            for (Part bilde : request.getParts()) {
-                if (bilde.getContentType() != null) {
-                    InputStream inputStream = bilde.getInputStream();
-                    bilder.add(new Bilde(inputStream));
-                }
-            }
 
             BoenhetsType boenhetsType;
             boenhetsType = new BoenhetsType(id, navn, kategori, enkeltsenger, dobeltsenger, beskrivelse, pris, bilder, egenskaperList);
@@ -130,6 +127,59 @@ public class Update extends HttpServlet {
             String reDir = "../boenhetstype?id=" + boenhetsType.getID();
             response.sendRedirect(reDir);
         }
+    }
+
+    protected void updateImgForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet Update</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<div class=\"Update\">");
+            out.println("<h1>Oppdater Boenhetstype</h1>");
+            out.println("<form action=\"oppdater\" method=\"post\" enctype=\"multipart/form-data\">");
+            String IDStr = request.getParameter("id");
+            int ID = Integer.parseInt(IDStr);
+
+            boenhetsTypeDAO = new BoenhetsTypeDAO();
+            BoenhetsType boenhetsType = boenhetsTypeDAO.read(ID);
+
+            out.println("<p><input type=\"text\" name=\"Navn\" placeholder=\"Navn\" value=\"" + boenhetsType.getNavn() + "\" readonly></p>");
+            out.println("<p><input type=\"text\" name=\"id\" placeholder=\"ID\" value=\"" + boenhetsType.getID() + "\" readonly></p>");
+            out.println("<p><input type=\"file\" name=\"Bilder\" multiple=\"multiple\" accept=\"image/*\"></p>");
+            out.println("<p><input type=\"hidden\" name=\"bilde\" value=\"true\" readonly></p>");
+            out.println("<p><input type=\"submit\" value=\"Oppdater romtype\"></p>");
+            out.println("</form>");
+            out.println("</div>");
+            out.println("</body>");
+            out.println("</html>");
+        }
+    }
+
+    protected void updateImg(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String idStr = request.getParameter("id");
+        int id = Integer.parseInt(idStr);
+
+        List<Bilde> bilder = new ArrayList<>();
+        for (Part bilde : request.getParts()) {
+            if (bilde.getContentType() != null) {
+                InputStream inputStream = bilde.getInputStream();
+                bilder.add(new Bilde(inputStream));
+            }
+        }
+
+        bildeDAO = new BildeDAO();
+        bildeDAO.update(bilder, id);
+
+        String reDir = "../boenhetstype?id=" + id;
+        response.sendRedirect(reDir);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -144,7 +194,12 @@ public class Update extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        updateForm(request, response);
+
+        if (request.getParameter("bilde") != null) {
+            updateImgForm(request, response);
+        } else {
+            updateForm(request, response);
+        }
     }
 
     /**
@@ -158,7 +213,11 @@ public class Update extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        update(request, response);
+        if (request.getParameter("bilde") != null) {
+            updateImg(request, response);
+        } else {
+            update(request, response);
+        }
     }
 
     /**
