@@ -6,7 +6,6 @@
 package Klasser.Bestilling;
 
 import Klasser.Boenhet.Boenhet;
-import Klasser.Bruker.Bruker;
 import java.util.List;
 
 /**
@@ -16,75 +15,63 @@ import java.util.List;
 public class Bestilling {
 
     private int bestillingsNummer;
+    private int brukerID;
     private String startDato;
     private String sluttDato;
-    private int antallPerson;
-    private List <Boenhet> boenhet;
+    private List<Boenhet> boenheter;
 
-   
-    public Bestilling(int bestillingsNummer, String startDato, String sluttDato, int brukerId, int antallPerson, List <Boenhet> boenheter) {
+    public Bestilling(int bestillingsNummer, String startDato, String sluttDato, int brukerID, List<Boenhet> boenheter) {
         this.bestillingsNummer = bestillingsNummer;
+        this.brukerID = brukerID;
         this.startDato = startDato;
         this.sluttDato = sluttDato;
-        this.antallPerson = antallPerson;
-        this.boenhet= boenheter;
-        
+        this.boenheter = boenheter;
     }
 
-    public Bestilling(String startDato, String sluttDato, int brukerId, int antallPerson) {
-
+    public Bestilling(String startDato, String sluttDato, int brukerID, List<Boenhet> boenheter) {
+        this.brukerID = brukerID;
         this.startDato = startDato;
         this.sluttDato = sluttDato;
-        this.antallPerson = antallPerson;
+        this.boenheter = boenheter;
     }
 
-    public Bestilling(String startDato, String sluttDato, int antallPerson) {
-
-        this.startDato = startDato;
-        this.sluttDato = sluttDato;
-
-        this.antallPerson = antallPerson;
-    }
-
-    public int getbestillingsNummer() {
+    public int getBestillingsNummer() {
         return bestillingsNummer;
-    }
-
-    public String getStartDato() {
-        return startDato;
-    }
-
-    public String getSluttDato() {
-        return sluttDato;
-    }
-
-    public int getAntallPerson() {
-        return antallPerson;
     }
 
     public void setBestillingsNummer(int bestillingsNummer) {
         this.bestillingsNummer = bestillingsNummer;
     }
 
+    public int getBrukerID() {
+        return brukerID;
+    }
+
+    public void setBrukerID(int brukerID) {
+        this.brukerID = brukerID;
+    }
+
+    public String getStartDato() {
+        return startDato;
+    }
+
     public void setStartDato(String startDato) {
         this.startDato = startDato;
+    }
+
+    public String getSluttDato() {
+        return sluttDato;
     }
 
     public void setSluttDato(String sluttDato) {
         this.sluttDato = sluttDato;
     }
 
-    public void setAntallPerson(int antallPerson) {
-        this.antallPerson = antallPerson;
+    public List<Boenhet> getBoenheter() {
+        return boenheter;
     }
 
-    
-     public List<Boenhet> getBoenhet() {
-        return boenhet;
+    public void setBoenheter(List<Boenhet> boenheter) {
+        this.boenheter = boenheter;
     }
-
-    public void setBoenhet(List<Boenhet> boenhet) {
-        this.boenhet = boenhet;
-    }
-
 }

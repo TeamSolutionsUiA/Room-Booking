@@ -6,7 +6,6 @@
 package Klasser.Bestilling;
 
 import Klasser.Boenhet.Boenhet;
-import Klasser.Bruker.Bruker;
 import Klasser.DbTool;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,17 +24,17 @@ public class BestillingDAO {
     private Bestilling bestilling;
    
 
-    public void insert (Bestilling bestilling, int brukerID) {
-        List <Boenhet> boenheter = bestilling.getBoenhet();
+    public void insert (Bestilling bestilling) {
+        List <Boenhet> boenheter = bestilling.getBoenheter();
         
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
 
-        int bestillingsnummer =insertbestilling(bestilling, conn, brukerID);
+        int bestillingsNummer = insertbestilling(bestilling, conn);
       
         
         for (Boenhet boenhet: boenheter) {
-            insertlinje(boenhet,conn, bestillingsnummer);
+            insertlinje(boenhet,conn, bestillingsNummer);
         }
     }
     
@@ -58,7 +57,7 @@ public class BestillingDAO {
     }
     
     
-    private int insertbestilling(Bestilling bestilling, Connection conn, int brukerID) {
+    private int insertbestilling(Bestilling bestilling, Connection conn) {
 
        
         try {
@@ -68,7 +67,7 @@ public class BestillingDAO {
 
             statement.setString(1, bestilling.getStartDato());
             statement.setString(2, bestilling.getSluttDato());
-            statement.setInt(3, brukerID);
+            statement.setInt(3, bestilling.getBrukerID());
    
 
             int rowsInserted = statement.executeUpdate();

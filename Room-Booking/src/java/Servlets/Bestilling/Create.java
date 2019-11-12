@@ -5,11 +5,14 @@
  */
 package Servlets.Bestilling;
 
-import Klasser.Bestilling.Bestilling;
-import Klasser.Bestilling.BestillingDAO;
+import Klasser.Bestilling.*;
+import Klasser.Boenhet.*;
+import Klasser.Bruker.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -22,10 +25,12 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author mohamJ
  */
-@WebServlet(name = "Bestilling.Create", urlPatterns = {"/bestilling/bestillingCreate"})
+@WebServlet(name = "Bestilling.Create", urlPatterns = {"bestilling/kundeinfo"})
 public class Create extends HttpServlet {
 
     private BestillingDAO bestillingDAO;
+    private BrukerDAO brukerDAO;
+    private BoenhetDAO boenhetDAO;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,34 +45,67 @@ public class Create extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Create</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Create at " + request.getContextPath() + "</h1>");
 
-            String start = request.getParameter("Bestilling-start");
-            String slutt = request.getParameter("Bestilling-slutt");
-            String antall = request.getParameter("Bestilling-antall");
-            int antall2 = Integer.parseInt(antall);
+        // Hente inn kundedata
+        String navn = request.getParameter("fornavn");
+        String etterNavn = request.getParameter("etternavn");
+        String fodselsDato = request.getParameter("fodselsdato");
+        String mobilNummer = request.getParameter("mobilnummer");
+        String epost = request.getParameter("epost");
 
-            String id = request.getParameter("Bestilling-kategori");
-            int ID = Integer.parseInt(id);
+        String rolle = "Kunde";
 
-            Bestilling bestilling;
-            bestilling = new Bestilling(start, slutt, ID, antall2);
+        // Legge inn kundeinfo som bruker i databasen, med rolle
+        // som "Kunde"- en bruker som ikke kan logge inn.
+        Bruker kundeBruker = new Bruker(rolle, navn, etterNavn, fodselsDato, epost, mobilNummer);
+        brukerDAO = new BrukerDAO();
+        String query = "INSERT INTO Bruker (Rolle, Fornavn, Etternavn, DOB, Epost, Telefon) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
+        int brukerID = brukerDAO.insert(kundeBruker, query);
 
-            BestillingDAO ab = new BestillingDAO();
+        // Hente inn bestillingsinfo
+        String startDato = request.getParameter("fradato");
+        String sluttDato = request.getParameter("tildato");
+        String boenhetsTypeIDString = request.getParameter("boenhetstypeid");
+        int boenhetsTypeID = Integer.parseInt(boenhetsTypeIDString);
 
-            ab.insert(bestilling);
+        // Finne boenhetsnummer.
+        String boenhetSQL = "SELECT Boenhet.* FROM ((((Boenhet LEFT JOIN BoenhetsType"
+                + " ON Boenhet.BoenhetsType_ID = '" + boenhetsTypeID + "')"
+                + " LEFT JOIN BestillingsLinje"
+                + " ON Boenhet.BoenhetsNummer = BestillingsLinje.BoenhetsNummer)"
+                + " LEFT JOIN Bestilling ON Bestilling.Bestillingsnummer"
+                + " = BestillingsLinje.BestillingsNummer"
+                + " WHERE Boenhet.BoenhetsNummer NOT IN (SELECT Boenhet.BoenhetsNummer FROM (Boenhet"
+                + " RIGHT JOIN BestillingsLinje"
+                + " ON BestillingsLinje.BoenhetsNummer = Boenhet.BoenhetsNummer)"
+                + " RIGHT JOIN Bestilling"
+                + " ON Bestilling.Bestillingsnummer = BestillingsLinje.BestillingsNummer"
+                + " WHERE (Bestilling.SluttDato > '" + startDato + "')"
+                + " AND (Bestilling.StartDato < '" + sluttDato + "'));";
 
-            out.println("</body>");
-            out.println("</html>");
+        boenhetDAO = new BoenhetDAO();
+        List<Boenhet> tilgjengeligeBoenheter = boenhetDAO.readAll(boenhetSQL);
+        List<Boenhet> boenheter = new ArrayList();
+
+        if (!tilgjengeligeBoenheter.isEmpty()) {
+
+            boenheter.add(tilgjengeligeBoenheter.get(0));
+
+        } else {
+            //Error
         }
+
+        Bestilling bestilling;
+        bestilling = new Bestilling(startDato, sluttDato, brukerID, boenheter);
+
+        bestillingDAO = new BestillingDAO();
+
+        bestillingDAO.insert(bestilling);
+        
+        String reDir = "../";
+                response.sendRedirect(reDir);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

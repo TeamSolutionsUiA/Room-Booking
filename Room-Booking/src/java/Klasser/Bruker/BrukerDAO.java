@@ -22,14 +22,11 @@ public class BrukerDAO {
     private Connection conn;
     private Bruker bruker;
     
-    public int insert(Bruker bruker) {
+    public int insert(Bruker bruker, String sql) {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
 
            try {
-           
-                String sql = "INSERT INTO Bruker (Rolle, Fornavn, Etternavn, DOB, Epost, Passord, Telefon)"
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
                 PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 
@@ -38,9 +35,11 @@ public class BrukerDAO {
                 statement.setString(3, bruker.getEtternavn());
                 statement.setString(4, bruker.getFodselsDato());
                 statement.setString(5, bruker.getEpost());
-                statement.setString(6, bruker.getPassord());
-                statement.setString(7, bruker.getTelefon());
-
+                statement.setString(6, bruker.getTelefon());
+                if(sql.contains("Passord")){
+                statement.setString(7, bruker.getPassord());
+                }
+                
                 int rowsInserted = statement.executeUpdate();
                 ResultSet idRs = statement.getGeneratedKeys();
                 if (idRs.next()) {

@@ -121,8 +121,10 @@ out.println(errors);
                 bruker = new Bruker(rolle, forNavn, etterNavn, fodselsDato, epost, verifPassord, telefon);
 out.println(bruker); 
                 brukerDAO = new BrukerDAO();
-                
-                int id = brukerDAO.insert(bruker);
+                String query = "INSERT INTO Bruker (Rolle, Fornavn, Etternavn, DOB, Epost, Telefon, Passord)"
+                    + " VALUES (?, ?, ?, ?, ?, ?, ?)";
+            // Sender bruker og query til insertmetoden i brukerDAO.
+                int id = brukerDAO.insert(bruker, query);
   
 out.println("ID: " + id);
             

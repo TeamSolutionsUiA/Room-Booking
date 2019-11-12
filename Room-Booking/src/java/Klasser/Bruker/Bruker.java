@@ -56,7 +56,7 @@ public class Bruker {
         this.telefon = telefon;
     }
 
-    public Bruker(String fornavn, String etternavn, String fodselsDato, String epost, String telefon) {
+    public Bruker(String rolle, String fornavn, String etternavn, String fodselsDato, String epost, String telefon) {
 
         this.fornavn = fornavn;
         this.etternavn = etternavn;

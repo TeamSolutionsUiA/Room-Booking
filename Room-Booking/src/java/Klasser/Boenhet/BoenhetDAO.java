@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,6 +80,28 @@ public class BoenhetDAO {
             while (rs.next()) {
                 boenhet = new Boenhet(rs.getString("BoenhetsNummer"), rs.getInt("BoenhetsType_ID"));
 
+                boenheter.add(boenhet);
+            }
+            return boenheter;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public List<Boenhet> readAll(String query) {
+        DbTool dbTool = new DbTool();
+        conn = dbTool.loggInn();
+
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+            List<Boenhet> boenheter = new ArrayList<>();
+            
+            while (rs.next()) {
+                boenhet = new Boenhet(rs.getString("BoenhetsNummer"), rs.getInt("BoenhetsType_ID"));
                 boenheter.add(boenhet);
             }
             return boenheter;
