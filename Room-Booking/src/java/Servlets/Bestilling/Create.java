@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author mohamJ
  */
-@WebServlet(name = "Bestilling.Create", urlPatterns = {"bestilling/kundeinfo"})
+@WebServlet(name = "Bestilling.Create", urlPatterns = {"/bestilling/create"})
 public class Create extends HttpServlet {
 
     private BestillingDAO bestillingDAO;
