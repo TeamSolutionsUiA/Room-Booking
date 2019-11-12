@@ -25,7 +25,7 @@ public class BestillingDAO {
     private Bestilling bestilling;
    
 
-    public void Insert (Bestilling bestilling, int brukerID) {
+    public void insert (Bestilling bestilling, int brukerID) {
         List <Boenhet> boenheter = bestilling.getBoenhet();
         
         DbTool dbTool = new DbTool();
