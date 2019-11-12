@@ -5,7 +5,9 @@
  */
 package Klasser.Bestilling;
 
+import Klasser.Boenhet.Boenhet;
 import Klasser.Bruker.Bruker;
+import java.util.List;
 
 /**
  *
@@ -16,22 +18,23 @@ public class Bestilling {
     private int bestillingsNummer;
     private String startDato;
     private String sluttDato;
-    private int brukerID;
     private int antallPerson;
+    private List <Boenhet> boenhet;
 
-    public Bestilling(int bestillingsNummer, String startDato, String sluttDato, int brukerId, int antallPerson) {
+   
+    public Bestilling(int bestillingsNummer, String startDato, String sluttDato, int brukerId, int antallPerson, List <Boenhet> boenheter) {
         this.bestillingsNummer = bestillingsNummer;
         this.startDato = startDato;
         this.sluttDato = sluttDato;
-        this.brukerID = brukerId;
         this.antallPerson = antallPerson;
+        this.boenhet= boenheter;
+        
     }
 
     public Bestilling(String startDato, String sluttDato, int brukerId, int antallPerson) {
 
         this.startDato = startDato;
         this.sluttDato = sluttDato;
-        this.brukerID = brukerId;
         this.antallPerson = antallPerson;
     }
 
@@ -75,12 +78,13 @@ public class Bestilling {
         this.antallPerson = antallPerson;
     }
 
-    public int getBrukerID() {
-        return brukerID;
+    
+     public List<Boenhet> getBoenhet() {
+        return boenhet;
     }
 
-    public void setBrukerID(int brukerID) {
-        this.brukerID = brukerID;
+    public void setBoenhet(List<Boenhet> boenhet) {
+        this.boenhet = boenhet;
     }
 
 }
