@@ -23,7 +23,7 @@
 
 
 
-<form action="bekreft" method="post" enctype="multipart/form-data">
+<form action="bekreft" method="post">
     <div class="col-login"> 
         <div class="form-group">
             <label class="control-label" for="input-Navn" id="fornavn">Fornavn*</label>

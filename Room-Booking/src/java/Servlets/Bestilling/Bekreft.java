@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author mohamJ
  */
-@WebServlet(name = "Bestilling.KundeInfo", urlPatterns = {"/bestilling/bekreft"})
+@WebServlet(name = "Bestilling.Bekreft", urlPatterns = {"/bestilling/bekreft"})
 public class Bekreft extends HttpServlet {
 
     private BestillingDAO bestillingDAO;
@@ -76,20 +76,36 @@ public class Bekreft extends HttpServlet {
             BoenhetsType boenhetsType = boenhetsTypeDAO.read(boenhetsTypeID);
             int antallPers = boenhetsType.getDobeltsenger() * 2 + boenhetsType.getEnkeltsenger();
             
+            //Sjekk antall dager og pris
+            
             out.println("<p>");
             out.println("<b>" + boenhetsType.getNavn() + "</b>");
-            out.println("Fra: " + startDato + "Til: " + sluttDato);
-            out.println("Kategori: " + boenhetsType.getKategori());
+            out.println("</p>");
+            out.println("<p>");
+            out.println("Fra: " + startDato + " Til: " + sluttDato);
+            out.println("</p>");
+            out.println("<p>");
+            out.println("Kategori: " + boenhetsType.getKategori().getKategori());
+            out.println("</p>");
+            out.println("<p>");
             out.println("Antall personer: " + antallPers);
             out.println("</p>");
             
             out.println("<h2>Kundeinformasjon</h2>");
             out.println("<p>");
             out.println("Navn: " + navn + " " + etterNavn);
+            out.println("</p>");
+            out.println("<p>");
             out.println("Fødselsdato: " + fodselsDato);
+            out.println("</p>");
+            out.println("<p>");
             out.println("Epost: " + epost);
+            out.println("</p>");
+            out.println("<p>");
             out.println("Telefon: " + mobilNummer);
             out.println("</p>");
+           
+            //Legg inn totalpris
             
             out.println("<form action=\"create\" method=\"post\">");
             out.println("<p><input type=\"hidden\" name=\"fornavn\" value=\"" + navn + "\" readonly></p>");
