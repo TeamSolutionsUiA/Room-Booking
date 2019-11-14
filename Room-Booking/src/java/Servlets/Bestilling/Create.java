@@ -69,7 +69,7 @@ public class Create extends HttpServlet {
         int boenhetsTypeID = Integer.parseInt(boenhetsTypeIDString);
 
         // Finne boenhetsnummer.
-        String boenhetSQL = "SELECT Boenhet.* FROM ((((Boenhet LEFT JOIN BoenhetsType"
+        String boenhetSQL = "SELECT Boenhet.* FROM ((Boenhet LEFT JOIN BoenhetsType"
                 + " ON Boenhet.BoenhetsType_ID = '" + boenhetsTypeID + "')"
                 + " LEFT JOIN BestillingsLinje"
                 + " ON Boenhet.BoenhetsNummer = BestillingsLinje.BoenhetsNummer)"

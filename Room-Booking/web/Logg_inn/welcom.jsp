@@ -33,7 +33,7 @@
                 
                 <div class="loggin">
                     <a class='nav-link1' href='' data-toggle="tooltip" title="logg inn her"> ${fornavn1} ${Etternavn}</a>
-                    <a class='nav-link1' href="../HomePage/index.html" data-toggle="tooltip" title="loo ut konto"> logg ut</a>
+                    <a class='nav-link1' href="../index.html" data-toggle="tooltip" title="loo ut konto"> logg ut</a>
                    <a class='nav-link1' href='profil.jsp' data-toggle="tooltip" title=""> Profil</a>
 
                 </div>
@@ -41,7 +41,7 @@
 
             <div class="container " id="124">
                 <div class='logo'>
-                    <a href="/Room-Booking/HomePage/index.html"> Brokke</a>
+                    <a href="../index.html"> Brokke</a>
                 </div>
 
                 <div id="navbar">

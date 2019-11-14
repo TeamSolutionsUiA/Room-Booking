@@ -52,7 +52,7 @@ public class VisBoenhetsTyper extends HttpServlet {
 
             // Innhenting av alle tilgjengelige boenhetsTyper 
             // Må finnes i boenhettabell
-            String boenhetsTypeSQL = "SELECT BoenhetsType.* FROM ((((Boenhet LEFT JOIN BoenhetsType"
+            String boenhetsTypeSQL = "SELECT Boenhet.BoenhetsNummer, BoenhetsType.* FROM ((((Boenhet LEFT JOIN BoenhetsType"
                     + " ON Boenhet.BoenhetsType_ID = BoenhetsType.ID)"
                     + " LEFT JOIN KategoriLink ON BoenhetsType.ID = KategoriLink.BoenhetsType_ID)"
                     + " LEFT JOIN Kategori ON KategoriLink.Kategori = Kategori.Kategori)"

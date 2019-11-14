@@ -24,7 +24,7 @@
 
             <div class="container " id="124">
                 <div class='logo'>
-                    <a href="/Room-Booking/HomePage/index.html"> Brokke</a>
+                    <a href="/Room-Booking/index.html"> Brokke</a>
                 </div>
 
                 <div id="navbar">
