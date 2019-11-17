@@ -65,10 +65,17 @@ public class sjekk extends HttpServlet {
            Bruker bruker = dao.check(epost, passord);
             
             String destPage = "login.jsp";
+         
+            
+                 
         
-            if( dao.check(epost,passord)!= null ){
+            if( dao.check(epost,passord)!= null  ){
                 
-                
+                 String roll = bruker.getRolle();
+                 
+                if (roll.equals("Bruker")) {
+                 response.sendRedirect("welcom.jsp");
+             
                  HttpSession session = request.getSession();
                  
                  session.setAttribute("brukerId", bruker.getId());
@@ -78,14 +85,18 @@ public class sjekk extends HttpServlet {
                  session.setAttribute("DOB", bruker.getFodselsDato());
                  session.setAttribute("epost", bruker.getEpost());
                  session.setAttribute("tele", bruker.getTelefon());
-                
-                
+                        }
+                 else if (roll.equals("admin")) { 
+                         out.println("welcom to Admin page");
+                         
+                         }
+             
+                 
+                 
+                 
               
-               
               
                 
-              
-                response.sendRedirect("welcom.jsp");
         }
             else{
                 String message = "Invalid email/password";

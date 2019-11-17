@@ -34,6 +34,8 @@ public class loginDAO {
             
             bruker.setId(rs.getInt("id"));
             
+            bruker.setRolle(rs.getString("Rolle"));
+            
            bruker.setFornavn(rs.getString("fornavn"));
             
            bruker.setEtternavn(rs.getString("etternavn"));
