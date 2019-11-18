@@ -127,13 +127,15 @@ public class BrukerDAO {
         return brukerEksist;
          }
     
-    public int update(Bruker bruker) {
+    public int update(Bruker bruker, String query) {
         DbTool dbTool = new DbTool();
         conn = dbTool.loggInn();
+        String sql = query;
         try {
-            String sql = "UPDATE Bruker SET Fornavn=?, Etternavn=?, DOB=?, Epost=?, Passord=?, Telefon=? WHERE ID=?";
+            
             PreparedStatement statement = conn.prepareStatement(sql);
             
+            if(sql.contains("Passord")){
             statement.setString(1, bruker.getFornavn());
             statement.setString(2, bruker.getEtternavn());
             statement.setString(3, bruker.getFodselsDato());
@@ -142,6 +144,15 @@ public class BrukerDAO {
             statement.setString(6, bruker.getTelefon());
             statement.setInt(7, bruker.getId());
             
+            } else {
+                statement.setString(1, bruker.getFornavn());
+                statement.setString(2, bruker.getEtternavn());
+                statement.setString(3, bruker.getFodselsDato());
+                statement.setString(4, bruker.getEpost());
+                statement.setString(5, bruker.getTelefon());
+                statement.setInt(6, bruker.getId());
+                
+            }
              int rowsInserted = statement.executeUpdate();
             
                 if (rowsInserted != 0) {

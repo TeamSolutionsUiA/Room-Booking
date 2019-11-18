@@ -136,8 +136,6 @@
                    <div class="pull-right">
                   <button  id="button" type="submit" name="Submit"   class="btn " data-loading-text="<span>Opprett Konto</span>">
                       <a style="color:white; text-decoration: none;">Registrer</a></button>
-                  <button  id="endre" type="submit" name="Lagre"   class="btn" data-loading-text="<span>Lagre</span>">
-                      <a style="color:white; text-decoration: none;">Lagre</a></button>
                 </div>
               </div>
              </div>

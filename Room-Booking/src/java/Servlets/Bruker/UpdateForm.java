@@ -69,8 +69,8 @@ public class UpdateForm extends HttpServlet {
             out.println("<p><input type=\"text\" name=\"Fodselsdato\" placeholder=\"Fødselsdato\" value=\"" + bruker.getFodselsDato() + "\" required></p>");
             out.println("<p><input type=\"text\" name=\"Mobilnummer\" placeholder=\"Mobilnummer\" min=\"8\" max=\"14\" value=\"" + bruker.getTelefon() + "\"></p>");
             out.println("<p><input type=\"email\" name=\"Epost\" placeholder=\"Epost-adresse\" min=\"6\" max=\"100\" value=\"" + bruker.getEpost() + "\"></p>");
-            out.println("<p><input type=\"password\" name=\"Passord\"  placeholder=\"Passord\" value=\"" + bruker.getPassord() + "\"required></p>");
-            out.println("<p><input type=\"password\" name=\"Re-Passord\"  placeholder=\"Bekreft passord\" value=\"" + bruker.getPassord() + "\"required></p>");
+            out.println("<p><input type=\"password\" name=\"Passord\"  placeholder=\"Passord\" value=\"\"></p>");
+            out.println("<p><input type=\"password\" name=\"Re-Passord\"  placeholder=\"Bekreft passord\" value=\"\"></p>");
        
             out.println("<p><input type=\"submit\" value=\"Oppdater bruker\"></p>");
             out.println("</form>");

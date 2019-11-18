@@ -13,8 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -83,13 +81,18 @@ out.println(epost);
             // Innhenting og kryptering av passord:
             passordHasher = new PassordHasher();
             
+            boolean nyttPassord = false;
             String verifPassord = "";
             String passord = passordHasher.krypterPassord(request.getParameter("Passord"));
             String passordBekreft = passordHasher.krypterPassord(request.getParameter("Re-Passord"));
             if(passordBekreft.equals(passord)){
                 verifPassord = passord;
+                }
+            if(!request.getParameter("Passord").equals("")){
+                nyttPassord = true;
+                }
                 
-            }
+          
 out.println(verifPassord);
             
             String telefon = request.getParameter("Mobilnummer");
@@ -125,15 +128,26 @@ out.println(after);
                 errors.put("Passord", "Passordene er ikke like!");
                 
 out.println(errors);
-            //Opprettelse av ny bruker, dersom det ikke er errors.
+            //Opprettelse av ny bruker, dersom det ikke er errors og oppdatering
+            //av databasen.
+            int updateID = 0;
+            Bruker bruker = null;
             
-            if(errors.isEmpty()){   
-                Bruker bruker;
+            if(errors.isEmpty() & nyttPassord == true) {   
                 bruker = new Bruker(id,forNavn, etterNavn, fodselsDato, epost, verifPassord, telefon);
 out.println(bruker); 
+                String query = "UPDATE Bruker SET Fornavn=?, Etternavn=?, DOB=?, Epost=?, Passord=?, Telefon=? WHERE ID=?";
                 brukerDAO = new BrukerDAO();
                 
-                int updateID = brukerDAO.update(bruker);
+                    updateID = brukerDAO.update(bruker, query);
+            } else if((errors.isEmpty() & nyttPassord == false)) {   
+                    bruker = new Bruker(id,forNavn, etterNavn, fodselsDato, epost,telefon);
+out.println(bruker); 
+                String query = "UPDATE Bruker SET Fornavn=?, Etternavn=?, DOB=?, Epost=?, Telefon=? WHERE ID=?";
+                brukerDAO = new BrukerDAO();
+                
+                    updateID = brukerDAO.update(bruker, query);
+            }
   
 out.println("ID: " + updateID);
             
@@ -142,7 +156,6 @@ out.println("Vellykket");
                     String reDirBruker = "../bruker?id=" + bruker.getId();
                     response.sendRedirect(reDirBruker);
                 }
-            }
                     else{
                 
                         // Legger inn errors og after-verdier i felt  
