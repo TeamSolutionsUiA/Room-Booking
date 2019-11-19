@@ -104,7 +104,7 @@ public class BoenhetsTypeDAO {
         conn = dbTool.loggInn();
         String query = sql;
         List<BoenhetsType> boenhetsTyper = new ArrayList<>();
-        
+        List<BoenhetsType> filter = new ArrayList<>();
         try {
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(query);
@@ -113,12 +113,28 @@ public class BoenhetsTypeDAO {
             bildeDAO = new BildeDAO();
             
             while (rs.next()) {
+               boolean eksisterer = false;
                 boenhetsType = new BoenhetsType(rs.getInt("ID"), rs.getString("Navn"), kategoriDAO.read(conn, rs.getInt("ID")),
                         rs.getInt("EnkeltSenger"), rs.getInt("DobeltSenger"),
                         rs.getString("Beskrivelse"), rs.getInt("Pris"),
                         bildeDAO.readAll(conn, rs.getInt("ID")),
                         egenskapDAO.readAll(conn, rs.getInt("ID")));
-                boenhetsTyper.add(boenhetsType);
+                
+                for (BoenhetsType boenhettype: boenhetsTyper) {
+                   eksisterer = false;
+                   for(BoenhetsType boenhettypef: filter) {
+                     if(boenhettype ==boenhettypef) {
+                         eksisterer =true;
+                     }
+                    }    
+                  if (eksisterer !=true) {
+                      boenhetsTyper.add(boenhetsType);
+                } 
+                
+                }
+                
+                
+                
             }
             if(!boenhetsTyper.isEmpty()){
                     return boenhetsTyper;
