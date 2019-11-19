@@ -136,7 +136,7 @@ public class BoenhetsTypeDAO {
                 }
             }  
   
-            // return the new list 
+            // returnerer den nye listen som er sjekket  
             if(!boenhetsTyperSjekket.isEmpty()){
             return boenhetsTyperSjekket; 
             }
