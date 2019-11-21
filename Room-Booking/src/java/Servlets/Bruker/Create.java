@@ -48,25 +48,14 @@ import javax.servlet.RequestDispatcher;
         response.setContentType("text/html;charset=UTF-8");
         
         try (PrintWriter out = response.getWriter()) {
-out.println("getWriter = ok");      
-            
+
             String rolle = "Bruker";
             
             String forNavn = request.getParameter("Navn");
             String etterNavn = request.getParameter("Etternavn");
-        
-out.println(forNavn);
-out.println(etterNavn);
-           
             String fodselsDato = request.getParameter("Fodselsdato");
-            
-out.println(fodselsDato);
-            
-           
             String epost = request.getParameter("Epost");
-            
-out.println(epost);
-            
+
             // Innhenting og kryptering av passord:
             passordHasher = new PassordHasher();
             
@@ -77,11 +66,8 @@ out.println(epost);
                 verifPassord = passord;
                 
             }
-out.println(verifPassord);
-            
             String telefon = request.getParameter("Mobilnummer");
 
-out.println(telefon);          
             // Legger inn alle parametere i liste (after) for gjenbruk i tilfelle error.
             after = new HashMap();
            
@@ -90,8 +76,7 @@ out.println(telefon);
             after.put("Fodselsdato", fodselsDato);
             after.put("Epost",epost);
             after.put("Mobilnummer",telefon);
-            
-out.println(after);
+
             // Verifisering av parametere og opprettelse av error.
             inputBehandler = new InputErrorBehandler();
             errors = new HashMap(); 
@@ -112,21 +97,19 @@ out.println(after);
                 errors.put("Etternavn", "Vennligst legg til etternavn.");
             if(verifPassord.equals(""))
                 errors.put("Passord", "Passordene er ikke like!");
-                
-out.println(errors);
+
             //Opprettelse av ny bruker, dersom det ikke er errors.
             
             if(errors.isEmpty()){   
                 Bruker bruker;
                 bruker = new Bruker(rolle, forNavn, etterNavn, fodselsDato, epost, verifPassord, telefon);
-out.println(bruker); 
+                
                 brukerDAO = new BrukerDAO();
                 String query = "INSERT INTO Bruker (Rolle, Fornavn, Etternavn, DOB, Epost, Telefon, Passord)"
                     + " VALUES (?, ?, ?, ?, ?, ?, ?)";
-            // Sender bruker og query til insertmetoden i brukerDAO.
+            
+                // Sender bruker og query til insertmetoden i brukerDAO.
                 int id = brukerDAO.insert(bruker, query);
-  
-out.println("ID: " + id);
             
                 if (id != 0) {
     

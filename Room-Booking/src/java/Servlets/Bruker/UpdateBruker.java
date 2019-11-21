@@ -56,29 +56,17 @@ public class UpdateBruker extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
   
         try (PrintWriter out = response.getWriter()) {
-out.println("getWriter = ok"); 
 
             String idStr = request.getParameter("ID");
-            int id = Integer.parseInt(idStr);       
-out.println(id);            
+            int id = Integer.parseInt(idStr);          
             String rolle = "Bruker";
-            
             String forNavn = request.getParameter("Fornavn");
             String etterNavn = request.getParameter("Etternavn");
-        
-out.println(forNavn);
-out.println(etterNavn);
-           
             String fodselsDato = request.getParameter("Fodselsdato");
-            
-out.println(fodselsDato);
-            
-           
             String epost = request.getParameter("Epost");
-            
-out.println(epost);
-            
-            // Innhenting og kryptering av passord:
+
+            // Innhenting og kryptering av passord og sjekker om det er 
+            // lagt inn nytt pasord:
             passordHasher = new PassordHasher();
             
             boolean nyttPassord = false;
@@ -91,13 +79,9 @@ out.println(epost);
             if(!request.getParameter("Passord").equals("")){
                 nyttPassord = true;
                 }
-                
-          
-out.println(verifPassord);
-            
+
             String telefon = request.getParameter("Mobilnummer");
 
-out.println(telefon);          
             // Legger inn alle parametere i liste (after) for gjenbruk i tilfelle error.
             after = new HashMap();
            
@@ -106,8 +90,7 @@ out.println(telefon);
             after.put("Fodselsdato", fodselsDato);
             after.put("Epost",epost);
             after.put("Mobilnummer",telefon);
-            
-out.println(after);
+
             // Verifisering av parametere og opprettelse av error.
             inputBehandler = new InputErrorBehandler();
             errors = new HashMap(); 
@@ -126,8 +109,7 @@ out.println(after);
             
             if(verifPassord.equals(""))
                 errors.put("Passord", "Passordene er ikke like!");
-                
-out.println(errors);
+
             //Opprettelse av ny bruker, dersom det ikke er errors og oppdatering
             //av databasen.
             int updateID = 0;
@@ -135,35 +117,29 @@ out.println(errors);
             
             if(errors.isEmpty() & nyttPassord == true) {   
                 bruker = new Bruker(id,forNavn, etterNavn, fodselsDato, epost, verifPassord, telefon);
-out.println(bruker); 
                 String query = "UPDATE Bruker SET Fornavn=?, Etternavn=?, DOB=?, Epost=?, Passord=?, Telefon=? WHERE ID=?";
                 brukerDAO = new BrukerDAO();
+                updateID = brukerDAO.update(bruker, query);
                 
-                    updateID = brukerDAO.update(bruker, query);
             } else if((errors.isEmpty() & nyttPassord == false)) {   
-                    bruker = new Bruker(id,forNavn, etterNavn, fodselsDato, epost,telefon);
-out.println(bruker); 
+                bruker = new Bruker(id,forNavn, etterNavn, fodselsDato, epost,telefon);
                 String query = "UPDATE Bruker SET Fornavn=?, Etternavn=?, DOB=?, Epost=?, Telefon=? WHERE ID=?";
                 brukerDAO = new BrukerDAO();
-                
-                    updateID = brukerDAO.update(bruker, query);
+                updateID = brukerDAO.update(bruker, query);
             }
-  
-out.println("ID: " + updateID);
             
-                if (updateID != 0) {
-out.println("Vellykket");
-                    String reDirBruker = "../bruker?id=" + bruker.getId();
+            if (updateID != 0) {
+                String reDirBruker = "../bruker?id=" + bruker.getId();
                     response.sendRedirect(reDirBruker);
-                }
-                    else{
+            }
+                else{
                 
-                        // Legger inn errors og after-verdier i felt  
-                        // i opprinnelig jsp form og presenterer for bruker.
-                        //request.setAttribute("after", after); 
-                        //request.setAttribute("errors", errors);
-                        //request.getRequestDispatcher("register.jsp").forward(request, response);
-    out.println("Noe gikk galt");
+                    // Legger inn errors og after-verdier i felt  
+                    // i opprinnelig jsp form og presenterer for bruker.
+                    //request.setAttribute("after", after); 
+                    //request.setAttribute("errors", errors);
+                    //request.getRequestDispatcher("register.jsp").forward(request, response);
+                    out.println("Noe gikk galt");
          
                     }
                 }

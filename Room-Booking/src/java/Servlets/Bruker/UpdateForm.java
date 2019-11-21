@@ -57,8 +57,7 @@ public class UpdateForm extends HttpServlet {
             out.println("<form action=\"oppdaterBruker\" method=\"post\" enctype=\"multipart/form-data\">");
             String IDStr = request.getParameter("id");
             int ID = Integer.parseInt(IDStr);
-            
- out.println(ID);           
+
             //Innhenting av brukerdata fra databasen:
             brukerDAO = new BrukerDAO();
             Bruker bruker = brukerDAO.read(ID);
