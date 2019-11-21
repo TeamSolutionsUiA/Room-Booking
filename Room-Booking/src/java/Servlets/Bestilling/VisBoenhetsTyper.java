@@ -68,8 +68,8 @@ public class VisBoenhetsTyper extends HttpServlet {
                     + " RIGHT JOIN Bestilling"
                     + " ON Bestilling.Bestillingsnummer = BestillingsLinje.BestillingsNummer"
                     + " WHERE (BoenhetsType.PublisertStatus = '1')"
-                    + " AND (CAST('" + reqStartDato + "' AS DATE) BETWEEN Bestilling.startDato AND Bestilling.sluttDato)"
-                    + " AND (CAST('" + reqSluttDato + "' AS DATE) BETWEEN Bestilling.startDato AND Bestilling.sluttDato));";        
+                    + " AND (Bestilling.SluttDato > '" + reqStartDato + "')"
+                    + " AND (Bestilling.StartDato < '" + reqSluttDato + "'));";        
             boenhetsTypeDAO = new BoenhetsTypeDAO();
             kategoriDAO = new KategoriDAO();
             List<BoenhetsType> boenhetsTyper = boenhetsTypeDAO.readAll(boenhetsTypeSQL);
