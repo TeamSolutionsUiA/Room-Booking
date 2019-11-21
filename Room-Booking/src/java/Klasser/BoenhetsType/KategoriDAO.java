@@ -120,30 +120,7 @@ public class KategoriDAO {
         return null;
     }
     
-    public List<String> readAll(String sql) {
-
-        DbTool dbTool = new DbTool();
-        conn = dbTool.loggInn();
-
-        try {
-            Statement stm = conn.createStatement();
-            String query = "SELECT Kategori FROM kategori";
-            ResultSet rs = stm.executeQuery(query);
-            List<String> kategoriList = new ArrayList<>();
-
-            while (rs.next()) {
-                kategoriList.add(rs.getString("Kategori"));
-            }
-            return kategoriList;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
+   
     public void delete(Connection conn, int id) {
         Kategori kategori = read(conn, id);
         
